@@ -1,0 +1,20 @@
+# Ignore all LaTeX produced files
+
+*.aux
+*.bbl
+*.blg
+*.lot
+*.lof
+*.log
+*.synctex.gz
+*.toc
+
+*.fls
+*.bcf
+*.fdb_latexmk
+*.run.xml
+
+*.ilg
+*.nlg
+*.nlo
+*.nls
