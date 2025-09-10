@@ -1,3 +1,5 @@
+%!TEX root = main.tex
+
 \clearpage
 \appendix
 
@@ -63,7 +65,7 @@
     \end{align*}
     This shows the first relation~\eqref{eq:banachpart}. According to Proposition~\ref{prop:banachRT}, this optimization problem admits a solution and therefore the solution set $\mathcal{W} (\lb,\lh)$ is non-empty. 
 
-    Proposition~\ref{prop:banachRT} also implies that all the $\hfb$ solution of \eqref{eq:newhproblem} share the same measurement vector $\mathbf{M}_{\lh}^{-\frac{1}{2}} \phib (\hfb)$. Hence $\bm{w} = \phih(\hfb) \in \R^L$ is the common measurement vector of the Banach components $\hfb$ of the solutions $(\hfb , \hfh) \in \mathcal{W} (\lb,\lh)$, which proves \eqref{eq:hilbertpart}.
+    Proposition~\ref{prop:banachRT} also implies that all the $\hfb$ solution of \eqref{eq:newhproblem} share the same measurement vector $\mathbf{M}_{\lh}^{-\frac{1}{2}} \phib (\hfb)$. Hence $\bm{w} = \phib(\hfb) \in \R^L$ is the common measurement vector of the Banach components $\hfb$ of the solutions $(\hfb , \hfh) \in \mathcal{W} (\lb,\lh)$, which proves \eqref{eq:hilbertpart}.
 
     % vector $\bm{w} (\mathbf{M}_{\lh}^{-\frac{1}{2}} \bm{y}, \mathbf{M}_{\lh}^{-\frac{1}{2}} \phib,\lb / \lh)$ which is the common measurements of the Banach components $\hfb$ of the solutions $(\hfb , \hfh) \in \mathcal{W} (\bm{y}, \bm{\Phi} ,\lb,\lh)$. In particular, $\bm{w} (\mathbf{M}_{\lh}^{-\frac{1}{2}} \bm{y}, \mathbf{M}_{\lh}^{-\frac{1}{2}} \phib,\lb / \lh) = \phib ( \hfb)$ in \eqref{eq:findmethishfh} and \eqref{eq:hilbertpart} is proved.
     
@@ -129,13 +131,30 @@
 
     \vfill
 
+    \begin{table}[b]
+        \centering
+        \begin{tabular}{l|rrrr}
+            \toprule
+             & \multicolumn{4}{c}{$\alpha_2$ in $\lambda_2 = \alpha_2 L$} \\
+            \cmidrule(lr){2-5}
+            $\alpha_1$ & 0.80 & 4.00 & 8.00 & 40.00 \\
+            \midrule
+            0.02 & \textbf{0.049} & 0.484 & 0.697 & 0.907 \\
+            0.05 & 0.130 & 0.082 & 0.309 & 0.778 \\
+            0.10 & 0.234 & 0.156 & 0.096 & 0.578 \\
+            0.15 & 0.311 & 0.243 & 0.165 & 0.409 \\
+            \bottomrule
+        \end{tabular}
+        \caption{Relative $\ell_2$-norm error on the background components \label{tab:rl2-bg}}
+    \end{table}
+
+    \vfill
+
     \begin{figure}[p]
         \makebox[\textwidth][c]{\includegraphics[width=1.1\linewidth, trim=2cm 2.5cm 2cm 3.7cm, clip]{figures/simple_reco/backgrounds.pdf}}
         \caption{Recovered background components, with the same value of regularization parameters as in figure~\ref{fig:simple:fg-merged}.}
         \label{fig:simple:bg}        
     \end{figure}
-
-
 
 
 \clearpage

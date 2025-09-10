@@ -250,10 +250,11 @@
             
             The measurement operator $\phib$ is defined with $L=100$ and $\sigma=0.02$. In addition, $\sigma_{\bm{n}}$ is set such that the signal-to-noise ratio between $\bm{y}$ and $\bm{n}$ reaches $SNR_\mathrm{dB} = 10 \log_{10}\left({\lVert \bm{y} \rVert_2^2}/{\lVert \bm{n} \rVert_2^2}\right) = 10$dB. To measure and adjust the contrast between the foreground and the background components in the signal to recover, we introduce the ratio $r_{1/2}$ of the contribution of each component in the observations, defined as
             \begin{equation}
-                r_{1/2} = \frac{\lVert \phih (s_1^\dagger) \rVert_2 }{\lVert \phih (s_2^\dagger) \rVert_2 }.
+                r_{1/2} = \frac{\lVert \phib (\fb^\dagger) \rVert_2 }{\lVert \phih (\fh^\dagger) \rVert_2 }.
             \end{equation}
     
             The observations $\bm{y}$ can be simulated with exact precision using this model. Indeed, we have
+            \ad{Change with phi1 and phi2.}
             $$
             \bm{\Phi}(s_1^{(0)} + s_2^{(0)})[\ell] = \sum_{k=1}^{K_f} \beta_k g(x_\ell - u_k) + \sum_{m=1}^{K_b} \gamma_m (g * g_b)(x_\ell - v_m),
             $$
@@ -309,7 +310,7 @@
 
         Obviously, the penalty parameters $\lb$ and $\lh$ have a significant influence on the recovered components and the interplay between the respective value of these two parameters is not fully understood. We provide in Appendix~\ref{app:reconstructions} a cross table of reconstructions with various regularization parameters to illustrate the dependence. 
         
-\section{Benefits of our decoupled composite model ...}
+\section{Benefits of our decoupled composite model}
     
     Building on the simulated composite model presented in the previous section, we now illustrate the benefits of our approach.
     
@@ -328,7 +329,7 @@
             \underset{\fb \in \mx}{\arg\min} \frac{1}{2} \| \bm{y} - \phib (\fb) \|_2^2  + \lambda \| \fb \|_{\mathcal{M}},
         \end{equation}
         for $\lambda > 0$.
-        With the fine-grid discretization proposed above, finding an approximate grid-based solution of this problem amounts to solve a classical LASSO problem. The regularization parameter $\lambda > 0$ is set specifically for this problem and is independent of $\lb$ used in \eqref{eq:deconv-banachpart}. There also exists a maximum value $\lambda_\mathrm{max} = \norm{\phih^*\bm{y}}_\infty$ for problem~\eqref{eq:argmin-sparse-only} and we set $\lambda = \alpha \lambda_\mathrm{max}$ for $0 < \alpha < 1$. It is usually larger than $\lambda_1$ as we need stronger prior information to recover a sparse solution.
+        With the fine-grid discretization proposed above, finding an approximate grid-based solution of this problem amounts to solve a classical LASSO problem. The regularization parameter $\lambda > 0$ is set specifically for this problem and is independent of $\lb$ used in \eqref{eq:deconv-banachpart}. There also exists a maximum value $\lambda_\mathrm{max} = \norm{\phib^*\bm{y}}_\infty$ for problem~\eqref{eq:argmin-sparse-only} and we set $\lambda = \alpha \lambda_\mathrm{max}$ for $0 < \alpha < 1$. It is usually larger than $\lambda_1$ as we need stronger prior information to recover a sparse solution.
         
         Figure~\ref{fig:simple:blasso-conv} displays the reconstructions with the same representation kernel as before for various reconstruction parameters $\alpha$.
         We observe that the B-LASSO problem manages to recover some high intensity peaks, however the reconstructions are strongly corrupted by the presence of background information. When more sparsity is enforced with a larger value of $\alpha$, the spurious peaks tend to vanish but the intensity of the relevant peaks is also reduced, becoming lower than the source and than the composite reconstruction.
@@ -362,11 +363,12 @@
                 \toprule
                  & \multicolumn{4}{c}{$\alpha_2$ in $\lambda_2 = \alpha_2 L$} \\
                 \cmidrule(lr){2-5}
-                $\alpha_1$ & 0.08 & 0.40 & 0.80 & 2.40 \\
+                $\alpha_1$ & 0.80 & 4.00 & 8.00 & 40.00 \\
                 \midrule
-                0.15 & 0.406 & 0.508 & 0.543 & 0.583 \\
-                0.25 & \textbf{0.337} & 0.374 & 0.389 & 0.401 \\
-                0.35 & 0.421 & 0.407 & 0.430 & 0.486 \\
+                0.02 & 0.503 & 0.728 & 0.798 & 1.047 \\
+                0.05 & 0.567 & 0.592 & \textbf{0.440} & 1.075 \\
+                0.10 & 0.637 & 0.595 & 0.571 & 0.839 \\
+                0.15 & 0.826 & 0.805 & 0.647 & 0.516 \\
                 \bottomrule
             \end{tabular}
             \caption{Relative $\ell_2$-norm error \label{tab:rl2}}
@@ -378,11 +380,12 @@
                 \toprule
                  & \multicolumn{4}{c}{$\alpha_2$ in $\lambda_2 = \alpha_2 L$} \\
                 \cmidrule(lr){2-5}
-                $\alpha_1$ & 0.08 & 0.40 & 0.80 & 2.40 \\
+                $\alpha_1$ & 0.80 & 4.00 & 8.00 & 40.00 \\
                 \midrule
-                0.15 & 0.607 & 0.802 & 0.875 & 0.951 \\
-                0.25 & \textbf{0.391} & 0.457 & 0.487 & 0.505 \\
-                0.35 & 0.479 & 0.473 & 0.515 & 0.552 \\
+                0.02 & 0.495 & 1.070 & 1.297 & 1.748 \\
+                0.05 & 0.585 & 0.601 & 0.626 & 1.669 \\
+                0.10 & 0.647 & 0.593 & \textbf{0.571} & 1.196 \\
+                0.15 & 0.802 & 0.790 & 0.661 & 0.600 \\
                 \bottomrule
             \end{tabular}
             \caption{Relative $\ell_1$-norm error\label{tab:rl1}}
@@ -398,8 +401,8 @@
                 \cmidrule(lr){2-5}
                  & 0.10 & 0.20 & 0.30 & 0.40 \\
                 \midrule
-                $\mathrm{RE}_2$ & 0.794 & 0.726 & 0.594 & \textbf{0.503} \\
-                $\mathrm{RE}_1$ & 1.424 & 1.196 & 0.980 & \textbf{0.745} \\
+                $\mathrm{RE}_2$ & 1.126 & 1.033 & 0.953 & \textbf{0.783} \\
+                $\mathrm{RE}_1$ & 1.864 & 1.593 & 1.370 & \textbf{1.051} \\
                 \bottomrule
             \end{tabular}
             \caption{B-LASSO errors \label{tab:blasso}}
@@ -470,6 +473,7 @@
             \label{fig:time-vs-srf}
         \end{figure}
     
+        \ad{Update the figures.}
         On both scenarios, the decoupled approach run significantly faster than the non-decoupled one, on average taking 10.6\% of the runtime in the first experiment (varying contrast) and 8.9\% in the second one (varying super resolution factor). Up to numerical approximations, the solutions are identical between the two methods. Interestingly, the decoupled approach turns out to be faster than the regular B-LASSO solver. Varying the contrast $r_{1/2}$ has little effect on the reconstruction time. Increasing the resolution, that is using more grid points in the discrete representation of $s_1^*$, slows down the solving for all the algorithms. The effect is stronger for the non-decoupled method, which suffers from having its reconstruction time multiplied by approximately $3.5$.
 
         

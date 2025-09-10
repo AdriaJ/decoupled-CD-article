@@ -37,7 +37,7 @@
         \item in section~\ref{sec:application} check if I should use $\R$ or $\mathcal{X}$.
         % \item \ju{Unify biblio (eg. T. Debarre vs Thomas Debarre)} -> Seems ok with using bibliographystyle vancouver.
         \item Position of the figures in the document.
-        \item Make new figures with the RKHS model and adapt the text with the new parameters' values.
+        % \item Make new figures with the RKHS model and adapt the text with the new parameters' values.
         \item Import changes from the thesis manuscript.
         \item Check consistency with the journal rules: figure and table no abbreviated.
         \item Use $:=$ for the definitions.
@@ -421,6 +421,7 @@
         % When a more general penalty term $\mathcal{R}(f_1)$ is used, the decoupling between the components still holds but the properties that stem from $\mathcal{V}(\mathbf{M}_{\lh}, \lb)$ are not guranteed and need to be verified according to the chosen regularization (representer theorem, uniqueness of measurement vector $\bm{w}$).
     \end{remark}
 
+    \ad{Remove next remark.}
     \begin{remark}[Different measurement operators]
         The data-fidelity term of equation~\eqref{eq:composite-optim} considers that the two components $s_1$ and $s_2$ are measured through the same operator $\phib$. The decoupling of Theorem~\ref{theo:main} still holds if different operators $\phib_1 \in \mathcal{A}^L$ and $\phih_2 \in \mathcal{H}^L$ are considered, each of the applying to a different component. In this case, the expression of the matrix $\mathbf{M}_{\lh}$ needs to be changed accordingly.
     \end{remark}
