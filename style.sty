@@ -1,0 +1,117 @@
+\usepackage{amssymb,upgreek,amsmath,bm,bbm,amsthm, algorithm2e, graphicx, epstopdf, tikz}
+
+\usepackage{mathrsfs}
+\usepackage{amssymb,upgreek,amsmath,amsfonts}
+\usepackage{makecell, boldline}
+\usepackage{booktabs}
+\usepackage{mathtools, bm,bbm}
+\usepackage{esint}
+\usepackage{tabularx, amsthm}
+\usepackage{enumitem, cite, color}
+\usepackage{multirow}
+\usepackage{enumerate}
+
+\usepackage[pagebackref=true]{hyperref}
+
+\usepackage{geometry}\geometry{verbose,tmargin=2.2cm,bmargin=2.2cm,lmargin=2.2cm,rmargin=2.2cm,headheight=1.2cm,headsep=1.2cm,footskip=1.2cm}
+
+\usepackage[OT2,T1]{fontenc}
+
+% \usepackage{showframe}
+\usepackage{subcaption}
+
+\DeclareSymbolFont{cyrletters}{OT2}{wncyr}{m}{n}
+\DeclareMathSymbol{\Sha}{\mathalpha}{cyrletters}{"58}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newcommand{\ju}[1]{\textcolor{red}{#1}}
+\newcommand{\ad}[1]{\textcolor{blue}{#1}}
+
+\def\One{\mathbbm{1}} 
+
+\newcommand{\fb}{s_1}
+\newcommand{\fh}{s_2}
+\newcommand{\hfb}{\widehat{s}_1}
+\newcommand{\hfh}{\widehat{s}_2}
+\newcommand{\lb}{\lambda_{1}}
+\newcommand{\lh}{\lambda_{2}}
+\newcommand{\phib}{\bm{\Phi}}
+\newcommand{\phih}{\bm{\Phi}}
+\newcommand{\lbm}{\lambda_{1, \mathrm{max}}}
+
+\newcommand{\weakconv}{ \underset{n \rightarrow \infty}{\overset{*}{\longrightarrow}}}
+\newcommand{\LT}{\mathrm{L}_T}
+\newcommand{\LTinv}{\mathrm{L}_{\mathrm{inv},T}}
+\newcommand{\LSinv}{\mathrm{L}_{\mathrm{inv},S}}
+\newcommand{\LS}{\mathrm{L}_S}
+\newcommand{\TV}{\mathrm{TV}}
+\newcommand{\MR}{\mathcal{M}(\mathbb{R})}
+\newcommand{\MT}{\mathcal{M}(\mathbb{T})}
+\newcommand{\MTz}{\mathcal{M}_0(\mathbb{T})}
+%\newcommand{\NT}{\mathcal{P}_{N_T}(\R)
+\newcommand{\MLT}{\mathcal{M}_{\LT}(\mathbb{R})}
+\newcommand{\MLS}{\mathcal{M}_{\LS}(\mathbb{T})}
+\newcommand{\MLSz}{\mathcal{M}_{\LS,0}(\mathbb{T})}
+\newcommand{\MLTLS}{\mathcal{M}{(\LT,\LS)}}
+\newcommand{\MhThS}{\mathcal{M}_{h_T,h_S}{(\LT,\LS)}}
+\newcommand{\CR}{\mathcal{C}_0(\mathbb{R})}
+\newcommand{\CT}{\mathcal{C}(\mathbb{T})}
+\newcommand{\CLT}{\mathcal{C}_{\LT}(\mathbb{R})}
+\newcommand{\CLS}{\mathcal{C}_{\LS}(\mathbb{T})}
+\newcommand{\CLSz}{\mathcal{C}_{\LS,0}(\mathbb{T})}
+\newcommand{\CLTLS}{\mathcal{C}{(\LT,\LS)}}
+\newcommand{\C}{ \mathbb{C}}
+\newcommand{\R}{ \mathbb{R}}
+\newcommand{\T}{ \mathbb{T}}
+\newcommand{\Z}{ \mathbb{Z}}
+\newcommand{\N}{ \mathbb{N}}
+\newcommand{\Per}{\mathrm{Per}}
+\newcommand{\Lop}{{\rm L}}
+\newcommand{\Pop}{{\rm P}}
+\newcommand{\Kop}{{\rm L^{\dagger}}}
+\newcommand{\Gop}{\rm G}
+\newcommand{\Dop}{{\rm D}}
+\newcommand{\Id}{\mathrm{Id}}
+\newcommand{\Span}{\mathrm{Span}}
+\newcommand{\Sat}{\mathrm{Sat}}
+\newcommand{\Supp}{\mathrm{Supp}}
+\newcommand{\Sp}{ \mathcal{S}}
+\newcommand{\FL}{(-\Delta)^{\gamma/2}}
+\newcommand{\ek}{{e}_{\bm{k}}}
+\newcommand{\drm}{\mathrm{d}}
+\newcommand{\per}{\mathrm{per}}
+\newcommand{\aper}{\overline{\mathrm{per}}}
+
+\DeclareMathOperator*{\esssup}{ess\,sup}
+\DeclareMathOperator*{\essinf}{ess\,inf}
+\DeclareMathOperator*{\real}{Re}
+\DeclareMathOperator*{\imag}{Im}
+\newcommand{\dualprod}[1]{\langle#1\rangle_{\mathbb{T}^d}}
+\newcommand{\dualSchwartz}[1]{\langle#1\rangle_{\R^d}}
+
+\def\V#1{{\boldsymbol{#1}}}         % vectors
+\def\Spc#1{{\mathcal{#1}}}  % spaces
+\def\M#1{{\bf{#1}}}  % matrices
+\def\Op#1{{\mathrm{#1}}}  % operator
+\def\ee{\mathrm{e}} 
+\def\jj{\mathrm{i}} 
+\def\Indic{\mathbbm{1}} 
+\def\One{\mathbbm{1}} 
+\def\Prob{\mathscr{P}}
+\def\Form{\widehat{\Prob}} 
+\def\Exp{\mathop{\mathbb{E}}\nolimits}
+
+\def\mx{\Spc{M}(\Spc{X})}
+\def\czx{\Spc{C}_0(\Spc{X})}
+\def\ldx{\mathrm{L}^2(\mathcal{X})}
+\newcommand\norm[1]{\left\lVert#1\right\rVert}
+\def\cH{\mathcal{H}}
+\def\cHk{\mathcal{H}_k}
+\def\cX{\mathcal{X}}
+\def\philk{\phi_\ell^{(k)}}
