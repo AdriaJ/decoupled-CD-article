@@ -1,0 +1,527 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{style}
+
+\title{Decoupled Solution for Composite Sparse-plus-Smooth Inverse Problems}
+\author{Adrian Jarret, Julien Fageot}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    We consider composite linear inverse problems where the signal to recover is modeled as a sum of two functions. 
+    We study a variational framework formulated as an optimization problem over the pairs of components using two regularization terms, each of them acting on a different part of the solution.
+    The specificity of our work is to study the case where one component is regularized with an atomic norm over a Banach space, which is known to promote sparse reconstruction, while the other is regularized with a quadratic norm over a Hilbert space, which promotes smooth solution.
+
+    We show how this composite optimization problem can be reduced to an optimization problem over the Banach space component only up to a linear problem.
+    This reveals a decoupling between the two components, allowing for a new composite representer theorem.
+    It naturally induces a decoupled numerical procedure to solve the composite optimization problem.
+
+    We exemplify our main result with a composite deconvolution problem of Dirac recovery over a smooth background. In this setting, we illustrate the relevance of a composite model and show a significant temporal gain on signal reconstruction, which results from our decoupled algorithmic approach.
+
+    % \ad{To improve: } This reveals how the joint optimization is made, allows for a new characterization of the extreme point solutions (representer theorem).
+    % We exemplify our main results over composite linear inverse problems with Dirac recovery among a smooth signal from Fourier measurements. In this setting,
+    % we illustrate how our main theoretical fact can lead to accelerate algorithmic methods for composite inverse problems.
+\end{abstract}
+
+\noindent{\it Keywords\/}: Sparse reconstruction, composite model, continuous-domain recovery, functional inverse problems. 
+
+    \ad{
+    Remaining todo's:
+    \begin{itemize}
+        \item \textcolor{red}{Consistency of capitals in the titles.}
+        \item check the ad comments
+        \item in section~\ref{sec:application} check if I should use $\R$ or $\mathcal{X}$.
+        % \item \ju{Unify biblio (eg. T. Debarre vs Thomas Debarre)} -> Seems ok with using bibliographystyle vancouver.
+        \item Position of the figures in the document.
+        \item Make new figures with the RKHS model and adapt the text with the new parameters' values.
+        \item Import changes from the thesis manuscript.
+        \item Check consistency with the journal rules: figure and table no abbreviated.
+        \item Use $:=$ for the definitions.
+        % \item \textcolor{gray}{Fix the size of the graduations on the plots, and graduations from 0 to 1 instead of 0 to 800 in figures~\ref{fig:simple:blasso-conv}, \ref{fig:simple:bg}, \ref{fig:simple:fg-merged}.}
+        % \item \textcolor{gray}{Make reference to Pyxu somewhere.}
+        % \item \textcolor{gray}{Do once again all the plots}
+        % \item \textcolor{gray}{run the time benchmark and do figures 9 and 10 (time comparisons)}
+        % \item \textcolor{gray}{analysis of the last section}
+        % \item \textcolor{gray}{homogenize sparse plus smooth or sparse-plus-smooth (also check if italic or not)}
+        % \item \textcolor{gray}{Homogenize the hyphen in words like non-something (non-linear vs nonlinear, subcomponent, subproblem).}
+        % \item \textcolor{gray}{check if the matrix M is defined in bold or not, consistency of the notation.}
+        % \item \textcolor{gray}{check consistency of notation of exponential: $\exp$ or $e^{\dots}$}
+        % \item \textcolor{gray}{Regarding bibliography: extract only relevant references and check the arxiv to see if they have been published.}
+        % \item \textcolor{gray}{capitals on figures, Sectin, etc... See journal guidelines.}
+        % \item \textcolor{gray}{Refer to appendix \ref{app:calculation} somewhere.}
+    \end{itemize}
+    }
+    
+\section{Introduction}
+    % \ad{\begin{itemize}
+    %     \item Elementary computations but cool results
+    %     \item Both theoretical and practical contributions: analysis of the solution set and decoupling for numerical solving 
+    % \end{itemize}
+    % }
+    % \noindent\ad{
+    % For sure, the article has to present the decoupling result for abstract Banach + Hilbert composite reconstruction.}
+    
+    % \noindent\ad{
+    % Then, different stories are to be considered:
+    % \begin{itemize}
+    %     \item More oriented toward applications: many consider a RA example, or as Martin suggested more detailed on the quality of the reconstruction.
+    %     \item Possible study of the influence of the regularization parameters.
+    %     \item More theory-oriented, considering various cases of composite reconstruction:
+    %     \begin{itemize}
+    %         \item Sparse pline reconstruction with nullspace 
+    %         \item Smooth spline reconstruciton with nullspace as well (weird constraint on the null space, could be investigated further)
+    %         \item Composite by design, with potionally a regularization operator on the sparse component (comes for free)
+    %         \item Composite by design, with regularization operator on the smooth component as well (not sure it works though)
+    %     \end{itemize}
+    % \end{itemize}
+    % }
+
+    \subsection{Composite Linear Inverse Problems}
+    
+    We study linear inverse problems where the goal is to recover a signal $s^\dagger$ from a finite number of possibly noisy linear measurements $\bm{y} \approx \bm{\Phi}(s^\dagger)$. 
+    The inverse problem is called composite if the signal to reconstruct is modeled as a sum of several subcomponents. We consider the case where $s^\dagger$ is the sum of two terms
+    \begin{equation}
+        s^\dagger = s_1^\dagger + s_2^\dagger
+        \label{eq:summodel}        
+    \end{equation}
+    with different characteristics.
+    Such a framework can be used for instance to model signals which contain mixed-types information, such as background and foreground in imaging. A concrete example of composite-type signal is provided in figure~\ref{fig:gleam-sky} with an image of the sky from radio observations, containing both precisely-localized point sources (stars) and diffuse emissions (nebulae) \cite{hurley-walker2017}.
+    Our goal is to approximately recover not only $s^\dagger$ but also the subcomponents $s_1^\dagger$ and $s_2^\dagger$ from the observations $\bm{y}$.
+    % Such a structure could be interesting for instance for modeling astronomical signals, as we can see in figure~\ref{fig:gleam-sky} in which the image to recover contains both slowly varying features and sparse and precisely-localized point sources \cite{hurley-walker2017}.
+
+    \begin{figure}[t]
+        \centering
+        \includegraphics[width=0.8\linewidth]{figures/gleam9h37m15.21s-50deg25min03.1sec.png}
+        \caption{Observation of the radio sky at coordinates from the GLEAM survey accessible at \href{https://gleamoscope.icrar.org/gleamoscope/trunk/src/}{gleamoscope.icrar.org}, J2000 coordinates (9h37min15.21s, 50\textdegree25'03.1'').}
+        \label{fig:gleam-sky}
+    \end{figure}
+    
+    
+    The inverse problem $\bm{y} \approx \bm{\Phi}(s_1^\dagger + s_2^\dagger)$ is generally ill-posed. First, the data are typically insufficient to reconstruct the total information of the original signal: many signals can explain the observation vector $\bm{y}$. Second, the observation vector $\bm{y}$ is often a noisy version of the measurement vector $\bm{\Phi}(s^\dagger)$. Third, the search for the subcomponents comes with an additional difficulty since it requires to separate the sources explaining adequately the observations.
+
+    %Motivation for this composite IP model, examples
+    Various classical signal recovery applications are based on a composite model for linear inverse problems.
+    % STD, Aujol 2006, Guennec 2024
+    For instance, structure-texture decomposition in images corresponds to a simple inverse problem (no forward operator) for which numerous composite models exist \cite{aujol2006std,guennec2024std}.
+    % % Foregournd/background separation (Bouwmans for a review), theoretic guarantees for composite sparse plus low rank problem with Tanner.
+    % A composite \emph{low-rank plus sparse} model is also classically used for background-foreground separation in images \cite{bouwmans2017decomposition}, for which theoretic reconstruction guarantees have been derived with a compressed sensing analysis \cite{tanner2023composite}.
+    % % Background removal techniques (see Vasiliki Colorme)
+    % \ad{Choose one of the two next sentences.} Other simpler composite models have been proposed to perform background removal for deconvolution in microscopy. 
+    % Background removal has also been studied with other different models, in particular for deconvolution in microscopy \cite{debarnot2020learning,stergiopoulou2022colorme}.
+    %% Better version that combines both sentences
+    We can also refer to background-foreground separation in images, which usually relies on composite models. They include \emph{sparse-plus-smooth} models, for instance used for deconvolution imaging in microscopy \cite{debarnot2020learning,stergiopoulou2022colorme}, or \emph{low-rank-plus-sparse} models for detecting moving objects from a background in video analysis \cite{bouwmans2017decomposition}, for which theoretic reconstruction guarantees exist \cite{tanner2023composite}.
+    % Fourier transform + shot noise, appliation to ECG signals
+    Composite modeling has also proven relevant for other types of signals than images. In \cite{marziliano2006blsignals}, the authors propose a joint model of high frequency noise and bandlimited signal to perform exact reconstruction based on the theory of finite rate of innovations, with application to compression of ECG.
+    % Spectrogram separation
+    The separation of bioacoustic signals through their spectrogram is studied in \cite{kreme2024separation}, relying on a composite model of non-stationary components.
+    % Potential use cases in astronomical images, composite objects observed
+
+
+    A classic strategy for solving ill-posed linear inverse problems is to reconstruct the signal as the solution of an optimization problem. We consider composite optimization problems of the form
+    \begin{equation} \label{eq:compositepb}
+        (s_1^*,s_2^*) \in \underset{(s_1,s_2)}{\arg\min} \ \mathcal{D}(\bm{y}, \bm{\Phi}(s_1 + s_2)) + \mathcal{R}_1 (s_1) + \mathcal{R}_2(s_2),
+    \end{equation}
+    in which the data-fidelity $\mathcal{D}(\bm{y}, \bm{\Phi}(s_1 + s_2))$ constrains the solution to correspond to the observations and the regularizations $\mathcal{R}_1 (s_1)$ and $\mathcal{R}_2(s_2)$ promotes specific behaviors according to some prior knowledge (see section~\ref{sec:regularizationblabla}). We specifically consider a \emph{sparse-plus-smooth} model where $\mathcal{R}_1$ is a sparsity-promoting regularization while $\mathcal{R}_2$ favors smooth components.
+
+    We make the assumption that the noise corrupting the data is Gaussian, which motivates the choice of a quadratic data fidelity of the form
+    \begin{equation*}
+        \mathcal{D} (\bm{y}, \Phi(s)) =  \frac{1}{2} \| \bm{y} - \bm{\Phi}(s) \|_2^2.
+    \end{equation*}
+    This choice is essential to our analysis, enabling us to later identify a quadratic optimization subproblem. 
+
+    % Composite signal models have already received some interest in the signal recovery literature, as they have demonstrated interesting results for various applications. Early works include the decomposition of images in cartoon plus texture \cite{osher2003decomposition,stark2005decomposition,daubechies2005decomposition} and structure plus texture \cite{aujol2006std}, as well as denoising of high frequency signals \cite{marziliano2006blsignals}. 
+    % At the same time, a two-variable optimization algorithm was proposed in \cite{mol2004} for generic finite-dimensional composite linear inverse problems.
+    % Later works seemed to have converged to this approach based on penalized optimization. The specific case of smooth plus piecewise constant signals was treated in \cite{gholami2013balanced}. Later works on the structure-texture decomposition have focused on improving the reconstructions with refined penalty terms \cite{ono2014std,guennec2024std}. Recently, composite optimization problems have also been applied to microscopy deconvolution \cite{debarnot2020learning} as well as spectrogram separation for acoustic signals \cite{kreme2024separation}.
+
+    % \ad{OLD: Composite optimization problems have also been studied for themselves, with the introduction of specific composite minimization algorithms \cite{mol2004mixed,gholami2013balanced} (general approach for linear inverse problems, smooth plus piecewise constant for Gholami). Recent articles tend to rely on the formal approach of penalized optimization for composite linear inverse problems, with applications to the structure-texture decomposition \cite{ono2014std, guennec2024std} as well as microscopy deconvolution \cite{debarnot2020learning} or even spectrogram separation \cite{kreme2024separation}. }
+
+    % \ad{Various applications of signal recovery problems can be treated using this composite model. Foreground/background recovery and decomposition. make reference to previous applications (see discrete paper, but do not cite it here).}
+    % From the application point of view, \eqref{eq:summodel} can be exemplified as follows. Imagine that the signal to reconstruct $s^\dagger$ is an astronomical sky image with two components, the first one being made of localized stars appearing as point sources, and the second one being made of some background whose statistical properties are known, as in figure~\ref{fig:sky}. 
+    % The point sources are typically modeled as a sum of 2D Diracs $s_1^\dagger = \sum_k a_k \delta(\cdot - \bm{x}_k)$ while $s_2^\dagger$ can be modeled as the realization of a Gaussian random field. 
+    % Then, sparsity-promoting regularization techniques~\cite{Bredies2013inverse} and smooth regularizations techniques~\cite{Berlinet2011reproducing} are known to perform adequately for the recovery of the single components $s_1^\dagger$ and  $s_2^\dagger$, respectively. Going one step further, we mix these techniques to jointly approximately reconstruct the couple $(s_1^\dagger, s_2^\dagger)$. 
+
+    %Our goal is to show how Hilbertian techniques can be added to known ones for Banach spaces in order 
+    
+    \subsection{From Sparse versus Smooth to Sparse-plus-Smooth Regularization}
+    \label{sec:regularizationblabla}
+
+    Consider for a moment the classical single-component version of the optimization problem~\eqref{eq:compositepb}, i.e.,
+    \begin{equation} \label{eq:singletpb}
+        \underset{s}{\arg\min} \ \mathcal{D}(\bm{y}, \bm{\Phi}(s)) + \mathcal{R} (s)
+    \end{equation}
+    that aims at solving a non-composite inverse problem.
+
+    In this work, we distinguish two types of regularization for ill-posed inverse problems. Smooth regularization corresponds to the case where the penalty is a quadratic norm over some Hilbert space $\mathcal{H}$, of the typical form 
+    \begin{equation*}
+        \mathcal{R} (s) = \lambda \| s \|_{\mathcal{H}}^2.
+    \end{equation*}
+    The name stems from the smoothing effect it has on the solution \cite{Kimeldorf1970}. Early versions include Tikhonov regularization~\cite{tikhonov1963solution}, known as ridge-regression in statistics~\cite{Hoerl1962ridge}. Smooth regularization has been widely used over more than 70 years, with countless applications. %with applications on discrete domain problems as well as recovery in the continuum \ad{ref needed here?}.
+    It is strongly connected to the RKHS theory and thus there exist representer theorems that precisely specify the form of the solution~\cite{Scholkopf2001generalized}. Interestingly, these problems are fairly simple to solve as they can be recast into a finite-dimensional formulation, even when the signals $s$ to recover are continuously defined, as for instance with $\mathcal{H} = \ldx$ the space of square integrable functions over a domain $\mathcal{X}$. 
+    % Early versions include Tichonov regularization~\cite{tikhonov1963solution}, known as ridge-regression in statistics~\cite{Hoerl1962ridge}. Over a generic Hilbert space, we will refer to it as smooth regularization for its smoothing effect~\cite{Kimeldorf1970}.
+    % Smooth regularization has proven to be efficient, it is strongly related to RKHS theory and representer theorems (which specifies the form of the solution of the optimization problem) in this context~\cite{Scholkopf2001generalized}. 
+
+    The second classical form of regularization considered here involves a norm over of Banach space $\mathcal{B}$ expressed as
+    \begin{equation*}
+        \mathcal{R} (s) = \lambda \| s \|_{\mathcal{B}}.
+    \end{equation*}
+    We refer to this type of penalties as sparse regularization, as it is used to reconstruct sparse solutions. More precisely, the solutions are expressed as sums of extreme points of the Banach norm unit ball \cite{boyer2019representer,Unser2020}. It is common to use atomic norms for which the extreme points are sparse vectors \cite{chandrasekaran2012convex}.
+    The classical finite-dimensional example is the $\ell_1$-norm over Euclidian $n$-spaces \cite{tibshirani1996regression,chen2001atomic}, however the formalism presented hereabove interestingly applies for infinite-dimensional cases, including the sparse spikes recovery case \cite{laville2021sparse} as well as more complex penalties \cite{laville2023a,ambrosio2023,decastro2024}.
+    % The topological structure of the search space is more general than the smooth regularization over Hilbert spaces and thus the penalized optimization problems are usually more difficult to solve in practice, the search space being infinite dimensional for continuous-domain problems.
+    The Banach space topology is more general than the smooth regularization over Hilbert spaces and thus the penalized optimization problems are more difficult to solve in practice (infinite-dimensional problems, no gradient, etc)
+    
+    % Atomic norm~\cite{chandrasekaran2012convex}. Example: $\ell_1$. Explain the general principle. \ad{Splines.}
+
+    In this work, we consider the combination of the two above-mentioned penalties, which we refer to as \emph{sparse-plus-smooth} regularization. We focus on problem~\eqref{eq:compositepb} with
+        \begin{equation*}
+        \mathcal{R}_1 (s_1) = \lambda_1 \| s_1 \|_{\mathcal{B}} \qquad\text{and}\qquad \mathcal{R}_2 (s_2) = \lambda_2 \| s_2 \|_{\mathcal{H}}^2
+    \end{equation*}
+    for $\lambda_1, \lambda_2 > 0$. This problem has already been studied in \cite{debarre2021continuous} in a general setting, including continuous-domain reconstruction and regularization operators. The authors demonstrated that the solutions of the composite optimization problem indeed behave as expected: the sparse component $s_1$ admits a sparse structure as if it was solution of a non-composite problem, and similarly the component $s_2$ behaves as the solution of a smooth problem. This result has been exemplified in various finite-dimensional application cases, using sparse-plus-smooth optimization problems with discrete vector components, see \cite{mol2004,gholami2013balanced,debarnot2020learning}. In the discrete setting, it is possible to decouple the resolution of the composite optimization problem: the sparse component can be directly identified with a Banach-penalized problem and the Hilbert component is unique and deduced afterward. The requirements for such a decoupling to take place are presented in \cite{jarret2024decoupled}, considering the general case in which operators are involved within the regularization terms.
+
+    % \ad{Should maybe put more emphasis on the continuun.}
+    % \ju{Agreed. It could list possible application frameworks when people use atomic norms in the continuum (Romain Petit, Shayan sur la Schatten norm, l'ancien collègue de Vasi qui bosse sur les courbes comme atomes).} \ad{Good point, done!}
+
+    % \ju{Possible emphasis: algorithmic consequences for all those applications. Many $ell_1$ algo does not apply to $ell_1 + ell_2$ and thanks to our work, now they do up to a linear subproblem. It could be the occasion to quickly refer to those algorithms, such as FW.} \ad{I don't think that is the case. If an algorithm solves a l1 penalized problem, it can solve a composite l1 + l2 problem as the l2 term is differentiable.}
+
+    \subsection{Contributions and Outline}
+
+    Our main contribution is to identify a new way of conceiving the optimization problem \eqref{eq:compositepb} by decoupling its resolution, extending the result of \cite{jarret2024decoupled} to general Banach and Hilbert spaces. More precisely, we show that the composite optimization problem~\eqref{eq:compositepb} can be reduced to two subproblems. The first one is brought back to the Banach space and directly identifies the sparse component, while the second one is a quadratic optimization problem that admits an explicit solution. We obtain a more precise composite representer theorem than existing results and identify in particular the smooth component in closed form as a function of the vector of measurements of the sparse component.
+
+    % We deduce some important algorithmic consequences in the study of specific optimization problems with the case of finite-dimensional inverse problems (regularization norms $\| \cdot \|_1$ and $\|\cdot \|_2$).
+
+    We illustrate the decoupling mechanism on a composite deconvolution problem inspired from microscopy imaging.
+    Empirically, we demonstrate in simulations the relevance of using a composite model over a single-component approach for problems involving a smooth background. We also show a significant temporal gain from the use of algorithms exploiting the decoupling of the initial problem compared to the standard approach based on the representer theorem of \cite{debarre2021continuous}. 
+
+    % \section{Related Works}
+
+    % Une section sur le related works.
+    % Histoire de Tychonov et conséquence.
+    % Histoire de sparsité. Compressed sensing, Sparse statistical learning, etc.
+
+    % Old name: \sout{Smooth versus Sparse} Representer Theorems \ad{for Single Component Problems}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%  SECTION 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Representer Theorems for Single-Component Problems}
+
+    % Named after the regularization. Introduction of notations. Known results.
+    As they will be useful later on, we recall here the classical representer theorems that characterize the solutions of single-component optimization problems, along with the relevant topological structures on the search spaces involved. In particular, smooth regularization can be formulated over regular Hilbert spaces while a more precise description of the topology of Banach spaces is needed for sparse regularization. 
+
+    % \subsection{Mathematical Background}
+    % \label{sec:mathsbackground}
+    
+    \subsection{Smooth Regularization of Inverse Problems}
+
+    \ad{We assume the search space $\mathcal{H}$ to be a Hilbert space with Hilbertian norm $s \mapsto \| s \|_\mathcal{H} = \sqrt{\langle s, s \rangle_{\mathcal{H}}}$. By the Riesz representer theorem, any continuous linear functional $\nu: \cH \to \R$ can be represented as the inner product with an element $\phi_\nu \in \cH$, such that $\nu(f) = \langle \phi_\nu, f \rangle_\cH$ for any $f \in \cH$. The topological dual $\cH'$ is then identified as the search space $\cH$ itself. For $\bm{\Phi}= (\phi_1 ,\ldots , \phi_L) \in \mathcal{H}^L$, we denote
+    \begin{equation}
+        \bm{\Phi}(s) = \left( \langle \phi_1, s \rangle_{\mathcal{H}} , \ldots , \langle \phi_L, s \rangle_{\mathcal{H}} \right). 
+        \label{eq:phi-hilbert}
+    \end{equation}
+    The adjoint of $\bm{\Phi}$ is the only operator $\bm{\Phi}^* : \R^L \rightarrow \mathcal{H}$ which satisfies the equality %\footnotemark{}
+    \begin{equation*}
+        \langle \phih(s), \bm{y}\rangle_{\R^L} = \langle s, \phih^*(\bm{y})\rangle_\cH,
+    \end{equation*}
+    for any $s \in \cH$ and $\bm{y}\in\R^L$.
+    Its expression is given by $\bm{\Phi}^* (\bm{y}) = \sum_{1 \leq \ell \leq L} y_\ell \phi_\ell$.
+    We also consider the Gram matrix $\mathrm{G} = \bm{\Phi} \bm{\Phi}^* \in \R^{L\times L}$ whose entries are given by $G[k,\ell] = \langle \phi_k , \phi_\ell\rangle_{\mathcal{H}}$.}
+    % \footnotetext{\ad{The definition of the adjoint operator depends on the inner product $\langle \cdot, \cdot \rangle_\cH$ used on $\cH$. The explicit expression of $\phih^*$ needs to be determined with a particular attention when the choice of this inner product is not canonical. This idea is discussed in \cite{unser2021unifying}, considering the more general concept of \emph{duality mappings} and \emph{conjugate pairs}.}
+
+    % We assume the search space $\mathcal{H}$ to be a Hilbert space with Hilbertian norm $s \mapsto \| s \|_\mathcal{H} = \sqrt{\langle s, s \rangle_{\mathcal{H}}}$. The topological dual of $\mathcal{H}$ is made of functionals $s \mapsto \langle \phi, s \rangle_{\mathcal{H}}$ with $\phi \in \mathcal{H}$.
+    % For $\bm{\Phi}= (\phi_1 ,\ldots , \phi_L) \in \mathcal{H}^L$, we denote
+    % \begin{equation}
+    %     \bm{\Phi}(s) = \left( \langle \phi_1, s \rangle_{\mathcal{H}} , \ldots , \langle \phi_L, s \rangle_{\mathcal{H}} \right). 
+    %     \label{eq:phi-hilbert}
+    % \end{equation}
+    % The adjoint of $\bm{\Phi}$ is the operator $\bm{\Phi}^* : \R^L \rightarrow \mathcal{H}$ such that $\bm{\Phi}^* (\bm{y}) = \sum_{1 \leq \ell \leq L} y_\ell \phi^*_\ell$. Then, $\mathrm{G} = \bm{\Phi} \bm{\Phi}^* \in \R^{L\times L}$ is the Gram matrix whose entries are $G[k,\ell] = \langle \phi_k , \phi_\ell\rangle_{\mathcal{H}}$. 
+    
+   Proposition \ref{prop:hilbertRT} hereafter is a classical result for quadratic optimization over Hilbert spaces. Significantly more general formulations can be found in~\cite{Scholkopf2001generalized} but we restrict here to the case which is relevant for our purpose. We follow the exposition of~\cite[Theorem~7]{caponera2021nonparametric}, which is based on \cite[Section~3.2]{Unser2020}. 
+
+    \begin{proposition}[Representer Theorem on Hilbert spaces]
+    \label{prop:hilbertRT}
+    Let $\bm{y}\in \R^L$, $\bm{\Phi}= (\phi_1 ,\ldots , \phi_L) \in \mathcal{H}^L$, and $\lambda > 0$. Given that the measurement functionals $\phi_1, \dots, \phi_L$ are linearly independent, the optimization problem 
+    \begin{equation} \label{eq:hibertpb}
+        \inf_{s \in \mathcal{H}} \frac{1}{2} \| \bm{y} - \bm{\Phi}(s) \|_2^2 + \frac{\lambda}{2} \| s \|_{\mathcal{H}}^2
+    \end{equation}
+    admits a unique solution $\hfh \in \mathcal{H}$ which is given by
+    \begin{equation} \label{eq:widehathilb}
+        \hfh  = \bm{\Phi}^* ( \bm{\Phi} \bm{\Phi}^* + \lambda \mathbf{I}_L)^{-1} \bm{y}.
+    \end{equation}
+    \end{proposition}
+    % \ad{This is okay but hides the difficulty: if the inner product on $\mathcal{H}$ is not canonical $\mathrm{L}_2$ then the adjoint of $\mathbf{\Phi}$ is actually quite tricky to determine and involves the Riesz map of $\mathcal{H}$. The proper reference in this scenario is from \cite[Section~3.2]{Unser2020}.}
+    
+    \noindent In other terms, Proposition~\ref{prop:hilbertRT} states that the solution set of ~\eqref{eq:hibertpb} is 
+    \begin{equation}
+        \mathcal{U} (\lambda) := \{ \bm{\Phi}^* ( \bm{\Phi} \bm{\Phi}^* + \lambda \mathbf{I}_L)^{-1} \bm{y}\}.
+    \end{equation}
+    The existence and uniqueness of the solution of \eqref{eq:hibertpb} follows from the the fact that the functional of \eqref{eq:hibertpb} is continuous and strongly convex due to the quadratic regularization.
+    % \ad{We should remove the next sentence I think.}
+    The function $ \hfh $ is in the span of the functionals $\phi_\ell$ since \eqref{eq:widehathilb} can be reinterpreted as 
+    \begin{equation*}
+    \hfh  = \sum_{1 \leq \ell \leq L} \alpha_\ell \phi_\ell \quad \text{where} \quad \bm{\alpha} = ( \bm{\Phi} \bm{\Phi}^* + \lambda \mathbf{I}_L)^{-1} \bm{y} \in \R^L. 
+    \end{equation*}
+
+    % \ad{The function $ \hfh $ can be reinterpreted as
+    % \begin{equation*}
+    % \hfh  = \sum_{1 \leq \ell \leq L} \alpha_\ell \phi_\ell^* \quad \text{with} \quad \bm{\alpha} = ( \bm{\Phi} \bm{\Phi}^* + \lambda \mathbf{I}_L)^{-1} \bm{y} \in \R^L,
+    % \end{equation*}
+    % in which the ....}
+    
+    
+    \subsection{Sparse Regularization of Inverse Problems}
+
+    The norms responsible for promoting sparsity do not stem from any inner product. The classical framework instead considers the search space being a generic non-reflexive Banach space $\mathcal{B}$ and assumes the existence of a predual space \cite{unser2021unifying}.
+    We fix two Banach spaces $( \mathcal{A}, \| \cdot \|_{\mathcal{A}})$ and $( \mathcal{B}, \| \cdot \|_{\mathcal{B}})$ such that $\mathcal{B} = \mathcal{A}'$ is the topological dual of $\mathcal{A}$ and $\| \cdot \|_{\mathcal{B}}$ is the dual norm 
+    \begin{equation*}
+        \| s \|_{\mathcal{B}} = \sup_{\|g \|_{\mathcal{A}}=1} \langle g, s \rangle_{\mathcal{A}\times\mathcal{B}}, 
+    \end{equation*}
+    \ad{where the \emph{dual product} is denoted as $\langle g, s \rangle_{\mathcal{A}\times\mathcal{B}} = s(g)$.}
+    This assumption implies that $\mathcal{B}$ can be endowed with the weak*-topology inherited from $\mathcal{A}$. We say that the sequence $(s_n)_{n\geq 1}$ of elements $s_n \in \mathcal{B}$ converges to $s \in \mathcal{B}$ for the weak*-topology if 
+    \begin{equation*}
+        \langle g , s_n \rangle_{\mathcal{A}\times\mathcal{B}} \underset{n\rightarrow \infty}{\longrightarrow} \langle g, s \rangle_{\mathcal{A}\times\mathcal{B}} 
+    \end{equation*}
+    for any $g \in \mathcal{A}$.
+    In other terms, $\mathcal{B}$ admits a predual. The Hilbert search space scenario presented in the previous section corresponds to the case $\mathcal{A} = \mathcal{B} = \mathcal{H}$.
+
+    A typical example is the space of Radon measures $(\mathcal{B}, \|\cdot \|_{\mathcal{B}}) = (\mx, \|\cdot \|_{\mathcal{M}})$ over a continuous domain $\mathcal{X}$. Its predual is the Banach space of continuous vanishing functions for the infinite norm $(\mathcal{A}, \|\cdot \|_{\mathcal{A}}) =(\czx, \| \cdot \|_{\infty})$. The Radon measures remarkably contain Dirac impulses, which make them well-suited for continuous-domain sparse recovery. For any $d\in\mathbb{N}^*$, the case $\mathcal{X}=\mathbb{R}^d$ is for instance presented in~\cite{unser2017splines,Unser2020} and the periodic case $\mathcal{X}=\mathbb{T}^d$ is covered by \cite{fageot2020tv}.
+    % Typical examples include $(\mathcal{B}, \|\cdot \|_{\mathcal{B}}) = (\ell_1(\Z), \|\cdot \|_{\ell_1})$, whose predual is the Banach space $(\mathcal{A}, \|\cdot \|_{\mathcal{A}}) =(c_0(\Z), \| \cdot \|_{\infty})$ of vanishing sequences for the infinite norm . Some Banach spaces do not enter in this category. For instance, the space $L_1(\R)$ of integrable functions does not admit a predual space~\cite[Theorem 6.3.7]{albiac2006topics} and is therefore excluded from our analysis.
+
+    Without the Hilbert space structure, the measurement operator $\bm{\Phi}= (\phi_1, \ldots, \phi_L)$ is made of measurement functionals $\phi_\ell \in \mathcal{A}$ from the predual space. Then, $\bm{\Phi}$ specifies a linear and weak*-continuous mapping $\bm{\Phi}: \mathcal{A}' =\mathcal{B} \rightarrow \R^L$ via 
+    \begin{equation}
+        \label{eq:phi-banach}
+        \bm{\Phi} (s )= (\langle \phi_\ell, s \rangle_{\mathcal{A}\times\mathcal{B}})_{1\leq \ell \leq L} \in \mathbb{R}^L.
+    \end{equation}
+
+    % Interestingly, it is possible to extend Proposition~\ref{prop:hilbertRT} to this more general setting.
+    In this more general setting, the solution set of the optimization problem~\eqref{eq:singletpb} when $\mathcal{R}(s) = \lambda \| s \|_{\mathcal{B}}$ is characterized with another representer theorem in Proposition~\ref{prop:banachRT} hereafter, analogous to Proposition~\ref{prop:hilbertRT} on Hilbert spaces.
+    % Interestingly, there exists another representer theorem which plays to counterpart of Proposition~\ref{prop:hilbertRT} in this more general setting.
+    % CHANGE ORDER OF THE SENTENCES.
+    The specific case of $\lVert \cdot \rVert_\mathcal{B}$ being the $\ell_1$-norm or its functional generalization is studied in~\cite{Fisher1975,Unser2016representer,unser2017splines,bredies2020sparsity}, and some even more general settings are studied in~\cite{boyer2019representer,unser2019native}.
+    % Hereafter, Proposition~\ref{prop:banachRT} recalls this result.
+
+
+    
+    % The Banach space generalization of Proposition~\ref{prop:hilbertRT} has been considered in the literature for the $\ell_1$-norm and its functional generalization~\cite{Fisher1975,Unser2016representer,unser2017splines,bredies2020sparsity} and in more general settings in~\cite{boyer2019representer,unser2019native}.
+    % Let $\bm{\Phi}= (\Phi_1, \ldots, \Phi_L) \in \mathcal{A}^L$. Then, $\bm{\Phi}$ specifies a linear and weak*-continuous mapping $\bm{\Phi}: \mathcal{A}' =\mathcal{B} \rightarrow \R^L$ via 
+    % \begin{equation}
+    %     \label{eq:phi-banach}
+    %     \bm{\Phi} (f )= (\langle \phi_\ell, f \rangle_{\mathcal{A}\times\mathcal{B}})_{1\leq \ell \leq L} \in \mathbb{R}^L.
+    % \end{equation}
+    % The adjoint of $\bm{\Phi}$ is given by
+    % \begin{equation}
+    %    \bm{\Phi}^* (\bm{y}) = \sum_{1 \leq \ell \leq L} y_\ell \phi_\ell \in \mathcal{A}
+    % \end{equation}
+    % for any $\bm{y}\in \R^L$. 
+    % Proposition~\ref{prop:banachRT} describes the solution set of the optimization problem~\eqref{eq:singletpb} when $\mathcal{R}(f) = \lambda \| f \|_{\mathcal{B}}$.
+
+    \begin{proposition}{Representer Theorem on Banach spaces}
+    \label{prop:banachRT}
+     Let $\bm{y}\in \R^L$, $\bm{\Phi}= (\phi_1 ,\ldots , \phi_L) \in \mathcal{A}^L$, and $\lambda > 0$. Then, the optimization problem 
+    \begin{equation} \label{eq:banachpb}
+        \inf_{s \in \mathcal{B}} \frac{1}{2} \| \bm{y} - \bm{\Phi}(s) \|_2^2 + \lambda \| s \|_{\mathcal{B}}
+    \end{equation}
+    admits at least a solution and its solution set $\mathcal{V} (\lambda)$ is weak*-compact, convex, and is the closed convex hull of its extreme points. Any extreme point $\hfb$ of $\mathcal{V} (\lambda)$ is such that 
+    \begin{equation} \label{eq:widehatbanachextreme}
+        \hfb  = \sum_{1 \leq k \leq K} \alpha_k e_k
+    \end{equation}
+    where $e_k$ are distinct extreme points of the unit ball of $\|\cdot \|_{\mathcal{B}}$,  $\alpha_k \in \mathbb{R}$, and $0 \leq K \leq L$.
+
+    Moreover, for any combination $\bm{y}, \bm{\Phi},\lambda$ there exists a unique vector $\bm{w} = \bm{w}(\bm{y}, \bm{\Phi},\lambda) \in \R^L$ such that
+    \begin{equation} \label{eq:zlambda}
+        \forall\ \hfb \in \mathcal{V} (\lambda), \quad \bm{\Phi}(\hfb) = \bm{w}.
+    \end{equation}
+    \end{proposition}
+    
+    Proposition~\ref{prop:banachRT} combines existence and topological results from~\cite[Proposition 8]{gupta2018continuous} and the extreme point characterization of \cite[Theorem 3.1]{boyer2019representer}.
+    %\ad{The link is not obvious to me with Boyer et al.}
+    The existence of a common measurement vector $\bm{w}$ for the solutions of \eqref{eq:banachpb} is classical and uses the strict convexity of the $\ell_2$-norm used in the data fidelity. A proof in a slightly different context can be found, for instance, in~\cite[Proposition 7]{debarre2022sparsest}.
+    % \ad{Question to myself: Does it still hold with arbitrary Banach norm, such as an atomic norm for instance ? Remark 3.4 from Boyer says so.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%  SECTION 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\section{Sparse-plus-Smooth Composite Representer Theorem}
+
+    Building on the analysis of the single-component problems, we now turn to the theoretical study of the composite case.
+
+    \subsection{Main theorem}
+
+    \ad{ToDo: Use phih and phib as defined by Julien.}
+    Let us recall the composite problem of interest. For $\lambda_1, \lambda_2 > 0$ we write the objective functional as
+    \begin{equation}
+        \label{eq:composite-optim}
+        \mathcal{J}(\fb, \fh) := \frac{1}{2} \| \bm{y} - (\phib (\fb) + \phih (\fh)) \|_2^2  + \lb \| \fb \|_{\mathcal{B}} + \frac{\lh}{2} \| \fh \|_{\mathcal{H}}^2.
+    \end{equation}
+    \ad{ToDo: Remove sentence on minimum requirement.}
+    The measurement operator $\phib$ samples both the sparse and the smooth components hence we have the minimal requirement that $\phib \in (\mathcal{A} \cap \mathcal{H})^L$. The set of pairs of minimizers is defined as
+    \begin{equation} \label{eq:argminisback}
+        \mathcal{W} (\lb,\lh) := \underset{(\fb,\fh) \in \mathcal{B} \times \mathcal{H}}{\arg\min} \mathcal{J}(\fb, \fh).
+    \end{equation}
+    We need to define the matrix
+    \ad{ToDo: This matrix only involves phih.}
+    \begin{equation}
+        \label{eq:def-Mphi}
+        \mathbf{M}_{\lh} := \frac{1}{\lh} \left(\phih\phih^* + \lh \mathbf{I}_L\right) = \frac{1}{\lh} \left( \langle \phi_k , \phi_\ell \rangle_{\mathcal{H}} + \lh \delta[k - \ell] \right)_{1\leq k, \ell \leq L}.
+    \end{equation}
+    This matrix is strictly positive definite. It is therefore invertible and admits a square-root matrix.
+
+    Our main result, Theorem~\ref{theo:main} hereafter, reduces the analysis of a composite optimization problem over $\mathcal{B}\times\mathcal{H}$ to a problem over $\mathcal{B}$, hence decoupling the contributions of the two components. The proof is given in Appendix~\ref{app:prooftheo1}.
+
+    \begin{theorem} \label{theo:main}
+    \ad{ToDo: Adapt hypothesis on the definition of phi.}
+     Let $\bm{y}\in \R^L$, $\lambda_1, \lh > 0$, $\phib \in (\mathcal{A} \cap \mathcal{H})^L$.
+     Then, the solution set $\mathcal{W} (\lb,\lh)$
+   %  \begin{equation*}
+   % \mathcal{W} (\lb,\lh) = \underset{(\fb,\fh) \in \mathcal{B} \times \mathcal{H}}{\arg\min} \| \bm{y} - (\phib (\fb) + \phih (\fh)) \|_2^2  + \lb \| \fb \|_{\mathcal{B}} + \lh \| \fh \|_{\mathcal{H}}^2
+   %  \end{equation*}
+    is non-empty, convex, and weak*-compact in $\mathcal{B}\times \mathcal{H}$. Moreover, we can write
+    \begin{equation}
+        \label{eq:decoupling}
+        \mathcal{W} (\lb,\lh) = \mathcal{V}(\mathbf{M}_{\lh},\lb) \times \{\hat{f}_2\}
+    \end{equation}
+    \ad{ToDo: s2 involves phih.}
+    with
+    \begin{align}
+        \mathcal{V}(\mathbf{M}_{\lh},\lb) &= \underset{ \fb \in \mathcal{B}}{\arg\min} \quad \|\mathbf{M}_{\lh}^{-\frac{1}{2}} ( \bm{y} - \phib(\fb)  ) \|_2^2  + \lb \| \fb \|_{\mathcal{B}} , \label{eq:banachpart} \\
+        \hfh &=  \frac{1}{\lh}\phih^* \mathbf{M}_{\lh}^{-1} \left(\bm{y} - \bm{w}\right), \label{eq:hilbertpart}
+    \end{align}
+    where the vector $\bm{w} = \phib ( \hfb)$ is unique and independent of the solution $\hfb \in \mathcal{V}(\mathbf{M}_{\lh},\lb)$. 
+    \end{theorem}
+
+    Consequently, known results over $\mathcal{B}$ are directly transferred into $\mathcal{B}\times \mathcal{H}$. We illustrate this principle with the following corollary, expressed as a representer theorem, which characterizes the extreme point solutions of composite inverse problems.
+
+    \begin{corollary}
+    From \eqref{eq:banachpart}, we can deduce that the extreme points of $\mathcal{W} (\lb,\lh)$ are of the form 
+    \begin{equation} \label{eq:extreme}
+        (\hfb , \hfh ) = \left( \sum_{1 \leq k \leq K} \alpha_k e_k , \hfh \right)
+    \end{equation}
+    where $\alpha_k \neq 0$, $e_k$ are distinct extreme points of the unit ball $\{ \fb \in \mathcal{B}, \ \| \fb \|_{\mathcal{B}} \leq 1\}$, $0 \leq K \leq L$, and $\hfh$ is given by \eqref{eq:hilbertpart}. 
+    \end{corollary}
+
+    Theorem~\ref{theo:main} reveals the interests of a composite framework using Banach and Hilbert regularizations. The Banach component is made of extreme points of the unit ball of $\mathcal{B}$
+    while the Hilbertian component lives in the finite-dimensional space of the measurement functionals $(\phi_1, \ldots, \phi_L)$. It implies in particular that the general form of an extreme point solution is 
+    \begin{equation*}
+        \widehat{s} = \hfb + \hfh = \sum_{1 \leq k \leq K} \alpha_k e_k + \sum_{1 \leq \ell \leq L} \beta_\ell \phi_{\ell},
+    \end{equation*}
+    with $K\leq L$ and where the $e_k$ are distinct extreme points of the unit ball of $\mathcal{B}$. 
+    This characterization is particularly relevant for Banach spaces whose extreme points have interesting properties, as is the case for $\ell_1$-norms and their generalizations~\cite{chandrasekaran2012convex}.
+    This last equation was already a consequence of~\cite[Theorem 2]{unser2022convex}, but Theorem~\ref{theo:main} specifies the joint properties of the weight vectors $\bm{\alpha}$ and $\bm{\beta}$.
+
+    \begin{remark}[Decoupling of Hilbert-plus-anything]
+        We stated Theorem~\ref{theo:main} for Hilbert-plus-Banach optimization but the decoupling readily holds for more general situations. Indeed, the proof only relies on the closed-form expression of the Hilbert component when the other one is fixed.
+        It is for instance possible to consider spline reconstruction using $\|\mathrm{L}\cdot\|_\mathcal{B}$ instead of $\|\cdot\|_\mathcal{B}$, with $\mathrm{L}$ a pseudo-differential operator \cite{unser2017splines}.
+        When a more general penalty term $\mathcal{R}(\fb)$ is used, the decoupling between the components still holds but the properties that stem from $\mathcal{V}(\mathbf{M}_{\lh}, \lb)$ need to be verified depending on the chosen regularization, see the representer theorems of \cite{boyer2019representer}.
+
+        % Hence, it is possible to replace $\|\cdot\|_\mathcal{B}$ by any penalty term, for instance considering spline reconstruction with $\|\mathrm{L}\cdot\|_\mathcal{B}$ for $\mathrm{L}$ a pseudo-differential operator.
+        % % or considering another norm/functional for $\mathcal{R}(f_1)$.
+        % When a more general penalty term $\mathcal{R}(f_1)$ is used, the decoupling between the components still holds but the properties that stem from $\mathcal{V}(\mathbf{M}_{\lh}, \lb)$ are not guranteed and need to be verified according to the chosen regularization (representer theorem, uniqueness of measurement vector $\bm{w}$).
+    \end{remark}
+
+    \begin{remark}[Different measurement operators]
+        The data-fidelity term of equation~\eqref{eq:composite-optim} considers that the two components $s_1$ and $s_2$ are measured through the same operator $\phib$. The decoupling of Theorem~\ref{theo:main} still holds if different operators $\phib_1 \in \mathcal{A}^L$ and $\phih_2 \in \mathcal{H}^L$ are considered, each of the applying to a different component. In this case, the expression of the matrix $\mathbf{M}_{\lh}$ needs to be changed accordingly.
+    \end{remark}
+
+    \subsection{Maximum regularization parameter for TV-norm}
+
+    Setting the regularization parameters in optimization problems is a notoriously sensitive task. 
+    If we consider a single-component problem with a Hilbert penalty, there exists an optimal value of the regularization parameter when the source signal follows a random Gaussian model \cite{Badou}. Beyond this ideal model, finding a relevant value for this parameter is still an open question and many strategies have been proposed in the literature \cite{hansen2000,park2008parameter}. The case of single-component Banach problems is not simpler \cite{deladalle2014sugar,chirinos2024parameter}. 
+    However, when an $\ell_1$-norm or total variation norm is considered, the regularization parameter of Banach-penalized problems can be theoretically bounded and we can determine a range of relevant values for $\lambda$. Indeed, there exists a problem-dependent maximum value $\lambda_{\mathrm{max}} > 0$ above which the solution of the optimization is unique and reduced to the null signal. This is a well-known result for LASSO-type problems, both in discrete \cite{tibshirani2013lasso}, \cite[Proposition~II.1]{koulouri2021} and continuous settings \cite[Proposition~10]{debarre2022sparsest}.
+
+    % Given a Gaussian random model on the data/measurements, there exists a theoretic optimal value for the regularization parameter of the single-component optimization problem with an Hilbert penalty \cite{}. This result however does not exist for a generic optimization problem and finding a rule to set the regularization parameter is an active field of research 
+    % \ad{Next introductive sentences need to be rephrased. I can mention that some techniques exist. We have more results for Hilbert-type regularization. References: chapter 7 of Rank-Deficient and discrete Ill-posed problems (Hansen), Wahba 1979, also from Hansen ``The L-curve and its use in the numerical treatment of inverse problems'', also see discussion in article from Park, 2017; another recent discusison in ``On learning the optimal regularization parameter in inverse problems'', Rodriguez 2024 -- FInally we have SUGAR paper from Peyré et al, 2014. }
+    % For single-component problems, there exists a theoretic optimal value when a Hilbert norm regularization is used \ad{reference needed here}. To the best of our knowledge, such result does not exist for a general Banach norm regularization. 
+    % % When Hilbert regularization is considered for a single component problem, it is possible to determine a value that is optimal in the sense of mean square error estimation
+
+    %--------------------
+
+    This result on the maximum value of the regularization parameter can be transferred to composite problems using Theorem~\ref{theo:main}. It reveals an explicit dependence between the two regularization parameters of composite problems, as illustrated in Proposition~\ref{prop:lmax}.
+
+    % In our composite optimization setting, it is possible to rely on such results to also propose an interpretation of the two regularization parameters. Let us consider the classical scenario in which the Banach component is a sparse Radon measure penalized using the associated total-variation norm.
+    % Thanks to Theorem~\ref{theo:main}, the regularization paramaters of the composite problem can be interpreted with the same tools when the Banach regularization obeys the same $\ell_1$-like guarantee 
+    % we can transfer the same type of guarantee on the regularization parameters of composite problems when the Banach regularization has responds to 
+
+    % we can apply this result to composite problems in which the Banach regularization obeys the same property. Proposition~\ref{prop:lmax} illustrates this transferred property onto the values of the two regularization parameters.
+    %--------------------
+
+    \begin{proposition}[Maximum value of $\lambda_1$]
+    \label{prop:lmax}
+    Let $\mathcal{X}$ be a continuous domain $\mathcal{X}=\mathbb{R}^d$ or $\mathcal{X}=\mathbb{T}^d$ for $d \in \mathbb{N}^*$.
+
+    We consider the composite optimization problem \eqref{eq:argminisback} where $\mathcal{B} = \mathcal{M}(\mathcal{X})$ and $\lVert \cdot \rVert_\mathcal{B} = \lVert \cdot \rVert_\mathcal{M}$. We define
+    \begin{equation}
+        \label{eq:l1max}
+        \begin{split}
+        \lambda_{1, \mathrm{max}} &= \lVert \phib^* \mathbf{M}_{\lambda_2}^{-1} \bm{y} \rVert_\infty \\
+                & = \lambda_2 \lVert \phib^* \left( \phih \phih^* + \lambda_2 \mathbf{I}_L \right)^{-1} \bm{y} \rVert_\infty.
+        \end{split}
+    \end{equation}
+    For any $\lambda_1 \geq \lambda_{1, \mathrm{max}}$, the solution set for the Banach component is reduced to the singleton zero 
+    $$\mathcal{V}(\mathbf{M}_{\lh}, \lb) = \left\{ 0 \right\}$$
+    and Problem \eqref{eq:argminisback} is equivalent to a single-component Hilbert problem.
+    \end{proposition}
+
+    \begin{proof}
+        Problem \eqref{eq:banachpart} is a B-LASSO problem with operator $\mathbf{M}_{\lh}^{-\frac{1}{2}} \phib$ and measurement vector $\mathbf{M}_{\lh}^{-\frac{1}{2}}\bm{y}$, hence the maximum value of the optimization parameter writes as
+        \begin{equation*}
+            \lambda_{1, \mathrm{max}} = \lVert (\mathbf{M}_{\lh}^{-\frac{1}{2}} \phib)^*  (\mathbf{M}_{\lh}^{-\frac{1}{2}} \bm{y}) \rVert_\infty = \lVert \phib^* (\mathbf{M}_{\lh}^{-\frac{1}{2}})^* \mathbf{M}_{\lh}^{-\frac{1}{2}} \bm{y} \rVert_\infty = \lVert \phib^* \mathbf{M}_{\lambda_2}^{-1} \bm{y} \rVert_\infty,
+        \end{equation*}
+        using the symmetry of the matrix $\mathbf{M}_{\lambda_2}$.
+    \end{proof}
+
+    Equation \eqref{eq:l1max} demonstrates a natural dependence of $\lb$ onto $\lh$. Indeed, the range of relevant values for $\lb$ is $[0, \lambda_{1, \mathrm{max}}]$ which depends on $\lh$. Hence, by first choosing $\lh$ then setting $\lb = \alpha \lambda_{1, \mathrm{max}}$ for $0 < \alpha < 1$ we ensure that the value of the regularization parameters is consistent with the problem. This approach was already proposed and discussed in our previous work on composite problems \cite{jarret2024decoupled}. We illustrate this dependency and how our scaling rule allows to decouple the choice of parameters with a cross table of reconstructions in Appendix~\ref{app:reconstructions}.
+
+    % Benefits of the result: natural scaling of regularization paramter, order of the selection of the parameters. Refernce to this approach is our previous paper \cite{jarret2024decoupled}.
+
+    Additionally, equation \eqref{eq:l1max} provides information on the asymptotic behavior of $\lbm$. When $\lambda_2$ is small, $\lh \mathbf{I}_L$ is negligible compared to $\phih \phih^*$ and so $\lbm$ is proportional to $\lh$. However, for large values of $\lh$, the Gram matrix $\phih \phih^*$ is itself negligible and $\lbm$ tends to $\lVert \mathbf{H}^* \bm{y}\rVert_\infty$. This latter result is consistent with the maximum value of the regularization parameter for the single-component B-LASSO problem.
+
+    % Interesting asymptotic behavior : when $\lambda$ gets very small, $\lambda_1$ needs to be scaled accordingly (regime of linear dependency).
+
+    % \ad{\textbf{Outdated}, how does lambda max compare to the continuous one though?}
+    % Note that it is possible to compute the maximum critical value for the regularization parameter based on this equation. We obtain
+    % \begin{align*}
+    %     \lambda_{1, max} &= \lVert \mathbf{H}^* \mathbf{M}_{\lambda_2}^{-1} \bm{y} \rVert_\infty \\
+    %             & = \lambda_2 \lVert \mathbf{H}^* \left( \phih \phih^* + \lambda_2 \mathbf{I}_L \right)^{-1} \bm{y} \rVert_\infty
+    % \end{align*}
+    % Hence when $\lambda_2 = o(\sigma_{max}^2(\phih))$, $\lambda_{1, max}$ is proportional to $\lh$. Contrarily, when $\lambda_2 \gg \sigma_{max}^2(\phih)$, $\lambda_{1, max} \to \lVert \mathbf{H}^* \bm{y}\rVert_\infty$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%  SECTION 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{sect4}
+
+\section{Conclusion}
+
+    % \begin{itemize}
+    %     \item Composite approach for inverse problem
+    %     \item Revisit the Sparse-plus-Smooth problem of Debarre et al.
+    %     \item General decoupling result when the problems are simple
+    %     \item Main benefit: decoupled numerical solver, much faster
+    %     \item Illustration of the relevance of composite model (even in a simple case)
+    %     \item Further work: Application to microscopy or astronomy.
+    % \end{itemize}
+
+    We introduced a new representer theorem for composite sparse-plus-smooth optimization problems, revisiting the original result from~\cite{debarre2021continuous}. Our theorem investigates deeper the connection between the two components of the problem and demonstrates a form of decoupling between them. Interestingly, the composite minimization can be transformed into an equivalent simpler single-component problem. We recover the uniqueness of the smooth component and provide a more precise closed-form expression depending on the residual of the decoupled sparse problem.
+
+    We highlighted the relevance of composite models for sparse recovery when the observations are corrupted with the presence of background information, in scenarios where single-component sparse modeling only fails to produce accurate solutions. Moreover, the decoupled numerical procedure stemming from our representer theorem significantly outperforms the direct two-variable approach in terms of solving time.
+
+    Building on this fast solver, composite models could be used as an enhanced version of traditional sparsity-promoting methods for practical applications involving large measurement datasets, such as 2D and 3D SMLM deconvolution.
+
+    % \ad{Reference to lensless imaging as potential application ?}
+
+
+% \ack 
+\section*{Acknowledgments}
+    The authors sincerely thank Martin Vetterli for his trust and guidance throughout this project.   
+    A.J. is funded by the Swiss National Science Fundation (SNSF) under grant \emph{SESAM - Sensing and Sampling: Theory and Algorithms (n\textdegree 200021\_181978/1)}.
+    
+\input{appendix}
+
+\bibliographystyle{vancouver}
+\bibliography{refs}
+
+\end{document}
