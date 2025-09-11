@@ -80,7 +80,7 @@
     % \end{itemize}
     % }
 
-    \subsection{Composite Linear Inverse Problems}
+    \subsection{Composite linear inverse problems}
     
     We study linear inverse problems where the goal is to recover a signal $s^\dagger$ from a finite number of possibly noisy linear measurements $\bm{y} \approx \bm{\Phi}(s^\dagger)$. 
     The inverse problem is called composite if the signal to reconstruct is modeled as a sum of several subcomponents. We consider the case where $s^\dagger$ is the sum of two terms
@@ -146,7 +146,7 @@
 
     %Our goal is to show how Hilbertian techniques can be added to known ones for Banach spaces in order 
     
-    \subsection{From Sparse versus Smooth to Sparse-plus-Smooth Regularization}
+    \subsection{From sparse-versus-smooth to sparse-plus-smooth regularization}
     \label{sec:regularizationblabla}
 
     Consider for a moment the classical single-component version of the optimization problem~\eqref{eq:compositepb}, i.e.,
@@ -186,14 +186,14 @@
 
     % \ju{Possible emphasis: algorithmic consequences for all those applications. Many $ell_1$ algo does not apply to $ell_1 + ell_2$ and thanks to our work, now they do up to a linear subproblem. It could be the occasion to quickly refer to those algorithms, such as FW.} \ad{I don't think that is the case. If an algorithm solves a l1 penalized problem, it can solve a composite l1 + l2 problem as the l2 term is differentiable.}
 
-    \subsection{Contributions and Outline}
+    \subsection{Contributions and outline}
 
-    Our main contribution is to identify a new way of conceiving the optimization problem \eqref{eq:compositepb} by decoupling its resolution, extending the result of \cite{jarret2024decoupled} to general Banach and Hilbert spaces. More precisely, we show that the composite optimization problem~\eqref{eq:compositepb} can be reduced to two subproblems. The first one is brought back to the Banach space and directly identifies the sparse component, while the second one is a quadratic optimization problem that admits an explicit solution. We obtain a more precise composite representer theorem than existing results and identify in particular the smooth component in closed form as a function of the vector of measurements of the sparse component.
+    Our main contribution is to identify a new way of conceiving the optimization problem \eqref{eq:compositepb} by decoupling its resolution, extending the result of \cite{jarret2024decoupled} to general Banach and Hilbert spaces. More precisely, we show that the composite optimization problem~\eqref{eq:compositepb} can be reduced to two subproblems. The first one is brought back to the Banach space and directly identifies the sparse component, while the second one is a quadratic optimization problem that admits an explicit solution for the smooth component. We obtain a more precise composite representer theorem than existing results and identify in particular the smooth component in closed form as a function of the vector of measurements of the sparse component.
 
     % We deduce some important algorithmic consequences in the study of specific optimization problems with the case of finite-dimensional inverse problems (regularization norms $\| \cdot \|_1$ and $\|\cdot \|_2$).
 
     We illustrate the decoupling mechanism on a composite deconvolution problem inspired from microscopy imaging.
-    Empirically, we demonstrate in simulations the relevance of using a composite model over a single-component approach for problems involving a smooth background. We also show a significant temporal gain from the use of algorithms exploiting the decoupling of the initial problem compared to the standard approach based on the representer theorem of \cite{debarre2021continuous}. 
+    We demonstrate in simulations the relevance of using a composite model over a single-component approach for problems involving a smooth background. We also show a significant temporal gain from the use of algorithms exploiting the decoupling of the initial problem compared to the standard approach based on the representer theorem of \cite{debarre2021continuous}. 
 
     % \section{Related Works}
 
@@ -209,25 +209,30 @@
 \section{Representer Theorems for Single-Component Problems}
 
     % Named after the regularization. Introduction of notations. Known results.
-    As they will be useful later on, we recall here the classical representer theorems that characterize the solutions of single-component optimization problems, along with the relevant topological structures on the search spaces involved. In particular, smooth regularization can be formulated over regular Hilbert spaces while a more precise description of the topology of Banach spaces is needed for sparse regularization. 
+    As they will be useful later on, we recall here the classical representer theorems that characterize the solutions of single-component optimization problems such as \eqref{eq:singletpb}, along with the relevant topological structures on the involved search spaces. In particular, smooth regularization can be formulated over regular Hilbert spaces while
+    % a more precise description of the topology of Banach spaces is needed for sparse regularization. 
+    sparse regularization requires to introduce a weak-* topology on Banach spaces (using a dual norm).
 
     % \subsection{Mathematical Background}
     % \label{sec:mathsbackground}
     
-    \subsection{Smooth Regularization of Inverse Problems}
+    \subsection{Smooth regularization of inverse problems}
 
-    \ad{We assume the search space $\mathcal{H}$ to be a Hilbert space with Hilbertian norm $s \mapsto \| s \|_\mathcal{H} = \sqrt{\langle s, s \rangle_{\mathcal{H}}}$. By the Riesz representer theorem, any continuous linear functional $\nu: \cH \to \R$ can be represented as the inner product with an element $\phi_\nu \in \cH$, such that $\nu(f) = \langle \phi_\nu, f \rangle_\cH$ for any $f \in \cH$. The topological dual $\cH'$ is then identified as the search space $\cH$ itself. For $\bm{\Phi}= (\phi_1 ,\ldots , \phi_L) \in \mathcal{H}^L$, we denote
+    \ad{We assume the search space $\mathcal{H}$ to be a Hilbert space with Hilbertian norm $s \mapsto \| s \|_\mathcal{H} := \sqrt{\langle s, s \rangle_{\mathcal{H}}}$. By the Riesz representer theorem, any continuous linear functional $\nu: \cH \to \R$ can be represented as the inner product with an element $\phi_\nu \in \cH$ such that $\nu(f) = \langle \phi_\nu, f \rangle_\cH$ for any $f \in \cH$. The topological dual $\cH'$ is then identified as the search space $\cH$ itself.}
+
+    \ad{
+    For $\phihsingle= (\phihh_1 ,\ldots , \phihh_L) \in \mathcal{H}^L$, we denote
     \begin{equation}
-        \bm{\Phi}(s) = \left( \langle \phi_1, s \rangle_{\mathcal{H}} , \ldots , \langle \phi_L, s \rangle_{\mathcal{H}} \right). 
+        \phihsingle(s) := \left( \langle \phihh_1, s \rangle_{\mathcal{H}} , \ldots , \langle \phihh_L, s \rangle_{\mathcal{H}} \right). 
         \label{eq:phi-hilbert}
     \end{equation}
-    The adjoint of $\bm{\Phi}$ is the only operator $\bm{\Phi}^* : \R^L \rightarrow \mathcal{H}$ which satisfies the equality %\footnotemark{}
+    The adjoint of $\phihsingle$ is the only operator $\phihsingle^* : \R^L \rightarrow \mathcal{H}$ which satisfies the equality %\footnotemark{}
     \begin{equation*}
         \langle \phih(s), \bm{y}\rangle_{\R^L} = \langle s, \phih^*(\bm{y})\rangle_\cH,
     \end{equation*}
     for any $s \in \cH$ and $\bm{y}\in\R^L$.
-    Its expression is given by $\bm{\Phi}^* (\bm{y}) = \sum_{1 \leq \ell \leq L} y_\ell \phi_\ell$.
-    We also consider the Gram matrix $\mathrm{G} = \bm{\Phi} \bm{\Phi}^* \in \R^{L\times L}$ whose entries are given by $G[k,\ell] = \langle \phi_k , \phi_\ell\rangle_{\mathcal{H}}$.}
+    Its expression is given by $\phihsingle^* (\bm{y}) = \sum_{1 \leq \ell \leq L} y_\ell \phi_\ell$.
+    The entries of the Gram matrix $\mathrm{G} := \phihsingle \phihsingle^* \in \R^{L\times L}$ are given by $G[k,\ell] = \langle \phihh_k , \phi_\ell^\cH \rangle_\cH$.}
     % \footnotetext{\ad{The definition of the adjoint operator depends on the inner product $\langle \cdot, \cdot \rangle_\cH$ used on $\cH$. The explicit expression of $\phih^*$ needs to be determined with a particular attention when the choice of this inner product is not canonical. This idea is discussed in \cite{unser2021unifying}, considering the more general concept of \emph{duality mappings} and \emph{conjugate pairs}.}
 
     % We assume the search space $\mathcal{H}$ to be a Hilbert space with Hilbertian norm $s \mapsto \| s \|_\mathcal{H} = \sqrt{\langle s, s \rangle_{\mathcal{H}}}$. The topological dual of $\mathcal{H}$ is made of functionals $s \mapsto \langle \phi, s \rangle_{\mathcal{H}}$ with $\phi \in \mathcal{H}$.
@@ -242,26 +247,26 @@
 
     \begin{proposition}[Representer Theorem on Hilbert spaces]
     \label{prop:hilbertRT}
-    Let $\bm{y}\in \R^L$, $\bm{\Phi}= (\phi_1 ,\ldots , \phi_L) \in \mathcal{H}^L$, and $\lambda > 0$. Given that the measurement functionals $\phi_1, \dots, \phi_L$ are linearly independent, the optimization problem 
+    Let $\bm{y}\in \R^L$, $\phihsingle= (\phihh_1 ,\ldots , \phihh_L) \in \mathcal{H}^L$, and $\lambda > 0$. Given that the measurement functionals $\phi_1, \dots, \phi_L$ are linearly independent, the optimization problem 
     \begin{equation} \label{eq:hibertpb}
-        \inf_{s \in \mathcal{H}} \frac{1}{2} \| \bm{y} - \bm{\Phi}(s) \|_2^2 + \frac{\lambda}{2} \| s \|_{\mathcal{H}}^2
+        \inf_{s \in \mathcal{H}} \frac{1}{2} \| \bm{y} - \phihsingle(s) \|_2^2 + \frac{\lambda}{2} \| s \|_{\mathcal{H}}^2
     \end{equation}
     admits a unique solution $\hfh \in \mathcal{H}$ which is given by
     \begin{equation} \label{eq:widehathilb}
-        \hfh  = \bm{\Phi}^* ( \bm{\Phi} \bm{\Phi}^* + \lambda \mathbf{I}_L)^{-1} \bm{y}.
+        \hfh  = \phihsingle^* ( \phihsingle \phihsingle^* + \lambda \mathbf{I}_L)^{-1} \bm{y}.
     \end{equation}
     \end{proposition}
     % \ad{This is okay but hides the difficulty: if the inner product on $\mathcal{H}$ is not canonical $\mathrm{L}_2$ then the adjoint of $\mathbf{\Phi}$ is actually quite tricky to determine and involves the Riesz map of $\mathcal{H}$. The proper reference in this scenario is from \cite[Section~3.2]{Unser2020}.}
     
     \noindent In other terms, Proposition~\ref{prop:hilbertRT} states that the solution set of ~\eqref{eq:hibertpb} is 
     \begin{equation}
-        \mathcal{U} (\lambda) := \{ \bm{\Phi}^* ( \bm{\Phi} \bm{\Phi}^* + \lambda \mathbf{I}_L)^{-1} \bm{y}\}.
+        \mathcal{U} (\lambda) := \{ \phihsingle^* ( \phihsingle \phihsingle^* + \lambda \mathbf{I}_L)^{-1} \bm{y}\}.
     \end{equation}
     The existence and uniqueness of the solution of \eqref{eq:hibertpb} follows from the the fact that the functional of \eqref{eq:hibertpb} is continuous and strongly convex due to the quadratic regularization.
     % \ad{We should remove the next sentence I think.}
     The function $ \hfh $ is in the span of the functionals $\phi_\ell$ since \eqref{eq:widehathilb} can be reinterpreted as 
     \begin{equation*}
-    \hfh  = \sum_{1 \leq \ell \leq L} \alpha_\ell \phi_\ell \quad \text{where} \quad \bm{\alpha} = ( \bm{\Phi} \bm{\Phi}^* + \lambda \mathbf{I}_L)^{-1} \bm{y} \in \R^L. 
+    \hfh  = \sum_{1 \leq \ell \leq L} \alpha_\ell \phi_\ell^\cH \quad \text{where} \quad \bm{\alpha} = ( \phihsingle \phihsingle^* + \lambda \mathbf{I}_L)^{-1} \bm{y} \in \R^L. 
     \end{equation*}
 
     % \ad{The function $ \hfh $ can be reinterpreted as
@@ -271,28 +276,30 @@
     % in which the ....}
     
     
-    \subsection{Sparse Regularization of Inverse Problems}
+    \subsection{Sparse regularization of inverse problems}
 
     The norms responsible for promoting sparsity do not stem from any inner product. The classical framework instead considers the search space being a generic non-reflexive Banach space $\mathcal{B}$ and assumes the existence of a predual space \cite{unser2021unifying}.
+    
     We fix two Banach spaces $( \mathcal{A}, \| \cdot \|_{\mathcal{A}})$ and $( \mathcal{B}, \| \cdot \|_{\mathcal{B}})$ such that $\mathcal{B} = \mathcal{A}'$ is the topological dual of $\mathcal{A}$ and $\| \cdot \|_{\mathcal{B}}$ is the dual norm 
     \begin{equation*}
-        \| s \|_{\mathcal{B}} = \sup_{\|g \|_{\mathcal{A}}=1} \langle g, s \rangle_{\mathcal{A}\times\mathcal{B}}, 
+        \| s \|_{\mathcal{B}} = \sup_{\|u \|_{\mathcal{A}}=1} \langle u, s \rangle_{\mathcal{A}\times\mathcal{B}}, 
     \end{equation*}
-    \ad{where the \emph{dual product} is denoted as $\langle g, s \rangle_{\mathcal{A}\times\mathcal{B}} = s(g)$.}
+    \ad{where the \emph{dual product} is denoted as $\langle u, s \rangle_{\mathcal{A}\times\mathcal{B}} = s(u)$.}
     This assumption implies that $\mathcal{B}$ can be endowed with the weak*-topology inherited from $\mathcal{A}$. We say that the sequence $(s_n)_{n\geq 1}$ of elements $s_n \in \mathcal{B}$ converges to $s \in \mathcal{B}$ for the weak*-topology if 
     \begin{equation*}
-        \langle g , s_n \rangle_{\mathcal{A}\times\mathcal{B}} \underset{n\rightarrow \infty}{\longrightarrow} \langle g, s \rangle_{\mathcal{A}\times\mathcal{B}} 
+        \langle u , s_n \rangle_{\mathcal{A}\times\mathcal{B}} \underset{n\rightarrow \infty}{\longrightarrow} \langle u, s \rangle_{\mathcal{A}\times\mathcal{B}} 
     \end{equation*}
-    for any $g \in \mathcal{A}$.
-    In other terms, $\mathcal{B}$ admits a predual. The Hilbert search space scenario presented in the previous section corresponds to the case $\mathcal{A} = \mathcal{B} = \mathcal{H}$.
+    for any $u \in \mathcal{A}$.
+    In other terms, $\mathcal{B}$ admits a predual\footnotemark.
+    \footnotetext{The Hilbert scenario presented in the previous section corresponds to the case $\mathcal{A} = \mathcal{B} = \mathcal{H}$.}
 
     A typical example is the space of Radon measures $(\mathcal{B}, \|\cdot \|_{\mathcal{B}}) = (\mx, \|\cdot \|_{\mathcal{M}})$ over a continuous domain $\mathcal{X}$. Its predual is the Banach space of continuous vanishing functions for the infinite norm $(\mathcal{A}, \|\cdot \|_{\mathcal{A}}) =(\czx, \| \cdot \|_{\infty})$. The Radon measures remarkably contain Dirac impulses, which make them well-suited for continuous-domain sparse recovery. For any $d\in\mathbb{N}^*$, the case $\mathcal{X}=\mathbb{R}^d$ is for instance presented in~\cite{unser2017splines,Unser2020} and the periodic case $\mathcal{X}=\mathbb{T}^d$ is covered by \cite{fageot2020tv}.
     % Typical examples include $(\mathcal{B}, \|\cdot \|_{\mathcal{B}}) = (\ell_1(\Z), \|\cdot \|_{\ell_1})$, whose predual is the Banach space $(\mathcal{A}, \|\cdot \|_{\mathcal{A}}) =(c_0(\Z), \| \cdot \|_{\infty})$ of vanishing sequences for the infinite norm . Some Banach spaces do not enter in this category. For instance, the space $L_1(\R)$ of integrable functions does not admit a predual space~\cite[Theorem 6.3.7]{albiac2006topics} and is therefore excluded from our analysis.
 
-    Without the Hilbert space structure, the measurement operator $\bm{\Phi}= (\phi_1, \ldots, \phi_L)$ is made of measurement functionals $\phi_\ell \in \mathcal{A}$ from the predual space. Then, $\bm{\Phi}$ specifies a linear and weak*-continuous mapping $\bm{\Phi}: \mathcal{A}' =\mathcal{B} \rightarrow \R^L$ via 
+    Without the Hilbert space structure, the measurement operator $\phibsingle= (\phibb_1, \ldots, \phibb_L)$ is made of measurement functionals $\phi_\ell^\cB \in \mathcal{A}$ from the predual space. Then, $\phibsingle$ specifies a linear and weak*-continuous mapping $\phibsingle: \mathcal{A}' =\mathcal{B} \rightarrow \R^L$ via 
     \begin{equation}
         \label{eq:phi-banach}
-        \bm{\Phi} (s )= (\langle \phi_\ell, s \rangle_{\mathcal{A}\times\mathcal{B}})_{1\leq \ell \leq L} \in \mathbb{R}^L.
+        \phibsingle (s) := (\langle \phi_\ell^\cB, s \rangle_{\mathcal{A}\times\mathcal{B}})_{1\leq \ell \leq L} \in \mathbb{R}^L.
     \end{equation}
 
     % Interestingly, it is possible to extend Proposition~\ref{prop:hilbertRT} to this more general setting.
@@ -319,9 +326,9 @@
 
     \begin{proposition}{Representer Theorem on Banach spaces}
     \label{prop:banachRT}
-     Let $\bm{y}\in \R^L$, $\bm{\Phi}= (\phi_1 ,\ldots , \phi_L) \in \mathcal{A}^L$, and $\lambda > 0$. Then, the optimization problem 
+     Let $\bm{y}\in \R^L$, $\phibsingle= (\phibb_1 ,\ldots , \phibb_L) \in \mathcal{A}^L$, and $\lambda > 0$. Then, the optimization problem 
     \begin{equation} \label{eq:banachpb}
-        \inf_{s \in \mathcal{B}} \frac{1}{2} \| \bm{y} - \bm{\Phi}(s) \|_2^2 + \lambda \| s \|_{\mathcal{B}}
+        \inf_{s \in \mathcal{B}} \frac{1}{2} \| \bm{y} - \phibsingle(s) \|_2^2 + \lambda \| s \|_{\mathcal{B}}
     \end{equation}
     admits at least a solution and its solution set $\mathcal{V} (\lambda)$ is weak*-compact, convex, and is the closed convex hull of its extreme points. Any extreme point $\hfb$ of $\mathcal{V} (\lambda)$ is such that 
     \begin{equation} \label{eq:widehatbanachextreme}
@@ -329,9 +336,9 @@
     \end{equation}
     where $e_k$ are distinct extreme points of the unit ball of $\|\cdot \|_{\mathcal{B}}$,  $\alpha_k \in \mathbb{R}$, and $0 \leq K \leq L$.
 
-    Moreover, for any combination $\bm{y}, \bm{\Phi},\lambda$ there exists a unique vector $\bm{w} = \bm{w}(\bm{y}, \bm{\Phi},\lambda) \in \R^L$ such that
+    Moreover, for any combination $\bm{y}, \phibsingle,\lambda$ there exists a unique vector $\bm{w} = \bm{w}(\bm{y}, \phibsingle,\lambda) \in \R^L$ such that
     \begin{equation} \label{eq:zlambda}
-        \forall\ \hfb \in \mathcal{V} (\lambda), \quad \bm{\Phi}(\hfb) = \bm{w}.
+        \forall\ \hfb \in \mathcal{V} (\lambda), \quad \phibsingle(\hfb) = \bm{w}.
     \end{equation}
     \end{proposition}
     
@@ -350,19 +357,19 @@
 
     \subsection{Main theorem}
 
-    \ad{ToDo: Use phih and phib as defined by Julien.}
-    Let us recall the composite problem of interest. For $\lambda_1, \lambda_2 > 0$ we write the objective functional as
+    We consider the composite problem \eqref{eq:compositepb} in a slightly more generic form using two measurement operators. For $\lambda_1, \lambda_2 > 0$, the objective functional is given by
     \begin{equation}
         \label{eq:composite-optim}
-        \mathcal{J}(\fb, \fh) := \frac{1}{2} \| \bm{y} - (\phib (\fb) + \phih (\fh)) \|_2^2  + \lb \| \fb \|_{\mathcal{B}} + \frac{\lh}{2} \| \fh \|_{\mathcal{H}}^2.
+        \mathcal{J}(\fb, \fh) := \frac{1}{2} \| \bm{y} - (\phib (\fb) + \phih (\fh)) \|_2^2  + \lb \| \fb \|_{\mathcal{B}} + \frac{\lh}{2} \| \fh \|_{\mathcal{H}}^2,
     \end{equation}
-    \ad{ToDo: Remove sentence on minimum requirement.}
-    The measurement operator $\phib$ samples both the sparse and the smooth components hence we have the minimal requirement that $\phib \in (\mathcal{A} \cap \mathcal{H})^L$. The set of pairs of minimizers is defined as
+    % \ad{ToDo: Remove sentence on minimum requirement.}
+    % The measurement operator $\phib$ samples both the sparse and the smooth components hence we have the minimal requirement that $\phib \in (\mathcal{A} \cap \mathcal{H})^L$.
+    where $\phib \in \mathcal{A}^L$ and $\phih\in\cH^L$ respectively sample the sparse and the smooth components. 
+    The set of pairs of minimizers is defined as
     \begin{equation} \label{eq:argminisback}
         \mathcal{W} (\lb,\lh) := \underset{(\fb,\fh) \in \mathcal{B} \times \mathcal{H}}{\arg\min} \mathcal{J}(\fb, \fh).
     \end{equation}
     We need to define the matrix
-    \ad{ToDo: This matrix only involves phih.}
     \begin{equation}
         \label{eq:def-Mphi}
         \mathbf{M}_{\lh} := \frac{1}{\lh} \left(\phih\phih^* + \lh \mathbf{I}_L\right) = \frac{1}{\lh} \left( \langle \phi_k , \phi_\ell \rangle_{\mathcal{H}} + \lh \delta[k - \ell] \right)_{1\leq k, \ell \leq L}.
@@ -372,8 +379,7 @@
     Our main result, Theorem~\ref{theo:main} hereafter, reduces the analysis of a composite optimization problem over $\mathcal{B}\times\mathcal{H}$ to a problem over $\mathcal{B}$, hence decoupling the contributions of the two components. The proof is given in Appendix~\ref{app:prooftheo1}.
 
     \begin{theorem} \label{theo:main}
-    \ad{ToDo: Adapt hypothesis on the definition of phi.}
-     Let $\bm{y}\in \R^L$, $\lambda_1, \lh > 0$, $\phib \in (\mathcal{A} \cap \mathcal{H})^L$.
+     Let $\bm{y}\in \R^L$, $\lambda_1, \lh > 0$, $\phib \in \mathcal{A}^L$ and $\phih \in \mathcal{H}^L$.
      Then, the solution set $\mathcal{W} (\lb,\lh)$
    %  \begin{equation*}
    % \mathcal{W} (\lb,\lh) = \underset{(\fb,\fh) \in \mathcal{B} \times \mathcal{H}}{\arg\min} \| \bm{y} - (\phib (\fb) + \phih (\fh)) \|_2^2  + \lb \| \fb \|_{\mathcal{B}} + \lh \| \fh \|_{\mathcal{H}}^2
@@ -381,15 +387,14 @@
     is non-empty, convex, and weak*-compact in $\mathcal{B}\times \mathcal{H}$. Moreover, we can write
     \begin{equation}
         \label{eq:decoupling}
-        \mathcal{W} (\lb,\lh) = \mathcal{V}(\mathbf{M}_{\lh},\lb) \times \{\hat{f}_2\}
+        \mathcal{W} (\lb,\lh) = \mathcal{V}(\mathbf{M}_{\lh},\lb) \times \{\hfh\}
     \end{equation}
-    \ad{ToDo: s2 involves phih.}
     with
     \begin{align}
-        \mathcal{V}(\mathbf{M}_{\lh},\lb) &= \underset{ \fb \in \mathcal{B}}{\arg\min} \quad \|\mathbf{M}_{\lh}^{-\frac{1}{2}} ( \bm{y} - \phib(\fb)  ) \|_2^2  + \lb \| \fb \|_{\mathcal{B}} , \label{eq:banachpart} \\
-        \hfh &=  \frac{1}{\lh}\phih^* \mathbf{M}_{\lh}^{-1} \left(\bm{y} - \bm{w}\right), \label{eq:hilbertpart}
+        \mathcal{V}(\mathbf{M}_{\lh},\lb) &:= \underset{ \fb \in \mathcal{B}}{\arg\min} \quad \|\mathbf{M}_{\lh}^{-\frac{1}{2}} ( \bm{y} - \phib(\fb)  ) \|_2^2  + \lb \| \fb \|_{\mathcal{B}} , \label{eq:banachpart} \\
+        \hfh &:=  \frac{1}{\lh}\phih^* \mathbf{M}_{\lh}^{-1} \left(\bm{y} - \bm{w}\right), \label{eq:hilbertpart}
     \end{align}
-    where the vector $\bm{w} = \phib ( \hfb)$ is unique and independent of the solution $\hfb \in \mathcal{V}(\mathbf{M}_{\lh},\lb)$. 
+    where the vector $\bm{w} := \phib ( \hfb)$ is unique and independent of the solution $\hfb \in \mathcal{V}(\mathbf{M}_{\lh},\lb)$. 
     \end{theorem}
 
     Consequently, known results over $\mathcal{B}$ are directly transferred into $\mathcal{B}\times \mathcal{H}$. We illustrate this principle with the following corollary, expressed as a representer theorem, which characterizes the extreme point solutions of composite inverse problems.
@@ -403,9 +408,9 @@
     \end{corollary}
 
     Theorem~\ref{theo:main} reveals the interests of a composite framework using Banach and Hilbert regularizations. The Banach component is made of extreme points of the unit ball of $\mathcal{B}$
-    while the Hilbertian component lives in the finite-dimensional space of the measurement functionals $(\phi_1, \ldots, \phi_L)$. It implies in particular that the general form of an extreme point solution is 
+    while the Hilbertian component lives in the finite-dimensional space of the measurement functionals $(\phihh_1, \ldots, \phihh_L)$. It implies in particular that the general form of an extreme point solution is 
     \begin{equation*}
-        \widehat{s} = \hfb + \hfh = \sum_{1 \leq k \leq K} \alpha_k e_k + \sum_{1 \leq \ell \leq L} \beta_\ell \phi_{\ell},
+        \widehat{s} = \hfb + \hfh = \sum_{1 \leq k \leq K} \alpha_k e_k + \sum_{1 \leq \ell \leq L} \beta_\ell \phihh_{\ell},
     \end{equation*}
     with $K\leq L$ and where the $e_k$ are distinct extreme points of the unit ball of $\mathcal{B}$. 
     This characterization is particularly relevant for Banach spaces whose extreme points have interesting properties, as is the case for $\ell_1$-norms and their generalizations~\cite{chandrasekaran2012convex}.
@@ -421,10 +426,10 @@
         % When a more general penalty term $\mathcal{R}(f_1)$ is used, the decoupling between the components still holds but the properties that stem from $\mathcal{V}(\mathbf{M}_{\lh}, \lb)$ are not guranteed and need to be verified according to the chosen regularization (representer theorem, uniqueness of measurement vector $\bm{w}$).
     \end{remark}
 
-    \ad{Remove next remark.}
-    \begin{remark}[Different measurement operators]
-        The data-fidelity term of equation~\eqref{eq:composite-optim} considers that the two components $s_1$ and $s_2$ are measured through the same operator $\phib$. The decoupling of Theorem~\ref{theo:main} still holds if different operators $\phib_1 \in \mathcal{A}^L$ and $\phih_2 \in \mathcal{H}^L$ are considered, each of the applying to a different component. In this case, the expression of the matrix $\mathbf{M}_{\lh}$ needs to be changed accordingly.
-    \end{remark}
+    % \ad{Remove next remark.}
+    % \begin{remark}[Different measurement operators]
+    %     The data-fidelity term of equation~\eqref{eq:composite-optim} considers that the two components $s_1$ and $s_2$ are measured through the same operator $\phib$. The decoupling of Theorem~\ref{theo:main} still holds if different operators $\phib_1 \in \mathcal{A}^L$ and $\phih_2 \in \mathcal{H}^L$ are considered, each of the applying to a different component. In this case, the expression of the matrix $\mathbf{M}_{\lh}$ needs to be changed accordingly.
+    % \end{remark}
 
     \subsection{Maximum regularization parameter for TV-norm}
 
@@ -456,7 +461,7 @@
     \begin{equation}
         \label{eq:l1max}
         \begin{split}
-        \lambda_{1, \mathrm{max}} &= \lVert \phib^* \mathbf{M}_{\lambda_2}^{-1} \bm{y} \rVert_\infty \\
+        \lambda_{1, \mathrm{max}} &:= \lVert \phib^* \mathbf{M}_{\lambda_2}^{-1} \bm{y} \rVert_\infty \\
                 & = \lambda_2 \lVert \phib^* \left( \phih \phih^* + \lambda_2 \mathbf{I}_L \right)^{-1} \bm{y} \rVert_\infty.
         \end{split}
     \end{equation}
@@ -477,7 +482,7 @@
 
     % Benefits of the result: natural scaling of regularization paramter, order of the selection of the parameters. Refernce to this approach is our previous paper \cite{jarret2024decoupled}.
 
-    Additionally, equation \eqref{eq:l1max} provides information on the asymptotic behavior of $\lbm$. When $\lambda_2$ is small, $\lh \mathbf{I}_L$ is negligible compared to $\phih \phih^*$ and so $\lbm$ is proportional to $\lh$. However, for large values of $\lh$, the Gram matrix $\phih \phih^*$ is itself negligible and $\lbm$ tends to $\lVert \mathbf{H}^* \bm{y}\rVert_\infty$. This latter result is consistent with the maximum value of the regularization parameter for the single-component B-LASSO problem.
+    Additionally, equation \eqref{eq:l1max} provides information on the asymptotic behavior of $\lbm$. When $\lambda_2$ is small, $\lh \mathbf{I}_L$ is negligible compared to $\phih \phih^*$ and so $\lbm$ is proportional to $\lh$. However, for large values of $\lh$, the Gram matrix $\phih \phih^*$ is itself negligible and $\lbm$ tends to $\lVert \phib^* \bm{y}\rVert_\infty$. This latter result is consistent with the maximum value of the regularization parameter for the single-component B-LASSO problem.
 
     % Interesting asymptotic behavior : when $\lambda$ gets very small, $\lambda_1$ needs to be scaled accordingly (regime of linear dependency).
 
