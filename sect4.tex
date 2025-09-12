@@ -6,7 +6,7 @@
     Deconvolution is a classical imaging inverse problem, appearing in various practical applications such as microscopy, photography or astronomy. It consists in recovering a high resolution image from blurred observations, possibly corrupted by various artifacts (measurement noise, external illumination, etc).
     The presence of background information in the signal to recover, even with a small intensity, significantly deteriorates the quality of traditional sparsity-based single-component reconstruction methods.
 
-    In this section, we illustrate our representer theorem for a deconvolution composite optimization problem. We first emphasize the decoupling in the specific case of measures-plus-Hilbert signal before performing actual reconstructions using a grid-based approximation of continuous-domain sparse signals.
+    In this section, we illustrate our representer theorem for a deconvolution composite optimization problem. We first emphasize the decoupling in the specific case of \emph{measures-plus-Hilbert} signal before performing actual reconstructions using a grid-based approximation of continuous-domain sparse signals.
 
     % In this section, we consider a composite signal model and illustrate the benefits of our representer theorem for a deconvolution optimization problem. In particular, composite modeling accurately recovers the unknown signal in situations where single-component problems fail to distinguish foreground from background information. Additionally, using a decoupled numerical procedure reduces the computation time compared to a direct 2-variables approach of the composite optimization problem.
 
@@ -14,20 +14,23 @@
     \subsection{Definition of the composite model}
     \label{sec:comp:model}
 
-        We consider a composite deconvolution inverse problem in which the signal to recover is the sum of a sparse foreground component and a smooth background component.   
-        Such scenario is inspired from Single Molecule Localization Microscopy (SMLM) in which the signal of interest is an image of fluorescent molecules \cite{sage2019smlm}.
-        % The measurement procedure is modeled as a convolution with the point-spread function (PSF) of the microscope.
-        The action of the microscope on the scene is modeled by a convolution with its known point-spread function (PSF).
-        Out-of-focus particles appear more spread-out and fainter than the objects in the focal plan, hence motivating for a composite model with a sparse component to account for the foreground and a smooth one for the background.
-        Moreover, using a continuous signal model is relevant for SMLM as it is possible to reach a resolution below the diffraction limit, relying on the sparse nature of the observed molecules \cite{huang2017super,denoyelle2019sliding,laville2021sparse}.
+        % We consider a composite deconvolution inverse problem in which the signal to recover is the sum of a sparse foreground component and a smooth background component.   
+        % Such scenario is inspired from Single Molecule Localization Microscopy (SMLM) in which the signal of interest is an image of fluorescent molecules \cite{sage2019smlm}.
+        % % The measurement procedure is modeled as a convolution with the point-spread function (PSF) of the microscope.
+        % The action of the microscope on the scene is modeled by a convolution with its known point-spread function (PSF).
+        % Out-of-focus particles appear more spread-out and fainter than the objects in the focal plan, hence motivating for a composite model with a sparse component to account for the foreground and a smooth one for the background.
+        % Moreover, using a continuous signal model is relevant for SMLM as it is possible to reach a resolution below the diffraction limit, relying on the sparse nature of the observed molecules \cite{huang2017super,denoyelle2019sliding,laville2021sparse}.
         
+        We consider a scenario inspired from Single Molecule Localization Microscopy (SMLM) in which the signal of interest is an image of fluorescent molecules \cite{sage2019smlm}. Out-of-focus particles appear more spread-out and fainter than the objects in the focal plan, hence motivating for a composite model. Moreover, using a continuous signal model is relevant for SMLM as it is possible to reach a resolution below the diffraction limit, relying on the sparse nature of the observed molecules \cite{huang2017super,denoyelle2019sliding,laville2021sparse}.
+
+
         % \subsubsection{Problem definition}
-        \ad{ToDo: maybe already introduce informally $g$ here.}
-        We first describe a simplified composite inverse problems that mimics the characteristics of SMLM recovery, being expressed as
+        We first describe a simplified composite inverse problems which mimics the characteristics of SMLM recovery. The measurements $\bm{y}\in\R^L$ are expressed as
         \begin{equation*}
-            \bm{y} \approx \bm{\Phi}(s_1^\dagger + s_2^\dagger).
+            \bm{y} \approx S \left\{g * (s_1^\dagger + s_2^\dagger)\right\}.
         \end{equation*}
-        with ground truth signal $s^\dagger = s_1^\dagger + s_2^\dagger$ using a sparse foreground component $s_1^\dagger \in \mathcal{B}$ and a smooth background component $s_2^\dagger \in \mathcal{H}$.
+        in which the ground truth signal $s^\dagger := s_1^\dagger + s_2^\dagger$ is the sum of a sparse foreground component $s_1^\dagger \in \mathcal{B}$ and a smooth background component $s_2^\dagger \in \mathcal{H}$. The action of the microscope on the scene is modeled as the convolution with the \emph{point-spread function (PSF)} $g$, before sampling on the grid of observation pixels with the operator $S$.
+
 
         \subsubsection{Function spaces}
             For $d \in \mathbb{N}^*$, let $\mathcal{X} = \mathbb{R}^d$ be the continuous domain of the $d$-dimensional signal to recover $s^\dagger$. 
@@ -47,40 +50,51 @@
             \begin{equation*}
                 \forall x, y \in \cX, \qquad k(x, y) = g_k(\norm{y - x}) := \frac{1}{(\sqrt{2\pi\sigma_k^2})^d} \exp{ \left({-\frac{\norm{y - x}^2}{2 \sigma_k^2}}\right)},
             \end{equation*}
-            for $\sigma_k > 0$. The kernel $k$ defines an inner product $\langle \cdot, \cdot \rangle_{\cHk}$ and the associated Hilbert norm $\norm{\cdot}_{\cHk}$ on $\cHk$. The formal construction of the RKHS is technical and we refer for instance to \cite[Chapter~10]{wendland2004}. Notably, no direct expression for the inner product  $\langle f, g \rangle_{\cHk}$ is available in the general case of arbitrary $f, g \in \cHk$. This Gaussian RKHS $\cHk$ is a subspace of the square integrable functions $\ldx$, containing the functions with spectral decay dominated by the one of $k$ (see, e.g., \cite{minh2010} for a more detailed characterization of $\cHk$). We later rely on this property to adjust the intensity of the promoted smoothness and tune the reconstruction with $\sigma_k$.
+            for $\sigma_k > 0$. The kernel $k$ defines an inner product $\langle \cdot, \cdot \rangle_{\cHk}$ and the associated Hilbert norm $\norm{\cdot}_{\cHk}$ on $\cHk$. The formal construction of the RKHS is technical and we refer for instance to \cite[Chapter~10]{wendland2004}. Notably, no direct expression for the inner product  $\langle f, g \rangle_{\cHk}$ is available in the general case of arbitrary $f, g \in \cHk$. This Gaussian RKHS $\cHk$ is a subspace of the square integrable functions $\ldx$, containing the functions with spectral decay dominated by the decay of $k$ (see, e.g., \cite{minh2010} for a more detailed characterization of $\cHk$). We later rely on this property to adjust the intensity of the promoted smoothness and tune the reconstruction with $\sigma_k$.
 
             Additionally, we assume that the ground truth signals $s_1^\dagger$ and $ s_2^\dagger$ have a compact support, included in the field of view of the microscope. Without loss of generality, we consider this support to be included in the interval $[0, 1]^d$. 
 
 
         \subsubsection{Measurement operator}        
-            In an optical system, each pixel of the sensor collects part of the light coming from the scene and produces one measurement $y_\ell$. This procedure is classically modeled with a convolution between the PSF of the measurement device $g \in \ldx \cap \czx$ and the observed signal $s = s_1 + s_2$ followed by local integration on a uniform grid \cite{denoyelle2019sliding}. For simplicity, we replace the integration step with a pointwise evaluation of the convolution on the grid.
+            In an optical system, each pixel of the sensor collects part of the light coming from the scene and produces one measurement $y_\ell$. This procedure is classically modeled with a convolution between the PSF of the measurement device $g \in \cHk \cap \czx$ and the observed signal $s = s_1 + s_2$ followed by local integration on a uniform grid \cite{denoyelle2019sliding}. For simplicity, we replace the integration step with a pointwise evaluation of the convolution on the grid.
         
             The sensor is made as a $d$-dimensional uniform grid of $K$ pixels per dimension, leading to $L = K^d$ measurements. The pixel locations are noted as $(x_\ell)_{\ell = 1, \dots, L}$ with $x_\ell \in [0, 1]^d$. For instance, $d=1$ leads to $L=K$ and $x_\ell = {\ell}/({L-1})$ for $\ell \in \{0, \dots, L-1\}$.
         
-            \ad{ToDo: In the current state, the operator Phih is defined as a regular function inner product, which coincides with the definition of the dual product in S' x S. We need to write the components of Phih as inner prodcts in the RKHS, that means identifying representers for the measurements functionals.}
-            For any $(s_1, s_2) \in \mx \times \ldx$, the measurement operator $\phih$ is defined as 
+            % \ad{ToDo: In the current state, the operator Phih is defined as a regular function inner product, which coincides with the definition of the dual product in S' x S. We need to write the components of Phih as inner prodcts in the RKHS, that means identifying representers for the measurements functionals.}
+            It leads to the following expression for the two measurement operators of \eqref{eq:composite-optim}. Consider $\ell \in \{1, \dots, L\}$.
+            \begin{itemize}
+                \item Definition of $\phib$:
             \begin{equation}
-                \label{eq:phi-conv}
+                \label{eq:phib-conv}
                 \begin{split}
-                \left[\phih(s_1 + s_2)\right]_\ell &= \left(g*(s_1 + s_2)\right)(x_\ell) \\
-                &= \int_\cX g(x_\ell - x) \mathrm{d}s_1(x) + \int_\cX g(x_\ell - x) s_2(x) \mathrm{d}x
+                \forall \fb \in \mx, \qquad \left[\phib(\fb)\right]_\ell &= \left(g*\fb\right)(x_\ell) \\
+                &= \int_\cX g(x_\ell - x) \mathrm{d}\fb(x).
+            \end{split}
+            \end{equation}
+            Keeping the notation of equation \eqref{eq:phi-hilbert}, this measurement operator corresponds to the measurement functionals
+            $$\phibb_\ell = g(x_\ell - \cdot) \in \czx.$$
+                \item Definition of $\phih$:
+            \begin{equation}
+                \label{eq:phih-conv}
+                \begin{split}
+                \forall \fh \in \cHk, \qquad\left[\phih(\fh)\right]_\ell &= \left(g*\fh\right)(x_\ell) \\
+                &= \int_\cX g(x_\ell - x) \fh(x) \mathrm{d}x.
                 \end{split}
             \end{equation}
-            for $\ell \in \{1, \dots, L\}$.
-            Keeping the notation of Equations \eqref{eq:phi-hilbert} and \eqref{eq:phi-banach}, this measurement operator corresponds to the measurement functionals
-            $$\phi_\ell = g(x_\ell - \cdot) \in \ldx \cap \czx.$$
+            However, the identification $\phihh_\ell$ from equation \eqref{eq:phi-banach} is not directly possible due to the absence of the inner product $\langle \cdot, \cdot \rangle_{\cHk}$ and is therefore deferred to Proposition~\ref{prop:phihh}.
+            \end{itemize}
 
             {\color{red}
-            \noindent\ad{Previously, Remark 3.}
             \begin{proposition}[Lemma~10 in \cite{Berlinet2011reproducing}]
+                \label{prop:phihh}
                 For any $\fh \in \cHk$, for $\ell \in \left\{ 1, \dots, L \right\}$, the measurement operator can be written as
                 \begin{equation}
-                    [\phih(\fh)]_\ell = \langle \philk , \fh \rangle_{\cHk}
+                    [\phih(\fh)]_\ell = \langle \phihh_\ell, \fh \rangle_{\cHk}
                     % = \int_\cX g(x_\ell - x) s_2(x) \mathrm{d}x = \int_\cX \phi_\ell(x) s_2(x) \mathrm{d}x
                 \end{equation}
-                with $\phi_\ell^{(k)}$ being the convolution
+                with $\phihh_\ell$ being the convolution
                 \begin{equation}
-                    \philk = g_k * \phi_\ell.
+                    \phihh_\ell = g_k * g(x_\ell - \cdot).
                 \end{equation}
             \end{proposition}
             \begin{proof}
@@ -98,12 +112,12 @@
                 % \ad{The inversion between integral and inner product needs to be properly defined and justified, that's why I would like to find a good reference.}
 
                 % \ad{Second proof, simpler.}
-                By Riesz representer theorem, for every coordinate  $\ell \in \left\{1, \dots, L \right\}$, there exists an element $\philk \in \cHk$ such that for any $\fh \in \cHk$ it holds $[\phih(\fh)]_\ell = \langle \philk , \fh \rangle_{\cHk}$. In particular, for $t \in \cX$, using $\fh = k(\cdot, t)$ and the reproducing property, we obtain
+                By Riesz representer theorem, for every coordinate  $\ell \in \left\{1, \dots, L \right\}$, there exists an element $\phihh_\ell \in \cHk$ such that for any $\fh \in \cHk$ it holds $[\phih(\fh)]_\ell = \langle \phihh_\ell , \fh \rangle_{\cHk}$. In particular, for $t \in \cX$, using $\fh = k(\cdot, t)$ and the reproducing property, we obtain
                 \begin{align*}
-                    \forall t \in \cX, \qquad \philk(t)
-                    &= \langle \philk, k(\cdot, t) \rangle_{\cHk} = [\phih(k(\cdot, t))]_\ell \\
+                    \forall t \in \cX, \qquad \phihh_\ell(t)
+                    &= \langle \phihh_\ell, k(\cdot, t) \rangle_{\cHk} = [\phih(k(\cdot, t))]_\ell \\
                     & = \int_\cX g(x_\ell - x) k(x, t) \mathrm{d}x = \int_\cX g(x_\ell - x) g_k(t - x) \mathrm{d}x \\
-                    & = (\phi_\ell * g_k)(t).
+                    & = (g(x_\ell - \cdot) * g_k)(t).
                 \end{align*}   
             \end{proof}
             }
@@ -115,10 +129,10 @@
             \end{equation}
             with $\norm{\cdot}$ the Euclidian norm on $\R^d$. It corresponds to a simplified version of the classical astigmatism model as presented in \cite{huang2017super,denoyelle2019sliding}.
             
-            The observations $\bm{y} \in \R^{L}$ are assumed to come from the measurement of the ground truth signal through $\phih$ corrupted by additive noise as follows
+            Finally, the observations $\bm{y} \in \R^{L}$ are assumed to be corrupted by additive noise as follows
             \begin{equation}
                 \label{eq:ip-bis}
-                \bm{y} = \phih(s_1^\dagger + s_2^\dagger) + \bm{n} \in \R^L
+                \bm{y} = \phib(s_1^\dagger) + \phih(s_2^\dagger) + \bm{n} \in \R^L
             \end{equation}
             where $\bm{n}$ is a white Gaussian noise of unknown variance $\sigma_{\bm{n}}^2$.
             An illustrative one-dimensional example of simulated measurements is provided in Figure~\ref{fig:simple:measop}.
@@ -155,24 +169,24 @@
             \begin{figure}
                 \centering
                 \includegraphics[width=\linewidth]{figures/simple_reco/measurement_figure.pdf}        
-                \caption{Illustration of the effect of the measurement operator applied to a Dirac signal.}
+                \caption{Illustration of the effect of the measurement operator $\phib$ applied to a Dirac signal $\fb^\dagger = \delta_{x_0}$ with $x_0 \approx 0.695$.}
                 \label{fig:simple:measop}
             \end{figure}
 
     
     \subsection{Composite representer theorem}
 
-        As proposed, we address the deconvolution and signal separation task from \eqref{eq:ip-bis} using the two variables optimization problem \eqref{eq:argminisback}. For a pair of parameters $\lambda_1, \lambda_2 > 0$ we consider
+        As proposed, we address the deconvolution and signal separation task from \eqref{eq:ip-bis} using the two-variables optimization problem \eqref{eq:argminisback}. For a pair of parameters $\lambda_1, \lambda_2 > 0$ we consider
 
         \begin{equation}
         \label{eq:argmin-sps}
-            \underset{(\fb,\fh) \in \mx \times \ldx}{\arg\min} \frac{1}{2} \| \bm{y} - (\phib (\fb) + \phih (\fh)) \|_2^2  + \lb \| \fb \|_{\mathcal{M}} + \frac{\lh}{2} \| \fh \|_{\cHk}^2.
+            \underset{(\fb,\fh) \in \mx \times \cHk}{\arg\min} \frac{1}{2} \| \bm{y} - (\phib (\fb) + \phih (\fh)) \|_2^2  + \lb \| \fb \|_{\mathcal{M}} + \frac{\lh}{2} \| \fh \|_{\cHk}^2.
         \end{equation}
 
         The solutions are indeed decoupled, according to the following result.
         \begin{proposition}
             \label{prop:rt-applied}
-            Any solution to the optimization problem~\eqref{eq:argmin-sps} can be expressed as a pair of components $(s_1^*, s_2^*) \in \mx \times \ldx$ such that
+            Any solution to the optimization problem~\eqref{eq:argmin-sps} can be expressed as a pair of components $(s_1^*, s_2^*) \in \mx \times \cHk$ such that
             \begin{align}
                 s_1^* &= \sum_{k=1}^{K_0} a_k \delta_{z_k}, \label{eq:deconv-banachpart}\\
                 s_2^* &=  \frac{1}{\lh}\phih^* \mathbf{M}_{\lh}^{-1} \left(\bm{y} - \bm{w}\right),\label{eq:deconv-hilbertpart}
@@ -185,7 +199,7 @@
             \begin{equation*}
                 s_1^* \in \underset{ s_1\in\mx}{\arg\min} \quad  \mathcal{J}_{\mathbf{M}}(s_1)
             \end{equation*}
-            with $\mathcal{J}_{\mathbf{M}}(s_1) = \|\mathbf{M}_{\lh}^{-\frac{1}{2}} ( \bm{y} - \phib(s_1)  ) \|_2^2  + \lb \| s_1 \|_{\mathcal{M}}$. From Proposition~\ref{prop:banachRT}, we know that this latter problem admits sparse solutions and that some can be expressed according to \eqref{eq:deconv-banachpart}.
+            with $\mathcal{J}_{\mathbf{M}}(s_1) := \|\mathbf{M}_{\lh}^{-\frac{1}{2}} ( \bm{y} - \phib(s_1)  ) \|_2^2  + \lb \| s_1 \|_{\mathcal{M}}$. From Proposition~\ref{prop:banachRT}, we know that this latter problem admits sparse solutions and that some can be expressed according to \eqref{eq:deconv-banachpart}.
         \end{proof}
 
         % \ju{Je mettrais le RT dans ce cas comme une proposition en étant clair sur le fait que c'est une application directe (à peine besoin d'une preuve)}
@@ -254,9 +268,8 @@
             \end{equation}
     
             The observations $\bm{y}$ can be simulated with exact precision using this model. Indeed, we have
-            \ad{Change with phi1 and phi2.}
             $$
-            \bm{\Phi}(s_1^{(0)} + s_2^{(0)})[\ell] = \sum_{k=1}^{K_f} \beta_k g(x_\ell - u_k) + \sum_{m=1}^{K_b} \gamma_m (g * g_b)(x_\ell - v_m),
+            \left[\phib(s_1^{(0)}) + \phih(s_2^{(0)})\right]_\ell = \sum_{k=1}^{K_f} \beta_k g(x_\ell - u_k) + \sum_{m=1}^{K_b} \gamma_m (g * g_b)(x_\ell - v_m),
             $$
             in which measuring the background involves the closed-form convolution
             $$

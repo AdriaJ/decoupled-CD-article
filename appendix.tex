@@ -72,7 +72,7 @@
     %\end{proof}
 
 \clearpage
-\section{Discretization of the Banach decoupled subproblem}
+\section{Discretization of the Banach Decoupled Subproblem}
     \label{app:discretization}
         Remember that we want to solve the following problem
         $$s_1^* \in \underset{ s_1\in\mx}{\arg\min} \quad \mathcal{J}_{\mathbf{M}}(s_1)$$
@@ -111,31 +111,17 @@
         \end{equation*}    
 
 \clearpage
-\section{Composite reconstructions}
-    \label{app:reconstructions}
 
-    \vfill
+\section{Error on the Reconstruction of the Background}
+    \label{app:errorbg}
 
-    Figure~\ref{fig:simple:fg-merged} displays the various reconstructions of the foreground component when varying the regularization parameters. Figure~\ref{fig:simple:bg} does the same for the background component. Note that the value of $\lb$ is not provided in these plots, only the coefficient $\alpha = \lambda_1 / \lambda_{1, \mathrm{max}}$. This reparametrization somehow interleaves the value of the parameters, indeed $\lambda_1$ strongly depends on the value of $\lambda_2$ (that is, in each column, $\lambda_1$ varies across the rows). However, this choice seems relevant as it almost decouple the choice of the parameters. Each column in the foreground reconstructions display similar sparsity characteristics. The choice of $\lambda_2$ mostly has impact on the recovered background.
+    The $\mathrm{RE}_2$ error on the background is reported in the following table. The best values are obtained with a certain trade-off between the two regularization parameters.  
 
-    \vfill
-
-    % trim={left bottom right top},clip
-    \begin{figure}[h]
-        % \centering
-        % \includegraphics[width=1.2\linewidth]{figures/simple_reco/foreground_merged.pdf}
-        \makebox[\textwidth][c]{\includegraphics[width=1.1\linewidth, trim=2cm 2.5cm 2cm 3.7cm, clip]{figures/simple_reco/foreground_merged.pdf}}
-        \caption{Recovered foreground after convolution with the representation kernel. \textit{Rows :} Increasing value of $\lambda_2$ from top to bottom. \textit{Columns :} Increasing factor $\alpha$ from left to right.}
-        \label{fig:simple:fg-merged}        
-    \end{figure}
-
-    \vfill
-
-    \begin{table}[b]
+    \begin{table}[h]
         \centering
         \begin{tabular}{l|rrrr}
             \toprule
-             & \multicolumn{4}{c}{$\alpha_2$ in $\lambda_2 = \alpha_2 L$} \\
+             & \multicolumn{4}{c}{$\lambda_2$} \\
             \cmidrule(lr){2-5}
             $\alpha_1$ & 0.80 & 4.00 & 8.00 & 40.00 \\
             \midrule
@@ -150,6 +136,26 @@
 
     \vfill
 
+\section{Composite Reconstructions}
+    \label{app:reconstructions}
+
+    % \vfill
+
+    Figure~\ref{fig:simple:fg-merged} displays the various reconstructions of the foreground component when varying the regularization parameters. Figure~\ref{fig:simple:bg} does the same for the background component. Note that the value of $\lb$ is not provided in these plots, only the coefficient $\alpha = \lambda_1 / \lambda_{1, \mathrm{max}}$. This reparametrization somehow interleaves the value of the parameters, indeed $\lambda_1$ strongly depends on the value of $\lambda_2$ (that is, in each column, $\lambda_1$ varies across the rows). However, this choice seems relevant as it almost decouple the choice of the parameters. Each column in the foreground reconstructions display similar sparsity characteristics. The choice of $\lambda_2$ mostly has impact on the recovered background.
+
+    \vfill
+
+    % trim={left bottom right top},clip
+    \begin{figure}[p]
+        % \centering
+        % \includegraphics[width=1.2\linewidth]{figures/simple_reco/foreground_merged.pdf}
+        \makebox[\textwidth][c]{\includegraphics[width=1.1\linewidth, trim=2cm 2.5cm 2cm 3.7cm, clip]{figures/simple_reco/foreground_merged.pdf}}
+        \caption{Recovered foreground after convolution with the representation kernel. \textit{Rows :} Increasing value of $\lambda_2$ from top to bottom. \textit{Columns :} Increasing factor $\alpha$ from left to right.}
+        \label{fig:simple:fg-merged}        
+    \end{figure}
+
+    % \vfill
+
     \begin{figure}[p]
         \makebox[\textwidth][c]{\includegraphics[width=1.1\linewidth, trim=2cm 2.5cm 2cm 3.7cm, clip]{figures/simple_reco/backgrounds.pdf}}
         \caption{Recovered background components, with the same value of regularization parameters as in figure~\ref{fig:simple:fg-merged}.}
@@ -158,7 +164,7 @@
 
 
 \clearpage
-\section{Calculation for the experiments}
+\section{Calculation for the Experiments}
     \label{app:calculation}
 
     \subsection{Computation of \texorpdfstring{$M_{\lh}$}{M lambda 2}}
