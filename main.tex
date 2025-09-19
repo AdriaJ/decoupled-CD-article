@@ -3,9 +3,13 @@
 
 \usepackage{style}
 
-\title{Decoupled Solution for Composite Sparse-plus-Smooth Inverse Problems}
-\author{Adrian Jarret, Julien Fageot}
-\date{}
+\title{Decoupled Solution for Composite Sparse-plus-Smooth Inverse Problems\footnote{The associated code is freely accessible on the dedicated open-access repository: \url{https://github.com/AdriaJ/decouple-composite}}}
+\author{Adrian Jarret$^1$\thanks{ Corresponding author,\url{adrian.jarret@epfl.ch}.} \and Julien Fageot$^1$}
+
+
+\date{
+	$^1${\small Laboratoire des Communications Audiovisuelles,\\ \'Ecole Polytechnique Fédérale de Lausanne,\\ 1015 Lausanne, Switzerland}%
+}
 
 \begin{document}
 
@@ -29,30 +33,30 @@
 
 \noindent{\it Keywords\/}: Sparse reconstruction, composite model, continuous-domain recovery, functional inverse problems. 
 
-    \ad{
-    Remaining todo's:
-    \begin{itemize}
-        % \item \textcolor{red}{Consistency of capitals in the titles.}
-        \item ad comments remaining: two figures.
-        % \item in section~\ref{sec:application} check if I should use $\R$ or $\cX$.
-        % \item \ju{Unify biblio (eg. T. Debarre vs Thomas Debarre)} -> Seems ok with using bibliographystyle vancouver.
-        % \item Make new figures with the RKHS model and adapt the text with the new parameters' values.
-        \item Check consistency with the journal rules: figure and table no abbreviated. No capital on reference words: section, equation, figure, table, appendix ?
-        % \item Use $:=$ for the definitions.
-        % \item \textcolor{gray}{Fix the size of the graduations on the plots, and graduations from 0 to 1 instead of 0 to 800 in figures~\ref{fig:simple:blasso-conv}, \ref{fig:simple:bg}, \ref{fig:simple:fg-merged}.}
-        % \item \textcolor{gray}{Make reference to Pyxu somewhere.}
-        % \item \textcolor{gray}{Do once again all the plots}
-        % \item \textcolor{gray}{run the time benchmark and do figures 9 and 10 (time comparisons)}
-        % \item \textcolor{gray}{analysis of the last section}
-        % \item \textcolor{gray}{homogenize sparse plus smooth or sparse-plus-smooth (also check if italic or not)}
-        % \item \textcolor{gray}{Homogenize the hyphen in words like non-something (non-linear vs nonlinear, subcomponent, subproblem).}
-        % \item \textcolor{gray}{check if the matrix M is defined in bold or not, consistency of the notation.}
-        % \item \textcolor{gray}{check consistency of notation of exponential: $\exp$ or $e^{\dots}$}
-        % \item \textcolor{gray}{Regarding bibliography: extract only relevant references and check the arxiv to see if they have been published.}
-        % \item \textcolor{gray}{capitals on figures, Sectin, etc... See journal guidelines.}
-        % \item \textcolor{gray}{Refer to appendix \ref{app:calculation} somewhere.}
-    \end{itemize}
-    }
+    % \ad{
+    % Remaining todo's:
+    % \begin{itemize}
+    %     \item ad comments remaining: Figure 3 and Figure 7.
+    %     \item Check consistency with the journal rules: figure and table no abbreviated. No capital on reference words: section, equation, figure, table, appendix ?
+    %     % \item \textcolor{red}{Consistency of capitals in the titles.}
+    %     % \item in section~\ref{sec:application} check if I should use $\R$ or $\cX$.
+    %     % \item \ju{Unify biblio (eg. T. Debarre vs Thomas Debarre)} -> Seems ok with using bibliographystyle vancouver.
+    %     % \item Make new figures with the RKHS model and adapt the text with the new parameters' values.
+    %     % \item Use $:=$ for the definitions.
+    %     % \item \textcolor{gray}{Fix the size of the graduations on the plots, and graduations from 0 to 1 instead of 0 to 800 in figures~\ref{fig:simple:blasso-conv}, \ref{fig:simple:bg}, \ref{fig:simple:fg-merged}.}
+    %     % \item \textcolor{gray}{Make reference to Pyxu somewhere.}
+    %     % \item \textcolor{gray}{Do once again all the plots}
+    %     % \item \textcolor{gray}{run the time benchmark and do figures 9 and 10 (time comparisons)}
+    %     % \item \textcolor{gray}{analysis of the last section}
+    %     % \item \textcolor{gray}{homogenize sparse plus smooth or sparse-plus-smooth (also check if italic or not)}
+    %     % \item \textcolor{gray}{Homogenize the hyphen in words like non-something (non-linear vs nonlinear, subcomponent, subproblem).}
+    %     % \item \textcolor{gray}{check if the matrix M is defined in bold or not, consistency of the notation.}
+    %     % \item \textcolor{gray}{check consistency of notation of exponential: $\exp$ or $e^{\dots}$}
+    %     % \item \textcolor{gray}{Regarding bibliography: extract only relevant references and check the arxiv to see if they have been published.}
+    %     % \item \textcolor{gray}{capitals on figures, Sectin, etc... See journal guidelines.}
+    %     % \item \textcolor{gray}{Refer to appendix \ref{app:calculation} somewhere.}
+    % \end{itemize}
+    % }
     
 \section{Introduction}
     % \ad{\begin{itemize}
@@ -216,9 +220,9 @@
     
     \subsection{Smooth regularization of inverse problems}
 
-    \textcolor{red}{We assume the search space $\mathcal{H}$ to be a Hilbert space with Hilbertian norm $s \mapsto \| s \|_\mathcal{H} := \sqrt{\langle s, s \rangle_{\mathcal{H}}}$. By the Riesz representer theorem, any continuous linear functional $\nu: \cH \to \R$ can be represented as the inner product with an element $\phi_\nu \in \cH$ such that $\nu(f) = \langle \phi_\nu, f \rangle_\cH$ for any $f \in \cH$. The topological dual $\cH'$ is then identified as the search space $\cH$ itself.}
+    {We assume the search space $\mathcal{H}$ to be a Hilbert space with Hilbertian norm $s \mapsto \| s \|_\mathcal{H} := \sqrt{\langle s, s \rangle_{\mathcal{H}}}$. By the Riesz representer theorem, any continuous linear functional $\nu: \cH \to \R$ can be represented as the inner product with an element $\phi_\nu \in \cH$ such that $\nu(f) = \langle \phi_\nu, f \rangle_\cH$ for any $f \in \cH$. The topological dual $\cH'$ is then identified as the search space $\cH$ itself.}
 
-    \textcolor{red}{
+    {
     For $\phihsingle= (\phihh_1 ,\ldots , \phihh_L) \in \mathcal{H}^L$, we denote
     \begin{equation}
         \phihsingle(s) := \left( \langle \phihh_1, s \rangle_{\mathcal{H}} , \ldots , \langle \phihh_L, s \rangle_{\mathcal{H}} \right). 
@@ -245,7 +249,7 @@
 
     \begin{proposition}[Representer Theorem on Hilbert spaces]
     \label{prop:hilbertRT}
-    Let $\bm{y}\in \R^L$, $\phihsingle= (\phihh_1 ,\ldots , \phihh_L) \in \mathcal{H}^L$, and $\lambda > 0$. Given that the measurement functionals $\phi_1, \dots, \phi_L$ are linearly independent, the optimization problem 
+    Let $\bm{y}\in \R^L$, $\phihsingle= (\phihh_1 ,\ldots , \phihh_L) \in \mathcal{H}^L$, and $\lambda > 0$. Given that the measurement functionals $\phihh_1, \dots, \phihh_L$ are linearly independent, the optimization problem 
     \begin{equation} \label{eq:hibertpb}
         \inf_{s \in \mathcal{H}} \frac{1}{2} \| \bm{y} - \phihsingle(s) \|_2^2 + \frac{\lambda}{2} \| s \|_{\mathcal{H}}^2
     \end{equation}
@@ -282,7 +286,7 @@
     \begin{equation*}
         \| s \|_{\mathcal{B}} = \sup_{\|u \|_{\mathcal{A}}=1} \langle u, s \rangle_{\mathcal{A}\times\mathcal{B}}, 
     \end{equation*}
-    \textcolor{red}{where the \emph{dual product} is denoted as $\langle u, s \rangle_{\mathcal{A}\times\mathcal{B}} = s(u)$.}
+    {where the \emph{duality product} is denoted as $\langle u, s \rangle_{\mathcal{A}\times\mathcal{B}} = s(u)$.}
     This assumption implies that $\mathcal{B}$ can be endowed with the weak*-topology inherited from $\mathcal{A}$. We say that the sequence $(s_n)_{n\geq 1}$ of elements $s_n \in \mathcal{B}$ converges to $s \in \mathcal{B}$ for the weak*-topology if 
     \begin{equation*}
         \langle u , s_n \rangle_{\mathcal{A}\times\mathcal{B}} \underset{n\rightarrow \infty}{\longrightarrow} \langle u, s \rangle_{\mathcal{A}\times\mathcal{B}} 
@@ -372,7 +376,7 @@
         \label{eq:def-Mphi}
         \mathbf{M}_{\lh} := \frac{1}{\lh} \left(\phih\phih^* + \lh \mathbf{I}_L\right) = \frac{1}{\lh} \left( \langle \phi_k , \phi_\ell \rangle_{\mathcal{H}} + \lh \delta[k - \ell] \right)_{1\leq k, \ell \leq L}.
     \end{equation}
-    This matrix is strictly positive definite. It is therefore invertible and admits a square-root matrix.
+    This matrix is positive definite. It is therefore invertible and admits a square-root matrix.
 
     Our main result, Theorem~\ref{theo:main} hereafter, reduces the analysis of a composite optimization problem over $\mathcal{B}\times\mathcal{H}$ to a problem over $\mathcal{B}$, hence decoupling the contributions of the two components. The proof is given in Appendix~\ref{app:prooftheo1}.
 
@@ -414,7 +418,7 @@
     This characterization is particularly relevant for Banach spaces whose extreme points have interesting properties, as is the case for $\ell_1$-norms and their generalizations~\cite{chandrasekaran2012convex}.
     This last equation was already a consequence of~\cite[Theorem 2]{unser2022convex}, but Theorem~\ref{theo:main} specifies the joint properties of the weight vectors $\bm{\alpha}$ and $\bm{\beta}$.
 
-    \begin{remark}[Decoupling of Hilbert-plus-anything]
+    \begin{remark}[Decoupling beyond Hilbert-plus-Banach]
         We stated Theorem~\ref{theo:main} for Hilbert-plus-Banach optimization but the decoupling readily holds for more general situations. Indeed, the proof only relies on the closed-form expression of the Hilbert component when the other one is fixed.
         It is for instance possible to consider spline reconstruction using $\|\mathrm{L}\cdot\|_\mathcal{B}$ instead of $\|\cdot\|_\mathcal{B}$, with $\mathrm{L}$ a pseudo-differential operator \cite{unser2017splines}.
         When a more general penalty term $\mathcal{R}(\fb)$ is used, the decoupling between the components still holds but the properties that stem from $\mathcal{V}(\mathbf{M}_{\lh}, \lb)$ need to be verified depending on the chosen regularization, see the representer theorems of \cite{boyer2019representer}.
@@ -535,7 +539,7 @@
         \subsubsection{Function spaces}
             For $d \in \mathbb{N}^*$, let $\cX = \mathbb{R}^d$ be the continuous domain of the $d$-dimensional signal to recover $s^\dagger$. 
 
-            We consider the classical model of Radon measures $\mathcal{B} = \mx$, in which sparse signals can be represented with Dirac impulses. The \textit{total-variation norm} $\norm{\cdot}_\mathcal{M}$ on $\mx$ is known to promote sparse solutions when used as a regularizer for optimization problems \cite{unser2017splines}. For $\czx$ the space of continuous vanishing functions on $\cX$, which is the predual of $\mx$, we recall the dual definition of the total-variation norm
+            We consider the classical model of Radon measures $\mathcal{B} = \mx$, in which sparse signals can be represented with Dirac impulses. The \textit{total-variation norm} $\norm{\cdot}_\mathcal{M}$ on $\mx$ is known to promote sparse solutions when used as a regularizer for optimization problems \cite{unser2017splines}. For $\czx$ the space of continuous vanishing functions on $\cX$, which is the Banach predual of $\mx$, we recall the dual definition of the total-variation norm
             \begin{equation*}
                 \forall m \in \mx, \quad \lVert m \rVert_\mathcal{M} = \underset{\substack{\varphi \in \czx \\ \| \varphi \|_\infty = 1}}{\sup} \int_\cX \varphi(x) \mathrm{d}m(x).
             \end{equation*}
@@ -548,9 +552,9 @@
 
             For the smooth background component $s_2$, we consider the Hilbert space $\cH = \cHk$ the RKHS\footnote{\textit{Reproducing Kernel Hilbert Space}.} induced by the Gaussian kernel $k: \cX \times \cX \to \R$, also called \emph{Gaussian radial basis function}, defined as
             \begin{equation*}
-                \forall x, y \in \cX, \qquad k(x, y) = g_k(\norm{y - x}) := \frac{1}{(\sqrt{2\pi\sigma_k^2})^d} \exp{ \left({-\frac{\norm{y - x}^2}{2 \sigma_k^2}}\right)},
+                \forall x, y \in \cX, \qquad k(x, y) = g_0(\norm{y - x}) := \frac{1}{(\sqrt{2\pi\sigma_0^2})^d} \exp{ \left({-\frac{\norm{y - x}^2}{2 \sigma_0^2}}\right)},
             \end{equation*}
-            for $\sigma_k > 0$. The kernel $k$ defines an inner product $\langle \cdot, \cdot \rangle_{\cHk}$ and the associated Hilbert norm $\norm{\cdot}_{\cHk}$ on $\cHk$. The formal construction of the RKHS is technical and we refer for instance to \cite[Chapter~10]{wendland2004}. Notably, no direct expression for the inner product  $\langle f, g \rangle_{\cHk}$ is available in the general case of arbitrary $f, g \in \cHk$. This Gaussian RKHS $\cHk$ is a subspace of the square integrable functions $\ldx$, containing the functions with spectral decay dominated by the decay of $k$ (see, e.g., \cite{minh2010} for a more detailed characterization of $\cHk$). We later rely on this property to adjust the intensity of the promoted smoothness and tune the reconstruction with $\sigma_k$.
+            for $\sigma_0 > 0$. The kernel $k$ defines an inner product $\langle \cdot, \cdot \rangle_{\cHk}$ and the associated Hilbert norm $\norm{\cdot}_{\cHk}$ on $\cHk$. The formal construction of the RKHS is technical and we refer for instance to \cite[Chapter~10]{wendland2004}. Notably, no direct expression for the inner product  $\langle f, g \rangle_{\cHk}$ is available in the general case of arbitrary $f, g \in \cHk$. This Gaussian RKHS $\cHk$ is a subspace of the square integrable functions $\ldx$, containing the functions with spectral decay dominated by the decay of $k$ (see, e.g., \cite{minh2010} for a more detailed characterization of $\cHk$). We later rely on this property to adjust the intensity of the promoted smoothness and tune the reconstruction with $\sigma_0$.
 
             Additionally, we assume that the ground truth signals $s_1^\dagger$ and $ s_2^\dagger$ have a compact support, included in the field of view of the microscope. Without loss of generality, we consider this support to be included in the interval $[0, 1]^d$. 
 
@@ -571,7 +575,7 @@
                 &= \int_\cX g(x_\ell - x) \mathrm{d}\fb(x).
             \end{split}
             \end{equation}
-            Keeping the notation of equation \eqref{eq:phi-hilbert}, this measurement operator corresponds to the measurement functionals
+            Keeping the notation of equation \eqref{eq:phi-banach}, this measurement operator corresponds to the measurement functionals
             $$\phibb_\ell = g(x_\ell - \cdot) \in \czx.$$
                 \item Definition of $\phih$:
             \begin{equation}
@@ -581,10 +585,11 @@
                 &= \int_\cX g(x_\ell - x) \fh(x) \mathrm{d}x.
                 \end{split}
             \end{equation}
-            However, the identification $\phihh_\ell$ from equation \eqref{eq:phi-banach} is not directly possible due to the absence of the inner product $\langle \cdot, \cdot \rangle_{\cHk}$ and is therefore deferred to Proposition~\ref{prop:phihh}.
+            % However, the identification $\phihh_\ell$ from equation \eqref{eq:phi-hilbert} is not directly possible due to the absence of the inner product $\langle \cdot, \cdot \rangle_{\cHk}$ and is therefore deferred to Proposition~\ref{prop:phihh}.
+            Expression \eqref{eq:phih-conv}, given in integral form, can also be written using the inner product on $\cHk$ in accordance with \eqref{eq:phi-hilbert}. The identification of the elements $\phihh_\ell$ deferred to Proposition~\ref{prop:phihh}.
             \end{itemize}
 
-            {\color{red}
+            {
             \begin{proposition}[Lemma~10 in \cite{Berlinet2011reproducing}]
                 \label{prop:phihh}
                 For any $\fh \in \cHk$, for $\ell \in \left\{ 1, \dots, L \right\}$, the measurement operator can be written as
@@ -594,7 +599,7 @@
                 \end{equation}
                 with $\phihh_\ell$ being the convolution
                 \begin{equation}
-                    \phihh_\ell = g_k * g(x_\ell - \cdot).
+                    \phihh_\ell = g_0 * g(x_\ell - \cdot).
                 \end{equation}
             \end{proposition}
             \begin{proof}
@@ -616,8 +621,8 @@
                 \begin{align*}
                     \forall t \in \cX, \qquad \phihh_\ell(t)
                     &= \langle \phihh_\ell, k(\cdot, t) \rangle_{\cHk} = [\phih(k(\cdot, t))]_\ell \\
-                    & = \int_\cX g(x_\ell - x) k(x, t) \mathrm{d}x = \int_\cX g(x_\ell - x) g_k(t - x) \mathrm{d}x \\
-                    & = (g(x_\ell - \cdot) * g_k)(t).
+                    & = \int_\cX g(x_\ell - x) k(x, t) \mathrm{d}x = \int_\cX g(x_\ell - x) g_0(t - x) \mathrm{d}x \\
+                    & = (g(x_\ell - \cdot) * g_0)(t).
                 \end{align*}   
             \end{proof}
             }
@@ -644,7 +649,7 @@
             %         \label{eq:rkhs-atom}
             %         \forall \mathbf{h} \in \mathbb{R}^L, \quad \phih^* (\mathbf{h}) = \sum_{\ell} h_\ell\, g_t(x_\ell - \cdot),
             %     \end{equation}
-            %     with $g_t := g_k * g$ being another Gaussian kernel of variance $\sigma_t^2 = \sigma_k^2 + \sigma^2$. % In other words, this setup conveniently allows for an explicit characterization of the spread of the reconstruction Gaussian kernel, which can be larger than the one of the measurement kernel.
+            %     with $g_t := g_0 * g$ being another Gaussian kernel of variance $\sigma_t^2 = \sigma_0^2 + \sigma^2$. % In other words, this setup conveniently allows for an explicit characterization of the spread of the reconstruction Gaussian kernel, which can be larger than the one of the measurement kernel.
             % \end{remark}
 
         
@@ -654,14 +659,14 @@
             % \end{equation}
             % using the symmetry of the convolution kernel.
 
-            \textcolor{red}{
+            {
             \begin{remark}[Synthesis operation within $\cHk$]
             In this convolution model, the adjoint operator $\phih^*$ as it appears in \eqref{eq:def-Mphi} and \eqref{eq:hilbertpart} admits the following expression, resulting from the RKHS structure of $\cHk$:
             \begin{equation}
                 \label{eq:rkhs-atom}
                 \forall \mathbf{h} \in \mathbb{R}^L, \quad \phih^* (\mathbf{h}) = \sum_{\ell} h_\ell\, g_t(x_\ell - \cdot),
             \end{equation}
-            with $g_t := g_k * g$ being another Gaussian kernel of target variance $\sigma_t^2 = \sigma_k^2 + \sigma^2$. In other words, this setup advantageously provides an explicit characterization of the spread of the reconstruction Gaussian kernel, which can be tuned by the practitioner and larger than the one of the measurement kernel.
+            with $g_t := g_0 * g$ being another Gaussian kernel of target variance $\sigma_t^2 = \sigma_0^2 + \sigma^2$. In other words, this setup advantageously provides an explicit characterization of the spread of the reconstruction Gaussian kernel, which can be tuned by the practitioner and larger than the one of the measurement kernel.
             \end{remark}
             }
 
@@ -686,7 +691,8 @@
         The solutions are indeed decoupled, according to the following result.
         \begin{proposition}
             \label{prop:rt-applied}
-            Any solution to the optimization problem~\eqref{eq:argmin-sps} can be expressed as a pair of components $(s_1^*, s_2^*) \in \mx \times \cHk$ such that
+            The solution set of problem~\eqref{eq:argmin-sps} is non-empty, convex and weak*-compact.
+            Any extreme point solution to the optimization can be expressed as a pair of components $(s_1^*, s_2^*) \in \mx \times \cHk$ such that
             \begin{align}
                 s_1^* &= \sum_{k=1}^{K_0} a_k \delta_{z_k}, \label{eq:deconv-banachpart}\\
                 s_2^* &=  \frac{1}{\lh}\phih^* \mathbf{M}_{\lh}^{-1} \left(\bm{y} - \bm{w}\right),\label{eq:deconv-hilbertpart}
@@ -721,10 +727,11 @@
         The smooth background problem \eqref{eq:deconv-hilbertpart} is explicit, so that the only numerical challenge consists in estimating the positions $z_k \in \cX$ and the associated intensities $a_k \in \R$ of the foreground component in \eqref{eq:deconv-banachpart}. The positions are notably more challenging to estimate than the intensities due to their continuously-defined nature and the nonlinear dependence on the measurements. This is done numerically by optimizing the single-component functional $\mathcal{J}_{\mathbf{M}}(\cdot)$ over $\mx$.
         The unique solution background component $s_2^*$ is then synthesized after computation of the residuals $\bm{y}-\bm{w}$ using \eqref{eq:deconv-hilbertpart}.
 
-        \textcolor{red}{
+        {
         \begin{remark}[Choice of the Hilbert space]
-            The choice of the Hilbert space $\cH$ and in particular the Hilbert norm $\norm{\cdot}_\cH$ has a significant impact on the shape of $\fh^*$, involving the operator $\phih^*$ in equation~\eqref{eq:deconv-hilbertpart}. Classical choices consist in using the space of square integrable functions $\cH = \ldx$ equipped with the canonical norm $\norm{f}_{\ldx}^2 = \int_\cX f(x)^2 \mathrm{d}x$ for $f \in \ldx$, or alternatively introducing an invertible operator $\mathrm{L}_{\cH}: \ldx \to \ldx$ such that $\norm{f}_\cH^2 = \int_\cX \mathrm{L}_{\cH}\{f\}(x)^2 \mathrm{d}x $. However, these common norms generally do not permit to enforce a strong penalty on the high-frequency band of the solution, limiting their practical interest in applications.
-            Our choice of using the RKHS induced by a Gaussian kernel is motivated by the test application considered in the following Section~\ref{sec:comp:reco}, in which we want to promote more energy in the low-frequency band. As demonstrated in equation~\ref{eq:rkhs-atom}, the reconstruction elements are shifted versions of the Gaussian function $g_t$ whose spatial extension is indeed larger than the measurement kernel $g$, hence promoting smoother solutions than what is achievable with classical $\mathrm{L}^2$-based norms.
+            The choice of the Hilbert space $\cH$ and in particular the Hilbert norm $\norm{\cdot}_\cH$ has a significant impact on the shape of $\fh^*$, involving the operator $\phih^*$ in equation~\eqref{eq:deconv-hilbertpart}. % Classical choices consist in using the space of square integrable functions $\cH = \ldx$ equipped with the canonical norm $\norm{f}_{\ldx}^2 = \int_\cX f(x)^2 \mathrm{d}x$ for $f \in \ldx$, or alternatively introducing an invertible operator $\mathrm{L}_{\cH}: \ldx \to \ldx$ such that $\norm{f}_\cH^2 = \int_\cX \mathrm{L}_{\cH}\{f\}(x)^2 \mathrm{d}x $. However, these common norms generally do not permit to enforce a strong penalty on the high-frequency band of the solution, limiting their practical interest in applications.
+            Our choice of using the RKHS induced by a Gaussian kernel is motivated by the test application considered in the following Section~\ref{sec:comp:reco}, in which we want to promote more energy in the low-frequency band. % As demonstrated in equation~\ref{eq:rkhs-atom}, the reconstruction elements are shifted versions of the Gaussian function $g_t$ whose spatial extension is indeed larger than the measurement kernel $g$, hence promoting smoother solutions than what is achievable with classical $\mathrm{L}^2$-based norms.
+             As demonstrated in equation~\eqref{eq:rkhs-atom}, the reconstruction elements are shifted versions of the Gaussian function $g_t$, whose spatial extension $\sigma_t$ can be tuned according to the user's needs.
         \end{remark}
         }
         
@@ -743,7 +750,7 @@
         We do so by restricting the searched positions $z_k$ to live on a uniform fine grid. This approach alleviates the challenge of nonlinearity in the position parameters, turning \eqref{eq:deconv-banachpart} into a tractable finite dimensional generalized LASSO problem -- which can be large depending on the discretization interval and space dimensions. This strategy is usually adopted to approximate continuous-problem solutions \cite{simeoni2020functional,Debarre2019} and convergence toward gridless solutions has been studied (see \cite{duval2017sparseI,debarre2022part2} and the recent article \cite{guillemet2025a}). 
         % \ju{Tu peux ajouter le récent article de Vincent qui détaille cela plus loin que les autres résultats}
 
-        We obtain the following finite-dimensional problem\footnotemark{} that approximates a continuous-domain solution of \eqref{eq:deconv-banachpart}:
+        After discretization as detailed in Appendix~\ref{app:discretization}, we obtain the following finite-dimensional problem which approximates a continuous-domain solution of \eqref{eq:deconv-banachpart}:
         \begin{equation}
             \label{eq:gridbased-sparse}
             \underset{ \bm{a} \in \mathbb{R}^{J^d}}{\arg\min} \quad ( \bm{y} - \mathbf{H}\bm{a}  )^T \mathbf{M}_{\lh}^{-1} ( \bm{y} - \mathbf{H}\bm{a}  )  + \lb \| \bm{a} \|_{1},
@@ -751,7 +758,6 @@
         The $d$-dimensional grid contains $J^d$ knots and the vector $\bm{a}\in\R^{J^d}$ stores the amplitude of Dirac impulses located on the knots.
         The matrix $\mathbf{H} \in \R^{L \times J^d}$ accounts for the application of $\phib$ to grid-based Dirac impulses.
         In the simple case $d=1$, we obtain $\mathbf{H}[\ell, j] = g(x_{\ell} - z_j)$ for $1 \leq \ell \leq L $ and $1 \leq j \leq J$.
-        \footnotetext{The discretization procedure is detailed in Appendix~\ref{app:discretization}.}
         
         The problem \eqref{eq:gridbased-sparse} can directly be solved with a proximal gradient descent algorithm (or any atomic LASSO solver such as a Frank-Wolfe algorithm). We solve this approximate problem considering a simple illustrative simulated example with $d=1$ in what follows.
 
@@ -783,7 +789,8 @@
             \begin{figure}[t]
                 \centering
                 \includegraphics[width=\linewidth]{figures/simple_reco/gt.pdf}        
-                \caption{Simulated source signal. \textit{Left:} Sparse component. \textit{Center:} Background smooth component. \textit{Right:} Sum of the two components. \ad{Change x-axis on the figures.}}
+                \caption{Simulated source signal. \textit{Left:} Sparse component. \textit{Center:} Background smooth component. \textit{Right:} Sum of the two components. %\ad{Change x-axis on the figures.}
+                }
                 \label{fig:simple:source}
             \end{figure}
         
@@ -851,7 +858,8 @@
         \begin{figure}[t]
             \centering
             \includegraphics[width=\linewidth, trim=0 2cm 0 2.2cm, clip]{figures/simple_reco/blasso_merged.pdf}
-            \caption{Single-component reconstructions using a B-LASSO problem approximated on the fine grid: ground truth (\textit{upper left}) and several values of the regularization parameter ($\alpha=0.2, 0.3$ or $0.4$). \ad{Larger titles or subfigures.}}
+            \caption{Single-component reconstructions using a B-LASSO problem approximated on the fine grid: ground truth (\textit{upper left}) and several values of the regularization parameter ($\alpha=0.2, 0.3$ or $0.4$). %\ad{Larger titles or subfigures.}
+            }
             \label{fig:simple:blasso-conv}
         \end{figure}
         
@@ -963,7 +971,7 @@
         \end{equation}
         where the matrix $\mathbf{T} \in \R^{L \times L}$ is defined as
         % $\mathbf{T}[i, j] = \langle \phi_j, \phi_i\rangle$ for $1 \leq i, j \leq L$
-        $\mathbf{T}[i, j] = (g * g_k * g)(x_j - x_i)$ for $1 \leq i, j \leq L$
+        $\mathbf{T}[i, j] = (g * g_0 * g)(x_j - x_i)$ for $1 \leq i, j \leq L$
         and $\mathbf{H} \in \R^{L\times J^d}$ is from \eqref{eq:gridbased-sparse}.
         % \ju{do you specify what is $T$ and how it connects with our theorem? + recall what is $H$ maybe.}
         This problem is equivalent to our decoupled and discretized approach \eqref{eq:deconv-banachpart} and \eqref{eq:deconv-hilbertpart}. It is convex, finite-dimensional, and the terms are either differentiable or proximable so that the optimization can be performed with a proximal algorithm. In what follows, we solve it with APGD. % and refer to this approach as \emph{non-decoupled}.
@@ -976,7 +984,7 @@
         For a fair treatment between the solver, the stopping criterion of all the algorithms is set as a threshold on the relative improvement of consecutive iterates of the foreground component variable. We present two experiment: the first one, displayed in figure~\ref{fig:time-vs-r}, reports the reconstruction time when the contrast $r_{1/2}$ evolves in the same setup as in section~\ref{sec:bene:comp}; the second experiment is reported in figure~\ref{fig:time-vs-srf} and presents the reconstruction time when the super resolution factor $n_\mathrm{srf}$ varies. The times reported correspond to the best reconstruction obtained through a tested set of regularization parameters. Each experiment is reproduced 24 times, the median value is reported with the solid line and the shaded area represents the interquartile spread.
         % \ju{I don't see where NDCP is presented, commented and linked with some previous works. I am right?}
 
-        \begin{figure}[t]
+        \begin{figure}[p]
             \centering
             \includegraphics[width=.7\linewidth]{figures/benchmark/time_vs_r12.pdf}        
             \caption{Time for the best reconstruction with the different solvers with varying values of $r_{1/2}$ and fixed value of $n_\mathrm{srf} = 8$. The two composite approaches are in red, with triangle markers for the decoupled reconstruction and circle for the non-decoupled problem (``NDCP'' in the legend).}
@@ -984,7 +992,7 @@
             \label{fig:time-vs-r}
         \end{figure}
     
-        \begin{figure}[t]
+        \begin{figure}[p]
             \centering
             \includegraphics[width=.7\linewidth]{figures/benchmark/time_vs_srf.pdf}        
             \caption{Time for the best reconstruction with the different solvers with varying values of $n_\mathrm{srf}$ and fixed $r_{1/2}=1$.}

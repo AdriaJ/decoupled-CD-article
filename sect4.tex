@@ -48,9 +48,9 @@
 
             For the smooth background component $s_2$, we consider the Hilbert space $\cH = \cHk$ the RKHS\footnote{\textit{Reproducing Kernel Hilbert Space}.} induced by the Gaussian kernel $k: \cX \times \cX \to \R$, also called \emph{Gaussian radial basis function}, defined as
             \begin{equation*}
-                \forall x, y \in \cX, \qquad k(x, y) = g_k(\norm{y - x}) := \frac{1}{(\sqrt{2\pi\sigma_k^2})^d} \exp{ \left({-\frac{\norm{y - x}^2}{2 \sigma_k^2}}\right)},
+                \forall x, y \in \cX, \qquad k(x, y) = g_0(\norm{y - x}) := \frac{1}{(\sqrt{2\pi\sigma_0^2})^d} \exp{ \left({-\frac{\norm{y - x}^2}{2 \sigma_0^2}}\right)},
             \end{equation*}
-            for $\sigma_k > 0$. The kernel $k$ defines an inner product $\langle \cdot, \cdot \rangle_{\cHk}$ and the associated Hilbert norm $\norm{\cdot}_{\cHk}$ on $\cHk$. The formal construction of the RKHS is technical and we refer for instance to \cite[Chapter~10]{wendland2004}. Notably, no direct expression for the inner product  $\langle f, g \rangle_{\cHk}$ is available in the general case of arbitrary $f, g \in \cHk$. This Gaussian RKHS $\cHk$ is a subspace of the square integrable functions $\ldx$, containing the functions with spectral decay dominated by the decay of $k$ (see, e.g., \cite{minh2010} for a more detailed characterization of $\cHk$). We later rely on this property to adjust the intensity of the promoted smoothness and tune the reconstruction with $\sigma_k$.
+            for $\sigma_0 > 0$. The kernel $k$ defines an inner product $\langle \cdot, \cdot \rangle_{\cHk}$ and the associated Hilbert norm $\norm{\cdot}_{\cHk}$ on $\cHk$. The formal construction of the RKHS is technical and we refer for instance to \cite[Chapter~10]{wendland2004}. Notably, no direct expression for the inner product  $\langle f, g \rangle_{\cHk}$ is available in the general case of arbitrary $f, g \in \cHk$. This Gaussian RKHS $\cHk$ is a subspace of the square integrable functions $\ldx$, containing the functions with spectral decay dominated by the decay of $k$ (see, e.g., \cite{minh2010} for a more detailed characterization of $\cHk$). We later rely on this property to adjust the intensity of the promoted smoothness and tune the reconstruction with $\sigma_0$.
 
             Additionally, we assume that the ground truth signals $s_1^\dagger$ and $ s_2^\dagger$ have a compact support, included in the field of view of the microscope. Without loss of generality, we consider this support to be included in the interval $[0, 1]^d$. 
 
@@ -94,7 +94,7 @@
                 \end{equation}
                 with $\phihh_\ell$ being the convolution
                 \begin{equation}
-                    \phihh_\ell = g_k * g(x_\ell - \cdot).
+                    \phihh_\ell = g_0 * g(x_\ell - \cdot).
                 \end{equation}
             \end{proposition}
             \begin{proof}
@@ -116,8 +116,8 @@
                 \begin{align*}
                     \forall t \in \cX, \qquad \phihh_\ell(t)
                     &= \langle \phihh_\ell, k(\cdot, t) \rangle_{\cHk} = [\phih(k(\cdot, t))]_\ell \\
-                    & = \int_\cX g(x_\ell - x) k(x, t) \mathrm{d}x = \int_\cX g(x_\ell - x) g_k(t - x) \mathrm{d}x \\
-                    & = (g(x_\ell - \cdot) * g_k)(t).
+                    & = \int_\cX g(x_\ell - x) k(x, t) \mathrm{d}x = \int_\cX g(x_\ell - x) g_0(t - x) \mathrm{d}x \\
+                    & = (g(x_\ell - \cdot) * g_0)(t).
                 \end{align*}   
             \end{proof}
             }
@@ -144,7 +144,7 @@
             %         \label{eq:rkhs-atom}
             %         \forall \mathbf{h} \in \mathbb{R}^L, \quad \phih^* (\mathbf{h}) = \sum_{\ell} h_\ell\, g_t(x_\ell - \cdot),
             %     \end{equation}
-            %     with $g_t := g_k * g$ being another Gaussian kernel of variance $\sigma_t^2 = \sigma_k^2 + \sigma^2$. % In other words, this setup conveniently allows for an explicit characterization of the spread of the reconstruction Gaussian kernel, which can be larger than the one of the measurement kernel.
+            %     with $g_t := g_0 * g$ being another Gaussian kernel of variance $\sigma_t^2 = \sigma_0^2 + \sigma^2$. % In other words, this setup conveniently allows for an explicit characterization of the spread of the reconstruction Gaussian kernel, which can be larger than the one of the measurement kernel.
             % \end{remark}
 
         
@@ -161,7 +161,7 @@
                 \label{eq:rkhs-atom}
                 \forall \mathbf{h} \in \mathbb{R}^L, \quad \phih^* (\mathbf{h}) = \sum_{\ell} h_\ell\, g_t(x_\ell - \cdot),
             \end{equation}
-            with $g_t := g_k * g$ being another Gaussian kernel of target variance $\sigma_t^2 = \sigma_k^2 + \sigma^2$. In other words, this setup advantageously provides an explicit characterization of the spread of the reconstruction Gaussian kernel, which can be tuned by the practitioner and larger than the one of the measurement kernel.
+            with $g_t := g_0 * g$ being another Gaussian kernel of target variance $\sigma_t^2 = \sigma_0^2 + \sigma^2$. In other words, this setup advantageously provides an explicit characterization of the spread of the reconstruction Gaussian kernel, which can be tuned by the practitioner and larger than the one of the measurement kernel.
             \end{remark}
             }
 
@@ -458,7 +458,7 @@
         \end{equation}
         where the matrix $\mathbf{T} \in \R^{L \times L}$ is defined as
         % $\mathbf{T}[i, j] = \langle \phi_j, \phi_i\rangle$ for $1 \leq i, j \leq L$
-        $\mathbf{T}[i, j] = (g * g_k * g)(x_j - x_i)$ for $1 \leq i, j \leq L$
+        $\mathbf{T}[i, j] = (g * g_0 * g)(x_j - x_i)$ for $1 \leq i, j \leq L$
         and $\mathbf{H} \in \R^{L\times J^d}$ is from \eqref{eq:gridbased-sparse}.
         % \ju{do you specify what is $T$ and how it connects with our theorem? + recall what is $H$ maybe.}
         This problem is equivalent to our decoupled and discretized approach \eqref{eq:deconv-banachpart} and \eqref{eq:deconv-hilbertpart}. It is convex, finite-dimensional, and the terms are either differentiable or proximable so that the optimization can be performed with a proximal algorithm. In what follows, we solve it with APGD. % and refer to this approach as \emph{non-decoupled}.
