@@ -26,7 +26,7 @@
     whose unique solution according to Proposition~\ref{prop:hilbertRT}, depends on $\fb$ and is given by
     \begin{equation}
         \label{eq:hatfwithfb}
-        \widehat{s}_{2, \fb} =\phih^* ( \phih \phih^* + \lh \mathbf{I}_L)^{-1} ( \bm{y} - \phih(\fb) ). 
+        \widehat{s}_{2, \fb} =\phih^* ( \phih \phih^* + \lh \mathbf{I}_L)^{-1} ( \bm{y} - \phib(\fb) ). 
     \end{equation}
     Using the latter relation, we therefore deduce that $(\hfb,\hfh) \in \mathcal{W} (\lb,\lh)$ if and only if  
     \begin{align}
@@ -57,7 +57,7 @@
         &= 
         \langle ( \phih \phih^* + \lh \mathbf{I}_L)^{-1} ( \bm{y} - \phib(\fb) ) ,  ( \bm{y} - \phib(\fb) ) \rangle - \lh \|( \phih \phih^* + \lh^2 \mathbf{I}_L)^{-1} ( \bm{y} - \phib(\fb) ) \|_2^2.   \label{eq:secondinterm} 
     \end{align}
-    Finally, plugging the relations \eqref{eq:firstinterm} and \eqref{eq:secondinterm} together,  the cost functional $\mathcal{J}(\fb, \widehat{f}_{2, f_1})$ in \eqref{eq:newhproblem} simplifies as
+    Finally, plugging the relations \eqref{eq:firstinterm} and \eqref{eq:secondinterm} together,  the cost functional $\mathcal{J}(\fb, \widehat{s}_{2, \fb})$ in \eqref{eq:newhproblem} simplifies as
     \begin{align*}
         \mathcal{J}(\fb, \widehat{s}_{2, \fb}) &=  \frac{\lh}{2} \langle ( \phih \phih^* + \lh \mathbf{I}_L)^{-1} ( \bm{y} - \phib(\fb) ) ,  ( \bm{y} - \phib(\fb) ) \rangle + \lb \|\fb\|_{\mathcal{B}} \nonumber \\
         &= \frac{\lh}{2} \| ( \phih \phih^* + \lh \mathbf{I}_L)^{-\frac{1}{2}} (\bm{y} - \phib(\fb) ) \|_2^2 + \lb \|\fb\|_{\mathcal{B}} \\
