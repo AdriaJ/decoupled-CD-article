@@ -166,6 +166,8 @@
     % Early versions include Tichonov regularization~\cite{tikhonov1963solution}, known as ridge-regression in statistics~\cite{Hoerl1962ridge}. Over a generic Hilbert space, we will refer to it as smooth regularization for its smoothing effect~\cite{Kimeldorf1970}.
     % Smooth regularization has proven to be efficient, it is strongly related to RKHS theory and representer theorems (which specifies the form of the solution of the optimization problem) in this context~\cite{Scholkopf2001generalized}. 
 
+    \ad{Maybe take a bit of distance with Banach norms, and promote instead atomic norms. Classical example is Banach norm over Banach space, but other penalties may be used for sparse reconstruction. NEED a notation! $\mathcal{R}_1$ or $\mathcal{R}_\mathrm{SPARSE}$ or $\mathcal{R}^\mathrm{S}$ ?}
+    {\color{red} Use a notation for sparsity promoting norms ($\mathcal{R}^\mathrm{S}$ for instance), keep in mind the classical case of Banach norms $\norm{\cdot}_\mathcal{B}$ and mention that there exist other forms. Cf Boyer ?}
     The second classical form of regularization considered here involves a norm over of Banach space $\mathcal{B}$ expressed as
     \begin{equation*}
         \mathcal{R} (s) = \lambda \| s \|_{\mathcal{B}}.
@@ -178,6 +180,7 @@
     
     % Atomic norm~\cite{chandrasekaran2012convex}. Example: $\ell_1$. Explain the general principle. \ad{Splines.}
 
+    {\color{red} Find the critera for $\mathcal{R}_1$.}
     In this work, we consider the combination of the two above-mentioned penalties, which we refer to as \emph{sparse-plus-smooth} regularization. We focus on problem~\eqref{eq:compositepb} with
         \begin{equation*}
         \mathcal{R}_1 (s_1) = \lambda_1 \| s_1 \|_{\mathcal{B}} \qquad\text{and}\qquad \mathcal{R}_2 (s_2) = \lambda_2 \| s_2 \|_{\mathcal{H}}^2
@@ -308,27 +311,10 @@
         \phibsingle (s) := (\langle \phibb_\ell, s \rangle_{\mathcal{A}\times\mathcal{B}})_{1\leq \ell \leq L} \in \mathbb{R}^L.
     \end{equation}
 
-    % Interestingly, it is possible to extend Proposition~\ref{prop:hilbertRT} to this more general setting.
+
+    {\color{red} Maybe cite RT from Boyer first. Then mention specific case of Banach norm.}
     In this more general setting, the solution set of the optimization problem~\eqref{eq:singletpb} when $\mathcal{R}(s) = \lambda \| s \|_{\mathcal{B}}$ is characterized with another representer theorem in Proposition~\ref{prop:banachRT} hereafter, analogous to Proposition~\ref{prop:hilbertRT} on Hilbert spaces.
-    % Interestingly, there exists another representer theorem which plays to counterpart of Proposition~\ref{prop:hilbertRT} in this more general setting.
-    % CHANGE ORDER OF THE SENTENCES.
     The specific case of $\lVert \cdot \rVert_\mathcal{B}$ being the $\ell_1$-norm or its functional generalization is studied in~\cite{Fisher1975,Unser2016representer,unser2017splines,bredies2020sparsity}, and some even more general settings are studied in~\cite{boyer2019representer,unser2019native}.
-    % Hereafter, Proposition~\ref{prop:banachRT} recalls this result.
-
-
-    
-    % The Banach space generalization of Proposition~\ref{prop:hilbertRT} has been considered in the literature for the $\ell_1$-norm and its functional generalization~\cite{Fisher1975,Unser2016representer,unser2017splines,bredies2020sparsity} and in more general settings in~\cite{boyer2019representer,unser2019native}.
-    % Let $\bm{\Phi}= (\Phi_1, \ldots, \Phi_L) \in \mathcal{A}^L$. Then, $\bm{\Phi}$ specifies a linear and weak*-continuous mapping $\bm{\Phi}: \mathcal{A}' =\mathcal{B} \rightarrow \R^L$ via 
-    % \begin{equation}
-    %     \label{eq:phi-banach}
-    %     \bm{\Phi} (f )= (\langle \phi_\ell, f \rangle_{\mathcal{A}\times\mathcal{B}})_{1\leq \ell \leq L} \in \mathbb{R}^L.
-    % \end{equation}
-    % The adjoint of $\bm{\Phi}$ is given by
-    % \begin{equation}
-    %    \bm{\Phi}^* (\bm{y}) = \sum_{1 \leq \ell \leq L} y_\ell \phi_\ell \in \mathcal{A}
-    % \end{equation}
-    % for any $\bm{y}\in \R^L$. 
-    % Proposition~\ref{prop:banachRT} describes the solution set of the optimization problem~\eqref{eq:singletpb} when $\mathcal{R}(f) = \lambda \| f \|_{\mathcal{B}}$.
 
     \begin{proposition}[Representer Theorem on Banach spaces]
     \label{prop:banachRT}
@@ -363,6 +349,7 @@
 
     \subsection{Main theorem}
 
+    {\color{red} Unify notation of \eqref{eq:compositepb} and here, remove the $+$ sign between the two components.}
     We consider the composite problem \eqref{eq:compositepb} in a slightly more generic form using two measurement operators. For $\lambda_1, \lambda_2 > 0$, the objective functional is given by
     \begin{equation}
         \label{eq:composite-optim}
@@ -422,6 +409,7 @@
     This characterization is particularly relevant for Banach spaces whose extreme points have interesting properties, as is the case for $\ell_1$-norms and their generalizations~\cite{chandrasekaran2012convex}.
     This last equation was already a consequence of~\cite[Theorem 2]{unser2022convex}, but Theorem~\ref{theo:main} specifies the joint properties of the weight vectors $\bm{\alpha}$ and $\bm{\beta}$.
 
+    {\color{red} Remove the remark and mention it in the main text earlier.}
     \begin{remark}[Decoupling beyond Hilbert-plus-Banach]
         We stated Theorem~\ref{theo:main} for Hilbert-plus-Banach optimization but the decoupling readily holds for more general situations. Indeed, the proof only relies on the closed-form expression of the Hilbert component when the other one is fixed.
         It is for instance possible to consider spline reconstruction using $\|\mathrm{L}\cdot\|_\mathcal{B}$ instead of $\|\cdot\|_\mathcal{B}$, with $\mathrm{L}$ a pseudo-differential operator \cite{unser2017splines}.
@@ -441,7 +429,31 @@
 
     Setting the regularization parameters in optimization problems is a notoriously sensitive task. 
     If we consider a single-component problem with a Hilbert penalty, there exists an optimal value of the regularization parameter when the source signal follows a random Gaussian model \cite{Badou}. Beyond this ideal model, finding a relevant value for this parameter is still an open question and many strategies have been proposed in the literature \cite{hansen2000,park2008parameter}. The case of single-component Banach problems is not simpler \cite{deladalle2014sugar,chirinos2024parameter}. 
-    However, when an $\ell_1$-norm or total variation norm is considered, the relevant values of the regularization parameter $\lambda > 0$ are confined to an explicit interval. Indeed, there exists a problem-dependent maximum value $\lambda_{\mathrm{max}} > 0$ above which the solution of the optimization is unique and reduced to the null signal. This is a well-known result for LASSO-type problems, both in discrete \cite{tibshirani2013lasso}, \cite[Proposition~II.1]{koulouri2021} and continuous settings \cite[Proposition~10]{debarre2022sparsest}.
+    However, when an $\ell_1$-norm or total variation norm is considered, the relevant values of the regularization parameter $\lambda > 0$ are confined to an explicit interval. Indeed, there exists a problem-dependent maximum value $\lambda_{\mathrm{max}} > 0$ above which the solution of the optimization is unique and reduced to the null signal. This is a well-known result for LASSO-type problems, both in discrete \cite{tibshirani2013lasso}, \cite[Proposition~II.1]{koulouri2021} and continuous settings \cite[Proposition~10]{debarre2022sparsest}, \cite[Proposition~4.3]{jarret_grid_2025}.
+
+    {\color{red} We first extend this result to the generic case of single-components problems penalized with a Banach norm in the following proposition.
+    \begin{proposition}[Bound on single-component Banach-penalized problems]
+    \label{prop:single-lmax}
+    For $\lambda >0$, we define the objective functional $\mathcal{J}_\mathcal{B}(s) := \frac{1}{2} \norm{\bm{y} - \bm{\Phi}(s)}_2^2 + \lambda \norm{s}_{\cB}$ and we consider the solution set of the following optimization problem
+    \begin{equation}
+        \label{eq:single-banach}
+        \mathcal{V}(\lambda) := \underset{s \in \cB}{\arg \min} \mathcal{J}_{\mathcal{B}}(s).
+    \end{equation}
+    Let us define
+    \begin{equation}
+        \lambda_{\mathrm{max}} = \norm{\phib^{*}\bm{y}}_{\mathcal{A}}.
+    \end{equation}
+    The two following statements hold:
+    \begin{itemize}
+        \item[1.] For any $\lambda \geq \lm$, the solution to \eqref{eq:single-banach} is unique and the solution set is reduced to $\mathcal{V}(\lambda) = \left\{0\right\} \subset \cB$.
+        \item[2.] For any $\lambda < \lm$, the null element $0$ is not solution, i.e., $0 \notin \mathcal{V}(\lambda)$.
+    \end{itemize}
+    \end{proposition}
+
+    \begin{proof}
+        To do.
+    \end{proof}
+    }
 
     % Given a Gaussian random model on the data/measurements, there exists a theoretic optimal value for the regularization parameter of the single-component optimization problem with an Hilbert penalty \cite{}. This result however does not exist for a generic optimization problem and finding a rule to set the regularization parameter is an active field of research 
     % \ad{Next introductive sentences need to be rephrased. I can mention that some techniques exist. We have more results for Hilbert-type regularization. References: chapter 7 of Rank-Deficient and discrete Ill-posed problems (Hansen), Wahba 1979, also from Hansen ``The L-curve and its use in the numerical treatment of inverse problems'', also see discussion in article from Park, 2017; another recent discusison in ``On learning the optimal regularization parameter in inverse problems'', Rodriguez 2024 -- FInally we have SUGAR paper from Peyré et al, 2014. }
@@ -459,6 +471,7 @@
     % we can apply this result to composite problems in which the Banach regularization obeys the same property. Proposition~\ref{prop:lmax} illustrates this transferred property onto the values of the two regularization parameters.
     %--------------------
 
+    \ad{rewrite this as a corollary}
     \begin{proposition}[Maximum value of $\lambda_1$]
     \label{prop:lmax}
     Let $\cX$ be $\mathbb{R}^d$ or $\mathbb{T}^d$ for $d \in \mathbb{N}^*$.
