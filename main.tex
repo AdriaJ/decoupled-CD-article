@@ -161,7 +161,7 @@
     \begin{equation*}
         \mathcal{R} (s) = \lambda \| s \|_{\mathcal{H}}^2.
     \end{equation*}
-    The name stems from the smoothing effect it has on the solution \cite{Kimeldorf1970}. Early versions include Tikhonov regularization~\cite{tikhonov1963solution}, known as ridge-regression in statistics~\cite{Hoerl1962ridge}. Smooth regularization has been widely used over more than 70 years, with countless applications. %with applications on discrete domain problems as well as recovery in the continuum \ad{ref needed here?}.
+    The name stems from the smoothing effect it has on the solution {\color{red}. Pioneering connections between quadratic regularization and spline smoothing were presented in \cite{Kimeldorf1970}, involving Bayesian estimation of Gaussian stochastic processes.} Early {\color{red} applied} versions {\color{red} of a quadratic regularization} include Tikhonov regularization~\cite{tikhonov1963solution}, known as ridge-regression in statistics~\cite{Hoerl1962ridge}. Smooth regularization has been widely used over more than 70 years, with countless applications. %with applications on discrete domain problems as well as recovery in the continuum \ad{ref needed here?}.
     It is strongly connected to the RKHS theory and thus there exist representer theorems that precisely specify the form of the solution~\cite{Scholkopf2001generalized}. Interestingly, these problems are fairly simple to solve as they can be recast into a finite-dimensional formulation, even when the signals $s$ to recover are continuously defined, as for instance with $\mathcal{H} = \ldx$ the space of square integrable functions over a domain $\cX$. 
     % Early versions include Tichonov regularization~\cite{tikhonov1963solution}, known as ridge-regression in statistics~\cite{Hoerl1962ridge}. Over a generic Hilbert space, we will refer to it as smooth regularization for its smoothing effect~\cite{Kimeldorf1970}.
     % Smooth regularization has proven to be efficient, it is strongly related to RKHS theory and representer theorems (which specifies the form of the solution of the optimization problem) in this context~\cite{Scholkopf2001generalized}. 
@@ -434,24 +434,63 @@
     {\color{red} We first extend this result to the generic case of single-components problems penalized with a Banach norm in the following proposition.
     \begin{proposition}[Bound on single-component Banach-penalized problems]
     \label{prop:single-lmax}
-    For $\lambda >0$, we define the objective functional $\mathcal{J}_\mathcal{B}(s) := \frac{1}{2} \norm{\bm{y} - \bm{\Phi}(s)}_2^2 + \lambda \norm{s}_{\cB}$ and we consider the solution set of the following optimization problem
+    For $\lambda >0$, we consider the solution set of the single-component optimization problem
     \begin{equation}
         \label{eq:single-banach}
-        \mathcal{V}(\lambda) := \underset{s \in \cB}{\arg \min} \mathcal{J}_{\mathcal{B}}(s).
+        \mathcal{V}(\lambda) := \underset{s \in \cB}{\arg \min} \frac{1}{2} \norm{\bm{y} - \phib(s)}_2^2 + \lambda \norm{s}_{\cB}.
     \end{equation}
     Let us define
     \begin{equation}
         \lambda_{\mathrm{max}} = \norm{\phib^{*}\bm{y}}_{\mathcal{A}}.
     \end{equation}
-    The two following statements hold:
+    The two statements hold:
     \begin{itemize}
-        \item[1.] For any $\lambda \geq \lm$, the solution to \eqref{eq:single-banach} is unique and the solution set is reduced to $\mathcal{V}(\lambda) = \left\{0\right\} \subset \cB$.
-        \item[2.] For any $\lambda < \lm$, the null element $0$ is not solution, i.e., $0 \notin \mathcal{V}(\lambda)$.
+        \item[1.] \label{item:lm:1} For any $\lambda \geq \lm$, the solution to \eqref{eq:single-banach} is unique and the solution set is reduced to $\mathcal{V}(\lambda) = \left\{0\right\} \subset \cB$.
+        \item[2.] \label{item:lm:2} For any $\lambda < \lm$, the null element $0$ is not solution, i.e., $0 \notin \mathcal{V}(\lambda)$.
     \end{itemize}
     \end{proposition}
 
     \begin{proof}
-        To do.
+        Let us call the objective functional $\mathcal{J}_\mathcal{B}(s) := \frac{1}{2} \norm{\bm{y} - \phib(s)}_2^2 + \lambda \norm{s}_{\cB}$. For any pair of elements $(u, s) \in \cA \times \cB$, the classical duality inequality stems from the definition of the dual norm $\norm{\cdot}_\cB$ on $\cB$ as
+        \begin{equation*}
+            \langle u, s \rangle_{\cA \times \cB} \leq \norm{u}_\cA \norm{s}_\cB.
+        \end{equation*}
+        Based on this result, we can lower-bound the value of the objective function for any $s\in\cB$ as
+        \begin{align}
+            \mathcal{J}_\mathcal{B}(s) &= \frac{1}{2} \norm{\bm{y} - \phib(s)}_2^2 + \lambda \norm{s}_{\cB} \\
+                    &= \frac{1}{2} \norm{\bm{y}}_2^2 + \frac{1}{2} \norm{\phib(s)}_2^2 - \langle \bm{y}, \phib(s) \rangle + \lambda \norm{s}_{\cB} \\
+                    &= \frac{1}{2} \norm{\bm{y}}_2^2 + \frac{1}{2} \norm{\phib(s)}_2^2 - \langle \phib^*\bm{y}, s \rangle_{\cA \times\cB} + \lambda \norm{s}_{\cB} \\
+                    &\geq \frac{1}{2} \norm{\bm{y}}_2^2 + \frac{1}{2} \norm{\phib(s)}_2^2 + \norm{s}_{\cB} \left(\lambda - \norm{\phib^*\bm{y}}_\cA \right)
+        \end{align}
+
+        Assuming $\lambda \geq \lm$, we obtain
+        \begin{equation*}
+            \forall s \in \cB, \qquad \mathcal{J}_\mathcal{B}(s) \geq \mathcal{J}_\mathcal{B}(0),
+        \end{equation*}
+        hence the null element is solution, $0 \in \mathcal{V}(\lambda)$. Moreover, the strict convexity of the square $\ell_2$-norm in the data-fidelity term induces uniqueness of the fit \cite{tibshirani2013lasso}, that is any solutoin belongs to the nullspace of the measurement operator $\phib$, as follows
+        \begin{equation*}
+            \forall s \in \mathcal{V}(\lambda), \qquad \phib(s) = \phib(0) = 0.
+        \end{equation*}
+        Necessarily, $0$ is the unique solution in the case $\lambda \geq \lm$, which proves the first statement.
+
+        Conversely, let us assume $0 < \lambda < \lm$ and let us prove the second statement. We want to show that $0$ is not solution, or equivalently that $\frac{1}{2} \norm{\phib(s)}_2^2 - \langle \phib^*\bm{y}, s \rangle_{\cA \times\cB} + \lambda \norm{s}_{\cB}$ can be negative. Let us write $v = \phib^*\bm{y} \in \cA$. Using the Hanh-Banach theorem \cite[Chapter~1]{Brezis_2011}, there exists an element $s_0\in\cB$ such that $\norm{s_0}_\cB = \norm{v}_\cA$ and
+        \begin{equation*}
+            \langle v, s_0\rangle = \norm{v}_\cA^2 = \norm{s_0}_\cB \norm{v}_\cA.
+        \end{equation*}
+        We can then write
+        \begin{align}
+            - \langle v, s_0 \rangle_{\cA \times\cB} + \lambda \norm{s_0}_{\cB} &= \norm{s}_{\cB} \left( \lambda - \norm{v}_\cA \right) \\
+                &= \norm{s_0}_{\cB} \left( \lambda - \lm \right) < 0.
+        \end{align}
+        The measurement operator $\phib: \cB \to \R^L$ being bounded, there exists a constant $C > 0$ such that
+        \begin{equation}
+            \norm{\phib(s_0)}_2^2 \leq C^2 \norm{s_0}_{\cB}^2.
+        \end{equation}
+        Using asymptotic growth comparison toward $0$, there exists $\xi > 0$ such that
+        \begin{equation*}
+            \frac{1}{2} \norm{\phib(\xi s_0)}_2^2 - \langle \phib^*\bm{y}, \xi s_0 \rangle_{\cA \times\cB} + \lambda \norm{\xi s_0}_{\cB} < 0,
+        \end{equation*}
+        which proves that $0$ is not a minimum.
     \end{proof}
     }
 
@@ -471,7 +510,7 @@
     % we can apply this result to composite problems in which the Banach regularization obeys the same property. Proposition~\ref{prop:lmax} illustrates this transferred property onto the values of the two regularization parameters.
     %--------------------
 
-    \ad{rewrite this as a corollary}
+    \ad{Rewrite this as a corollary applied to the case $\norm{\cdot}_\cB$ penalization.}
     \begin{proposition}[Maximum value of $\lambda_1$]
     \label{prop:lmax}
     Let $\cX$ be $\mathbb{R}^d$ or $\mathbb{T}^d$ for $d \in \mathbb{N}^*$.
@@ -535,12 +574,7 @@
     \subsection{Definition of the composite model}
     \label{sec:comp:model}
 
-        % We consider a composite deconvolution inverse problem in which the signal to recover is the sum of a sparse foreground component and a smooth background component.   
-        % Such scenario is inspired from Single Molecule Localization Microscopy (SMLM) in which the signal of interest is an image of fluorescent molecules \cite{sage2019smlm}.
-        % % The measurement procedure is modeled as a convolution with the point-spread function (PSF) of the microscope.
-        % The action of the microscope on the scene is modeled by a convolution with its known point-spread function (PSF).
-        % Out-of-focus particles appear more spread-out and fainter than the objects in the focal plan, hence motivating for a composite model with a sparse component to account for the foreground and a smooth one for the background.
-        % Moreover, using a continuous signal model is relevant for SMLM as it is possible to reach a resolution below the diffraction limit, relying on the sparse nature of the observed molecules \cite{huang2017super,denoyelle2019sliding,laville2021sparse}.
+        \ad{Temper the claim: "we use a simplistic scenario involving linear operator and continuous-domain reocnstruction. This kind of scenario would be relevant for instance in SMLM imaging."}
         
         We consider a scenario inspired from Single Molecule Localization Microscopy (SMLM) in which the signal of interest is an image of fluorescent molecules \cite{sage2019smlm}. Out-of-focus particles appear more spread-out and fainter than the objects in the focal plan, hence motivating for a composite model. Moreover, using a continuous signal model is relevant for SMLM as it is possible to reach a resolution below the diffraction limit, relying on the sparse nature of the observed molecules \cite{huang2017super,denoyelle2019sliding,laville2021sparse}.
 
