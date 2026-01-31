@@ -33,6 +33,15 @@
 
 \noindent{\it Keywords\/}: Sparse reconstruction, composite model, continuous-domain recovery, functional inverse problems. 
 
+{
+    \color{red}
+    Remaining todo's:
+    \begin{itemize}
+        \item Check consistency for solution of optimization problems: star, hat or something else? (like five-arms star).
+        \item Proof of Theorem 2 to be deferred in the appendix.
+    \end{itemize}
+}
+
     % \ad{
     % Remaining todo's:
     % \begin{itemize}
@@ -93,7 +102,8 @@
     with different characteristics.
     Such a framework can be used for instance to model signals which contain mixed-types information, such as background and foreground in imaging. A concrete example of composite-type signal is provided in figure~\ref{fig:gleam-sky} with an image of the sky from radio observations, containing both precisely-localized point sources (stars) and diffuse emissions (nebulae) \cite{hurley-walker2017}.
     Our goal is to approximately recover not only $s^\dagger$ but also the subcomponents $s_1^\dagger$ and $s_2^\dagger$ from the observations $\bm{y}$.
-    As $s_1^\dagger$ and $s_2^\dagger$ may belong to different spaces for which the addition would be impossible/incompatible/undefined, from now on we consider the more generic inverse problem over the pair $(s_1^\dagger, s_2^\dagger)$ with two possibly different operators
+
+    In a theoretical model, the addition between $s_1^\dagger$ and $s_2^\dagger$ may not be properly defined because the signals may belong to different spaces. For this reason, in what follows we consider the more general inverse problem over the pair $(s_1^\dagger, s_2^\dagger)$ with two possibly different operators
     \begin{equation}
         \label{eq:generic-comp-ip}
         \bm{y} \approx \bm{\Phi}_1(s_1^\dagger) + \bm{\Phi}_2(s_2^\dagger)
@@ -175,30 +185,27 @@
     \begin{equation*}
         \mathcal{R}(s) = \lambda \mathcal{R}^\mathrm{S}(s).
     \end{equation*}
-    In this scenario, we consider the theoretical model of signals $s$ living in a Banach search space $\cB$. This framework is more general than the former case of Hilbert spaces and thus enables us to cover most of the common sparsity-promoting penalties.
-    The classical finite-dimensional example for $\mathcal{R}^\mathrm{S}(\cdot)$ is the $\ell_1$-norm over Euclidian $n$-spaces \cite{tibshirani1996regression,chen2001atomic}, optionally including an analysis prior model with a nested linear operator \ad{ref needed}. The continuous-domain counterparts consist in the problems of sparse spikes recovery \cite{laville2021sparse} and spline reconstruction \cite{unser2017splines}, both being infinite-dimensional and based on a total-variation penalty. When a Banach norm $\mathcal{R}^\mathrm{S} (s) = \| s \|_{\mathcal{B}}$ is considered, the solution set of the single-component problem \eqref{eq:singletpb} is described thanks to representer theorems: the solutions are expressed as sums of extreme points of the Banach norm unit ball \cite{boyer2019representer,Unser2020,bredies2020sparsity}. Similarly, $\mathcal{R}^\mathrm{S}(\cdot)$ can be defined as an atomic norm to promote sparse solutions, as the extreme points are generally sparse vectors \cite{chandrasekaran2012convex}. This framework of Banach search space also covers significantly more complex functional setups of sparse recovery, as for instance in \cite{laville2023a,ambrosio2023,decastro2024}.
+    In this scenario, we consider the theoretical model of signals $s$ living in a Banach search space $\cB$, and a convex function $\cRS: \cB \to \R_+$. This framework is more general than the former case of Hilbert spaces and thus enables us to cover most of the common sparsity-promoting penalties.
+    The classical finite-dimensional example for $\mathcal{R}^\mathrm{S}(\cdot)$ is the $\ell_1$-norm over Euclidian $n$-spaces \cite{tibshirani1996regression,chen2001atomic}, optionally including an analysis prior model with a nested linear operator \cite{elad2006analysis}. The continuous-domain counterparts consist in the problems of sparse spikes recovery \cite{laville2021sparse} and spline reconstruction \cite{unser2017splines}, both being infinite-dimensional and based on a total-variation penalty. When a Banach norm $\mathcal{R}^\mathrm{S} (s) = \| s \|_{\mathcal{B}}$ is considered, the solution set of the single-component problem \eqref{eq:singletpb} is described thanks to representer theorems: the solutions are expressed as sums of extreme points of the Banach norm unit ball \cite{boyer2019representer,Unser2020,bredies2020sparsity}. Similarly, $\mathcal{R}^\mathrm{S}(\cdot)$ can be defined as an atomic norm to promote sparse solutions, as the extreme points are generally sparse vectors \cite{chandrasekaran2012convex}. This framework of Banach search space also covers significantly more complex functional setups of sparse recovery, as for instance in \cite{laville2023a,ambrosio2023,decastro2024}.
     Solving such a sparsity-promoting penalized problem is generally more difficult than the case of quadratic regularization on a Hilbert space: the solution set may be infinite-dimensional and the non-reflexivity of the Banach space prevents us from using gradient steps.
 
-    % \ad{Maybe take a bit of distance with Banach norms, and promote instead atomic norms. Classical example is Banach norm over Banach space, but other penalties may be used for sparse reconstruction. NEED a notation! $\mathcal{R}_1$ or $\mathcal{R}_\mathrm{SPARSE}$ or $\mathcal{R}^\mathrm{S}$ ?}
-    % {\color{red} Use a notation for sparsity promoting norms ($\mathcal{R}^\mathrm{S}$ for instance), keep in mind the classical case of Banach norms $\norm{\cdot}_\mathcal{B}$ and mention that there exist other forms. Cf Boyer ?}
-    The second classical form of regularization considered here involves a norm over of Banach space $\mathcal{B}$ expressed as
-    \begin{equation*}
-        \mathcal{R} (s) = \lambda \| s \|_{\mathcal{B}}.
-    \end{equation*}
-    We refer to this type of penalties as sparse regularization, as it is used to reconstruct sparse solutions. More precisely, the solutions are expressed as sums of extreme points of the Banach norm unit ball \cite{boyer2019representer,Unser2020,bredies2020sparsity}. It is common to use atomic norms for which the extreme points are sparse vectors \cite{chandrasekaran2012convex}.
-    The classical finite-dimensional example is the $\ell_1$-norm over Euclidian $n$-spaces \cite{tibshirani1996regression,chen2001atomic}, however the formalism presented hereabove interestingly applies for infinite-dimensional cases, including the sparse spikes recovery case \cite{laville2021sparse} as well as more complex penalties \cite{laville2023a,ambrosio2023,decastro2024}.
-    % The topological structure of the search space is more general than the smooth regularization over Hilbert spaces and thus the penalized optimization problems are usually more difficult to solve in practice, the search space being infinite dimensional for continuous-domain problems.
-    Solving such a sparsity-promoting penalized problem is generally more difficult than the case of quadratic regularization on a Hilbert space: the solution set may be infinite-dimensional and the non-reflexivity of the Banach space prevents us from using gradient steps.
-    % The Banach space topology is more general than the smooth regularization over Hilbert spaces and thus the penalized optimization problems are more difficult to solve in practice (infinite-dimensional problems, no gradient, etc)
+    % The second classical form of regularization considered here involves a norm over of Banach space $\mathcal{B}$ expressed as
+    % \begin{equation*}
+    %     \mathcal{R} (s) = \lambda \| s \|_{\mathcal{B}}.
+    % \end{equation*}
+    % We refer to this type of penalties as sparse regularization, as it is used to reconstruct sparse solutions. More precisely, the solutions are expressed as sums of extreme points of the Banach norm unit ball \cite{boyer2019representer,Unser2020,bredies2020sparsity}. It is common to use atomic norms for which the extreme points are sparse vectors \cite{chandrasekaran2012convex}.
+    % The classical finite-dimensional example is the $\ell_1$-norm over Euclidian $n$-spaces \cite{tibshirani1996regression,chen2001atomic}, however the formalism presented hereabove interestingly applies for infinite-dimensional cases, including the sparse spikes recovery case \cite{laville2021sparse} as well as more complex penalties \cite{laville2023a,ambrosio2023,decastro2024}.
+    % % The topological structure of the search space is more general than the smooth regularization over Hilbert spaces and thus the penalized optimization problems are usually more difficult to solve in practice, the search space being infinite dimensional for continuous-domain problems.
+    % Solving such a sparsity-promoting penalized problem is generally more difficult than the case of quadratic regularization on a Hilbert space: the solution set may be infinite-dimensional and the non-reflexivity of the Banach space prevents us from using gradient steps.
+    % % The Banach space topology is more general than the smooth regularization over Hilbert spaces and thus the penalized optimization problems are more difficult to solve in practice (infinite-dimensional problems, no gradient, etc)
     
-    % Atomic norm~\cite{chandrasekaran2012convex}. Example: $\ell_1$. Explain the general principle. \ad{Splines.}
+    % % Atomic norm~\cite{chandrasekaran2012convex}. Example: $\ell_1$. Explain the general principle. \ad{Splines.}
 
-    {\color{red} Find the criteria for $\mathcal{R}_1$.}
     In this work, we consider the combination of the two above-mentioned penalties, which we refer to as \emph{sparse-plus-smooth} regularization. We focus on problem~\eqref{eq:compositepb} with
         \begin{equation*}
         \mathcal{R}_1 (s_1) = \lambda_1 \mathcal{R}^\mathrm{S}(s_1) \qquad\text{and}\qquad \mathcal{R}_2 (s_2) = \lambda_2 \| s_2 \|_{\mathcal{H}}^2
     \end{equation*}
-    for $\cR^\mathrm{S}$ a general convex sparsity-promoting function $\cB \to \R_+$ and $\lambda_1, \lambda_2 > 0$. This problem has already been studied in \cite{debarre2021continuous} using a Banach norm for $\cR_1$, covering continuous-domain reconstruction and regularization operators. The authors demonstrated that the solutions of the composite optimization problem indeed behave as expected: the sparse component $s_1$ admits a sparse structure as if it solved non-composite problem, and similarly the component $s_2$ behaves as the solution of a smooth problem. This result had been exemplified earlier in various finite-dimensional application cases, using sparse-plus-smooth optimization problems with discrete vector components, see \cite{mol2004,gholami2013balanced,debarnot2020learning}. In a discrete setting, it is possible to decouple the resolution of the composite optimization problem: the sparse component can be directly identified with a single-component optimization problem and the smooth component is unique and deduced afterward. The requirements for such a decoupling to take place are presented in \cite{jarret2024decoupled}, considering the general case in which operators are involved within the regularization terms.
+    for $\cRS$ a general convex sparsity-promoting function $\cB \to \R_+$ and $\lambda_1, \lambda_2 > 0$. This problem has already been studied in \cite{debarre2021continuous} using a Banach norm for $\cRS$, covering continuous-domain reconstruction and regularization operators. The authors demonstrated that the solutions of the composite optimization problem indeed behave as expected: the sparse component $s_1$ admits a sparse structure as if it solved non-composite problem, and similarly the component $s_2$ behaves as the solution of a smooth problem. This result had been exemplified earlier in various finite-dimensional application cases, using sparse-plus-smooth optimization problems with discrete vector components, see \cite{mol2004,gholami2013balanced,debarnot2020learning}. In a discrete setting, it is possible to decouple the resolution of the composite optimization problem: the sparse component can be directly identified with a single-component optimization problem and the smooth component is unique and deduced afterward. The requirements for such a decoupling to take place are presented in \cite{jarret2024decoupled}, considering the general case in which operators are involved within the regularization terms.
 
     % \ad{Should maybe put more emphasis on the continuun.}
     % \ju{Agreed. It could list possible application frameworks when people use atomic norms in the continuum (Romain Petit, Shayan sur la Schatten norm, l'ancien collègue de Vasi qui bosse sur les courbes comme atomes).} \ad{Good point, done!}
@@ -300,7 +307,7 @@
     % The norms responsible for promoting sparsity do not stem from any inner product.
     % Using a Hilbertian norm generally does not promote sparsity, as the solution can be interpreted as a projection over 
     The solution resulting from the quadratic Hilbertian regularization is generally not sparse (it can be interpreted as an orthogonal projection over a Hilbert norm ball, see \cite{engl1996regularization}).
-    The classical framework for sparse reconstruction instead considers a search space that is a generic non-reflexive Banach space $\mathcal{B}$ and assumes the existence of a predual space \cite{unser2021unifying}.
+    A general framework for sparse reconstruction can be classically formalized using a non-reflexive Banach space $\mathcal{B}$ as the search space, for which we assume the existence of a predual space \cite{unser2021unifying}.
     
     We fix two Banach spaces $( \mathcal{A}, \| \cdot \|_{\mathcal{A}})$ and $( \mathcal{B}, \| \cdot \|_{\mathcal{B}})$ such that $\mathcal{B} = \mathcal{A}'$ is the topological dual of $\mathcal{A}$ and $\| \cdot \|_{\mathcal{B}}$ is the dual norm 
     \begin{equation*}
@@ -323,37 +330,74 @@
         \label{eq:phi-banach}
         \phibsingle (s) := (\langle \phibb_\ell, s \rangle_{\mathcal{A}\times\mathcal{B}})_{1\leq \ell \leq L} \in \mathbb{R}^L.
     \end{equation}
+    In what follows, we make the mild assumption that $\phib$ is a bounded operator, an assumption that is typically satisfied in practical settings.
 
 
-    {\color{red} Maybe cite RT from Boyer first. Then mention specific case of Banach norm.}
-    In this more general setting, the solution set of the optimization problem~\eqref{eq:singletpb} when $\mathcal{R}(s) = \lambda \| s \|_{\mathcal{B}}$ is characterized with another representer theorem in Proposition~\ref{prop:banachRT} hereafter, analogous to Proposition~\ref{prop:hilbertRT} on Hilbert spaces.
-    The specific case of $\lVert \cdot \rVert_\mathcal{B}$ being the $\ell_1$-norm or its functional generalization is studied in~\cite{Fisher1975,Unser2016representer,unser2017splines,bredies2020sparsity}, and some even more general settings are studied in~\cite{boyer2019representer,unser2019native}.
+    Within this framework, the solutions of the optimization problem~\eqref{eq:singletpb} with $s\in\cB$  are significantly influenced by the choice of the sparsity-promoting penalty $\mathcal{R}(s) = \lambda \cRS(s)$. Remarkably, we have access to abstract representer theorems to characterize the solution set. We follow the presentation of \cite{boyer2019representer} but similar results were proposed at the same time with somewhat different proofs in \cite{bredies2020sparsity}. The abstract theorem presented hereafter generalizes Proposition~\ref{prop:hilbertRT} on Hilbert spaces.
+    
+    \ad{Should I use a proper star instead of the product star as exponent ?}
+    \begin{proposition}[Abstract Representer Theorem for penalized problems (Corollary 2 in \cite{boyer2019representer})]
+    \label{prop:abstract-rt}
+    Let $\cRS: \cB \to \R_+$ be a convex function, $\bm{y}\in \R^L$, $\phibsingle= (\phibb_1 ,\ldots , \phibb_L) \in \mathcal{A}^L$, and $\lambda > 0$. Moreover, let us assume that the optimization problem
+    \begin{equation} \label{eq:sparse-rt}
+        \inf_{s \in \mathcal{B}} \frac{1}{2} \| \bm{y} - \phibsingle(s) \|_2^2 + \lambda \cRS(s)
+    \end{equation}
+    has a nonempty solution set $\mathcal{V}(\lambda)$.
+    \begin{itemize}
+        \item First, the strict convexity of the quadratic data-fidelity term ensures that any solution $\widehat{s} \in \mathcal{V}(\lambda)$ shares the same measurement vector, i.e., $\phib \left(\mathcal{V}(\lambda)\right)$ is a singleton.
+        \item Second, any solution $\widehat{s} \in \mathcal{V}(\lambda)$ leads to the same value of the penalty $R^\star := \cRS(\widehat{s})$.
+        \item Third, assuming the level set $C^\star := \left\{s \in \cB,\ \cRS(s) \leq R^\star\right\}$ is linearly closed, any solution $\widehat{s} \in \mathcal{V}(\lambda)$ can be expressed as a convex combination of extreme points of the set $C^\star$. The bounds on the  number of elements in the combination depends on the dimension of the face of the solution set which contains the considered solution. 
+    \end{itemize}
+    \end{proposition}
 
-    \ad{Replace with Boyer RT}
+    Proposition~\ref{prop:abstract-rt} sheds light on the mechanics behind sparsity-promoting penalties: sparse reconstruction is naturally obtained using a function $\cR^{\mathrm{S}}$ whose level sets have sparse extreme points, and the reconstruction atoms can be chosen to be the extreme points themselves.
+
+    More precise representer theorems can be deduced from Proposition~\ref{prop:abstract-rt}, for instance considering (generalized) total-variation norms for measures and splines reconstructions\cite{Fisher1975,Unser2016representer,unser2017splines,bredies2020sparsity,bredies2020sparsity}. As an example, we recall the specific case of a Banach-norm regularization $\cRS = \norm{s}_\cB$ in Proposition~\ref{prop:banachRT}, which combines existence and topological results from~\cite[Proposition 8]{gupta2018continuous} and the extreme point characterization of \cite[Theorem 3.1]{boyer2019representer}.
+
     \begin{proposition}[Representer Theorem on Banach spaces]
     \label{prop:banachRT}
-     Let $\bm{y}\in \R^L$, $\phibsingle= (\phibb_1 ,\ldots , \phibb_L) \in \mathcal{A}^L$, and $\lambda > 0$. Then, the optimization problem 
+    Let $\bm{y}\in \R^L$, $\phibsingle= (\phibb_1 ,\ldots , \phibb_L) \in \mathcal{A}^L$, and $\lambda > 0$. The optimization problem 
     \begin{equation} \label{eq:banachpb}
         \inf_{s \in \mathcal{B}} \frac{1}{2} \| \bm{y} - \phibsingle(s) \|_2^2 + \lambda \| s \|_{\mathcal{B}}
     \end{equation}
-    admits at least a solution and its solution set $\mathcal{V} (\lambda)$ is weak*-compact, convex, and is the closed convex hull of its extreme points. Any extreme point $\hfb$ of $\mathcal{V} (\lambda)$ is such that 
+    admits at least a solution and its solution set $\mathcal{V} (\lambda)$ is weak*-compact, convex, and is the closed convex hull of its extreme points.
+
+    Any extreme point $\hfb$ of $\mathcal{V} (\lambda)$ is such that 
     \begin{equation} \label{eq:widehatbanachextreme}
         \hfb  = \sum_{1 \leq k \leq K} \alpha_k e_k
     \end{equation}
     where $e_k$ are distinct extreme points of the unit ball of $\|\cdot \|_{\mathcal{B}}$,  $\alpha_k \in \mathbb{R}$, and $0 \leq K \leq L$.
-
-    \ad{Make another proposition.}
-    Moreover, for any combination $\bm{y}, \phibsingle,\lambda$ there exists a unique vector $\bm{w} = \bm{w}(\bm{y}, \phibsingle,\lambda) \in \R^L$ such that
-    \begin{equation} \label{eq:zlambda}
-        \forall\ \hfb \in \mathcal{V} (\lambda), \quad \phibsingle(\hfb) = \bm{w}.
-    \end{equation}
     \end{proposition}
+
+    % {\color{red} Maybe cite RT from Boyer first. Then mention specific case of Banach norm.}
+    % In this more general setting, the solution set of the optimization problem~\eqref{eq:singletpb} when $\mathcal{R}(s) = \lambda \| s \|_{\mathcal{B}}$ is characterized with another representer theorem in Proposition~\ref{prop:banachRT} hereafter, analogous to Proposition~\ref{prop:hilbertRT} on Hilbert spaces.
+    % The specific case of $\lVert \cdot \rVert_\mathcal{B}$ being the $\ell_1$-norm or its functional generalization is studied in~\cite{Fisher1975,Unser2016representer,unser2017splines,bredies2020sparsity}, and some even more general settings are studied in~\cite{boyer2019representer,unser2019native}.
+
+    % \ad{Replace with Boyer RT}
+    % \begin{proposition}[Representer Theorem on Banach spaces]
+    % \label{prop:banachRT}
+    % Let $\bm{y}\in \R^L$, $\phibsingle= (\phibb_1 ,\ldots , \phibb_L) \in \mathcal{A}^L$, and $\lambda > 0$. Then, the optimization problem 
+    % \begin{equation} \label{eq:banachpb}
+    %     \inf_{s \in \mathcal{B}} \frac{1}{2} \| \bm{y} - \phibsingle(s) \|_2^2 + \lambda \| s \|_{\mathcal{B}}
+    % \end{equation}
+    % admits at least a solution and its solution set $\mathcal{V} (\lambda)$ is weak*-compact, convex, and is the closed convex hull of its extreme points. Any extreme point $\hfb$ of $\mathcal{V} (\lambda)$ is such that 
+    % \begin{equation} \label{eq:widehatbanachextreme}
+    %     \hfb  = \sum_{1 \leq k \leq K} \alpha_k e_k
+    % \end{equation}
+    % where $e_k$ are distinct extreme points of the unit ball of $\|\cdot \|_{\mathcal{B}}$,  $\alpha_k \in \mathbb{R}$, and $0 \leq K \leq L$.
+
+    % \ad{Make another proposition.}
+    % Moreover, for any combination $\bm{y}, \phibsingle,\lambda$ there exists a unique vector $\bm{w} = \bm{w}(\bm{y}, \phibsingle,\lambda) \in \R^L$ such that
+    % \begin{equation} \label{eq:zlambda}
+    %     \forall\ \hfb \in \mathcal{V} (\lambda), \quad \phibsingle(\hfb) = \bm{w}.
+    % \end{equation}
+    % \end{proposition}
     
-    \ad{Mention that the framework of banach space which admits a pre-dual is generally enough to guarantee existence of solution, hence we can aply the RT from Boyer.}
-    Proposition~\ref{prop:banachRT} combines existence and topological results from~\cite[Proposition 8]{gupta2018continuous} and the extreme point characterization of \cite[Theorem 3.1]{boyer2019representer}.
-    %\ad{The link is not obvious to me with Boyer et al.}
-    The existence of a common measurement vector $\bm{w}$ for the solutions of \eqref{eq:banachpb} is classical and uses the strict convexity of the $\ell_2$-norm used in the data fidelity. A proof in a slightly different context can be found, for instance, in~\cite[Proposition 7]{debarre2022sparsest}.
-    % \ad{Question to myself: Does it still hold with arbitrary Banach norm, such as an atomic norm for instance ? Remark 3.4 from Boyer says so.}
+    % \ad{Mention that the framework of banach space which admits a pre-dual is generally enough to guarantee existence of solution, hence we can aply the RT from Boyer.}
+    % Proposition~\ref{prop:banachRT} combines existence and topological results from~\cite[Proposition 8]{gupta2018continuous} and the extreme point characterization of \cite[Theorem 3.1]{boyer2019representer}.
+    % %\ad{The link is not obvious to me with Boyer et al.}
+    % The existence of a common measurement vector $\bm{w}$ for the solutions of \eqref{eq:banachpb} is classical and uses the strict convexity of the $\ell_2$-norm used in the data fidelity. A proof in a slightly different context can be found, for instance, in~\cite[Proposition 7]{debarre2022sparsest}.
+    % % \ad{Question to myself: Does it still hold with arbitrary Banach norm, such as an atomic norm for instance ? Remark 3.4 from Boyer says so.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%  SECTION 3
@@ -365,11 +409,10 @@
 
     \subsection{Main theorem}
 
-    {\color{red} Unify notation of \eqref{eq:compositepb} and here, remove the $+$ sign between the two components.}
-    We consider the composite problem \eqref{eq:compositepb} in a slightly more generic form using two measurement operators. For $\lambda_1, \lambda_2 > 0$, the objective functional is given by
+    Let us recall the composite problem \eqref{eq:compositepb} with a quadratic data-fidelity term. For $\lambda_1, \lambda_2 > 0$, the objective functional is given by
     \begin{equation}
         \label{eq:composite-optim}
-        \mathcal{J}(\fb, \fh) := \frac{1}{2} \| \bm{y} - (\phib (\fb) + \phih (\fh)) \|_2^2  + \lb \| \fb \|_{\mathcal{B}} + \frac{\lh}{2} \| \fh \|_{\mathcal{H}}^2,
+        \mathcal{J}(\fb, \fh) := \frac{1}{2} \| \bm{y} - (\phib (\fb) + \phih (\fh)) \|_2^2  + \lb \cRS(\fb) + \frac{\lh}{2} \| \fh \|_{\mathcal{H}}^2,
     \end{equation}
     % \ad{ToDo: Remove sentence on minimum requirement.}
     % The measurement operator $\phib$ samples both the sparse and the smooth components hence we have the minimal requirement that $\phib \in (\mathcal{A} \cap \mathcal{H})^L$.
@@ -381,60 +424,74 @@
     We need to define the matrix
     \begin{equation}
         \label{eq:def-Mphi}
-        \mathbf{M}_{\lh} := \frac{1}{\lh} \left(\phih\phih^* + \lh \mathbf{I}_L\right) = \frac{1}{\lh} \left( \langle \phi_k , \phi_\ell \rangle_{\mathcal{H}} + \lh \delta[k - \ell] \right)_{1\leq k, \ell \leq L}.
+        \mathbf{M}_{\lh} := \frac{1}{\lh} \left(\phih\phih^* + \lh \mathbf{I}_L\right) = \frac{1}{\lh} \left( \langle \phihh_k , \phihh_\ell \rangle_{\mathcal{H}} + \lh \delta[k - \ell] \right)_{1\leq k, \ell \leq L}.
     \end{equation}
     This matrix is positive definite. It is therefore invertible and admits a square-root matrix.
 
     Our main result, Theorem~\ref{theo:main} hereafter, reduces the analysis of a composite optimization problem over $\mathcal{B}\times\mathcal{H}$ to a problem over $\mathcal{B}$, hence decoupling the contributions of the two components. The proof is given in Appendix~\ref{app:prooftheo1}.
 
     \begin{theorem} \label{theo:main}
-     Let $\bm{y}\in \R^L$, $\lambda_1, \lh > 0$, $\phib \in \mathcal{A}^L$ and $\phih \in \mathcal{H}^L$.
-     Then, the solution set $\mathcal{W} (\lb,\lh)$
-   %  \begin{equation*}
-   % \mathcal{W} (\lb,\lh) = \underset{(\fb,\fh) \in \mathcal{B} \times \mathcal{H}}{\arg\min} \| \bm{y} - (\phib (\fb) + \phih (\fh)) \|_2^2  + \lb \| \fb \|_{\mathcal{B}} + \lh \| \fh \|_{\mathcal{H}}^2
-   %  \end{equation*}
-    is non-empty, convex, and weak*-compact in $\mathcal{B}\times \mathcal{H}$. Moreover, we can write
-    \begin{equation}
-        \label{eq:decoupling}
-        \mathcal{W} (\lb,\lh) = \mathcal{V}(\mathbf{M}_{\lh},\lb) \times \{\hfh\}
-    \end{equation}
-    with
-    \begin{align}
-        \mathcal{V}(\mathbf{M}_{\lh},\lb) &:= \underset{ \fb \in \mathcal{B}}{\arg\min} \quad \|\mathbf{M}_{\lh}^{-\frac{1}{2}} ( \bm{y} - \phib(\fb)  ) \|_2^2  + \lb \| \fb \|_{\mathcal{B}} , \label{eq:banachpart} \\
-        \hfh &:=  \frac{1}{\lh}\phih^* \mathbf{M}_{\lh}^{-1} \left(\bm{y} - \bm{w}\right), \label{eq:hilbertpart}
-    \end{align}
-    where the vector $\bm{w} := \phib ( \hfb)$ is unique and independent of the solution $\hfb \in \mathcal{V}(\mathbf{M}_{\lh},\lb)$. 
+        Let $\cRS: \cB \to \R_+$ be a convex function,  $\bm{y}\in \R^L$, $\lambda_1, \lh > 0$, $\phib \in \mathcal{A}^L$ and $\phih \in \mathcal{H}^L$.
+        The solution set $\mathcal{W} (\lb,\lh)$ can be written as
+        \begin{equation}
+            \label{eq:decoupling}
+            \mathcal{W} (\lb,\lh) = \mathcal{V}(\mathbf{M}_{\lh},\lb) \times \{\hfh\}
+        \end{equation}
+        with
+        \begin{align}
+            \mathcal{V}(\mathbf{M}_{\lh},\lb) &:= \underset{ \fb \in \mathcal{B}}{\arg\min} \quad \|\mathbf{M}_{\lh}^{-\frac{1}{2}} ( \bm{y} - \phib(\fb)  ) \|_2^2  + \lb \cRS(\fb), \label{eq:banachpart} \\
+            \hfh &:=  \frac{1}{\lh}\phih^* \mathbf{M}_{\lh}^{-1} \left(\bm{y} - \bm{w}\right), \label{eq:hilbertpart}
+        \end{align}
+        where the vector $\bm{w} := \phib ( \hfb)$ is unique and independent of the solution $\hfb \in \mathcal{V}(\mathbf{M}_{\lh},\lb)$. 
     \end{theorem}
 
-    Consequently, known results over $\mathcal{B}$ are directly transferred into $\mathcal{B}\times \mathcal{H}$. We illustrate this principle with the following corollary, expressed as a representer theorem, which characterizes the extreme point solutions of composite inverse problems.
+    Theorem~\ref{theo:main} reveals the interests of a composite framework using sparsity-promoting and quadratic Hilbertian regularizations. The sparse component is made of extreme points of the level sets of $\cRS$ while the smooth component lives in the finite-dimensional space of the measurement functionals $(\phihh_1, \ldots, \phihh_L)$. It implies in particular that the general form of an extreme point solution is 
+    \begin{equation*}
+        \left(\hfb, \hfh \right) = \left(\sum_{k} \alpha_k e_k, \sum_{1 \leq \ell \leq L} \beta_\ell \phihh_{\ell}\right),
+    \end{equation*}
+    where the $e_k$ are distinct extreme points of the the level sets of $\cRS$. 
+
+   %  \begin{theorem} \label{theo:main}
+   %  Let $\cRS: \cB \to \R$ be a convex function,  $\bm{y}\in \R^L$, $\lambda_1, \lh > 0$, $\phib \in \mathcal{A}^L$ and $\phih \in \mathcal{H}^L$.
+   %  The solution set $\mathcal{W} (\lb,\lh)$
+   % %  \begin{equation*}
+   % % \mathcal{W} (\lb,\lh) = \underset{(\fb,\fh) \in \mathcal{B} \times \mathcal{H}}{\arg\min} \| \bm{y} - (\phib (\fb) + \phih (\fh)) \|_2^2  + \lb \| \fb \|_{\mathcal{B}} + \lh \| \fh \|_{\mathcal{H}}^2
+   % %  \end{equation*}
+   %  is non-empty, convex, and weak*-compact in $\mathcal{B}\times \mathcal{H}$. Moreover, we can write
+   %  \begin{equation}
+   %      \label{eq:decoupling}
+   %      \mathcal{W} (\lb,\lh) = \mathcal{V}(\mathbf{M}_{\lh},\lb) \times \{\hfh\}
+   %  \end{equation}
+   %  with
+   %  \begin{align}
+   %      \mathcal{V}(\mathbf{M}_{\lh},\lb) &:= \underset{ \fb \in \mathcal{B}}{\arg\min} \quad \|\mathbf{M}_{\lh}^{-\frac{1}{2}} ( \bm{y} - \phib(\fb)  ) \|_2^2  + \lb \| \fb \|_{\mathcal{B}} , \label{eq:banachpart} \\
+   %      \hfh &:=  \frac{1}{\lh}\phih^* \mathbf{M}_{\lh}^{-1} \left(\bm{y} - \bm{w}\right), \label{eq:hilbertpart}
+   %  \end{align}
+   %  where the vector $\bm{w} := \phib ( \hfb)$ is unique and independent of the solution $\hfb \in \mathcal{V}(\mathbf{M}_{\lh},\lb)$. 
+   %  \end{theorem}
+
+    Another consequence of Theorem~\ref{theo:main} is that known results over $\mathcal{B}$ are directly transferred into $\mathcal{B}\times \mathcal{H}$, as the decoupling holds for any convex penalty $\cRS$. The properties of the sparse component directly stem from the shape of the solutions in $\mathcal{V}(\mathbf{M}_{\lh}, \lb)$. We illustrate this principle with a Banach-norm regularization in the following corollary, stating a representer theorem which characterizes the extreme point solutions.
 
     \begin{corollary}
-    From \eqref{eq:banachpart}, we can deduce that the extreme points of $\mathcal{W} (\lb,\lh)$ are of the form 
+    Let us consider the problem~\eqref{eq:argminisback} with $\cRS(\cdot) = \norm{\cdot}_\cB $ over $\cB$. Invoking Proposition~\ref{prop:banachRT} to $\mathcal{V}(\mathbf{M}_{\lh},\lb)$ in \eqref{eq:banachpart}, the solution set $\mathcal{W} (\lb,\lh)$ is non-empty, convex, and weak*-compact in $\mathcal{B}\times \mathcal{H}$. Its extreme points are of the form 
     \begin{equation} \label{eq:extreme}
-        (\hfb , \hfh ) = \left( \sum_{1 \leq k \leq K} \alpha_k e_k , \hfh \right)
+        (\hfb , \hfh ) = \left( \sum_{1 \leq k \leq K} \alpha_k e_k , \frac{1}{\lh}\phih^* \mathbf{M}_{\lh}^{-1} \left(\bm{y} - \bm{w}\right)\right)
     \end{equation}
     where $\alpha_k \neq 0$, $e_k$ are distinct extreme points of the unit ball $\{ \fb \in \mathcal{B}, \ \| \fb \|_{\mathcal{B}} \leq 1\}$, $0 \leq K \leq L$, and $\hfh$ is given by \eqref{eq:hilbertpart}. 
     \end{corollary}
 
-    Theorem~\ref{theo:main} reveals the interests of a composite framework using Banach and Hilbert regularizations. The Banach component is made of extreme points of the unit ball of $\mathcal{B}$
-    while the Hilbertian component lives in the finite-dimensional space of the measurement functionals $(\phihh_1, \ldots, \phihh_L)$. It implies in particular that the general form of an extreme point solution is 
-    \begin{equation*}
-        \widehat{s} = \hfb + \hfh = \sum_{1 \leq k \leq K} \alpha_k e_k + \sum_{1 \leq \ell \leq L} \beta_\ell \phihh_{\ell},
-    \end{equation*}
-    with $K\leq L$ and where the $e_k$ are distinct extreme points of the unit ball of $\mathcal{B}$. 
-    This characterization is particularly relevant for Banach spaces whose extreme points have interesting properties, as is the case for $\ell_1$-norms and their generalizations~\cite{chandrasekaran2012convex}.
-    This last equation was already a consequence of~\cite[Theorem 2]{unser2022convex}, but Theorem~\ref{theo:main} specifies the joint properties of the weight vectors $\bm{\alpha}$ and $\bm{\beta}$.
+    Equation~\eqref{eq:extreme} was already a consequence of~\cite[Theorem 2]{unser2022convex}, but Theorem~\ref{theo:main} specifies the exact form of the smooth component $\hfb$. Incidentally, spline-based reconstruction could be readily considered for the sparse component using $\cRS(\cdot) = \|\mathrm{L}\cdot\|_\mathcal{B}$, with $\mathrm{L}$ a pseudo-differential operator \cite{unser2017splines}.
 
-    {\color{red} Remove the remark and mention it in the main text earlier.}
-    \begin{remark}[Decoupling beyond Hilbert-plus-Banach]
-        We stated Theorem~\ref{theo:main} for Hilbert-plus-Banach optimization but the decoupling readily holds for more general situations. Indeed, the proof only relies on the closed-form expression of the Hilbert component when the other one is fixed.
-        It is for instance possible to consider spline reconstruction using $\|\mathrm{L}\cdot\|_\mathcal{B}$ instead of $\|\cdot\|_\mathcal{B}$, with $\mathrm{L}$ a pseudo-differential operator \cite{unser2017splines}.
-        When a more general penalty term $\mathcal{R}(\fb)$ is used, the decoupling between the components still holds but the properties that stem from $\mathcal{V}(\mathbf{M}_{\lh}, \lb)$ need to be verified depending on the chosen regularization, see the representer theorems of \cite{boyer2019representer}.
+    % {\color{red} Remove the remark and mention it in the main text earlier.}
+    % \begin{remark}[Decoupling beyond Hilbert-plus-Banach]
+    %     We stated Theorem~\ref{theo:main} for Hilbert-plus-Banach optimization but the decoupling readily holds for more general situations. Indeed, the proof only relies on the closed-form expression of the Hilbert component when the other one is fixed.
+    %     It is for instance possible to consider spline reconstruction using $\|\mathrm{L}\cdot\|_\mathcal{B}$ instead of $\|\cdot\|_\mathcal{B}$, with $\mathrm{L}$ a pseudo-differential operator \cite{unser2017splines}.
+    %     When a more general penalty term $\mathcal{R}(\fb)$ is used, the decoupling between the components still holds but the properties that stem from $\mathcal{V}(\mathbf{M}_{\lh}, \lb)$ need to be verified depending on the chosen regularization, see the representer theorems of \cite{boyer2019representer}.
 
-        % Hence, it is possible to replace $\|\cdot\|_\mathcal{B}$ by any penalty term, for instance considering spline reconstruction with $\|\mathrm{L}\cdot\|_\mathcal{B}$ for $\mathrm{L}$ a pseudo-differential operator.
-        % % or considering another norm/functional for $\mathcal{R}(f_1)$.
-        % When a more general penalty term $\mathcal{R}(f_1)$ is used, the decoupling between the components still holds but the properties that stem from $\mathcal{V}(\mathbf{M}_{\lh}, \lb)$ are not guranteed and need to be verified according to the chosen regularization (representer theorem, uniqueness of measurement vector $\bm{w}$).
-    \end{remark}
+    %     % Hence, it is possible to replace $\|\cdot\|_\mathcal{B}$ by any penalty term, for instance considering spline reconstruction with $\|\mathrm{L}\cdot\|_\mathcal{B}$ for $\mathrm{L}$ a pseudo-differential operator.
+    %     % % or considering another norm/functional for $\mathcal{R}(f_1)$.
+    %     % When a more general penalty term $\mathcal{R}(f_1)$ is used, the decoupling between the components still holds but the properties that stem from $\mathcal{V}(\mathbf{M}_{\lh}, \lb)$ are not guranteed and need to be verified according to the chosen regularization (representer theorem, uniqueness of measurement vector $\bm{w}$).
+    % \end{remark}
 
     % \ad{Remove next remark.}
     % \begin{remark}[Different measurement operators]
@@ -447,8 +504,9 @@
     If we consider a single-component problem with a Hilbert penalty, there exists an optimal value of the regularization parameter when the source signal follows a random Gaussian model \cite{Badou}. Beyond this ideal model, finding a relevant value for this parameter is still an open question and many strategies have been proposed in the literature \cite{hansen2000,park2008parameter}. The case of single-component Banach problems is not simpler \cite{deladalle2014sugar,chirinos2024parameter}. 
     However, when an $\ell_1$-norm or total variation norm is considered, the relevant values of the regularization parameter $\lambda > 0$ are confined to an explicit interval. Indeed, there exists a problem-dependent maximum value $\lambda_{\mathrm{max}} > 0$ above which the solution of the optimization is unique and reduced to the null signal. This is a well-known result for LASSO-type problems, both in discrete \cite{tibshirani2013lasso}, \cite[Proposition~II.1]{koulouri2021} and continuous settings \cite[Proposition~10]{debarre2022sparsest}, \cite[Proposition~4.3]{jarret_grid_2025}.
 
-    {\color{red} We first extend this result to the generic case of single-components problems penalized with a Banach norm in the following proposition.
-    \begin{proposition}[Bound on single-component Banach-penalized problems]
+    \ad{Maybe move the proof to the appendix.}
+    We first extend this result to the generic case of single-components problems penalized with a Banach norm in the following theorem.
+    \begin{theorem}[Bound on single-component Banach-penalized problems]
     \label{prop:single-lmax}
     For $\lambda >0$, we consider the solution set of the single-component optimization problem
     \begin{equation}
@@ -464,14 +522,14 @@
         \item[1.] \label{item:lm:1} For any $\lambda \geq \lm$, the solution to \eqref{eq:single-banach} is unique and the solution set is reduced to $\mathcal{V}(\lambda) = \left\{0\right\} \subset \cB$.
         \item[2.] \label{item:lm:2} For any $\lambda < \lm$, the null element $0$ is not solution, i.e., $0 \notin \mathcal{V}(\lambda)$.
     \end{itemize}
-    \end{proposition}
+    \end{theorem}
 
     \begin{proof}
-        Let us call the objective functional $\mathcal{J}_\mathcal{B}(s) := \frac{1}{2} \norm{\bm{y} - \phib(s)}_2^2 + \lambda \norm{s}_{\cB}$. For any pair of elements $(u, s) \in \cA \times \cB$, the classical duality inequality stems from the definition of the dual norm $\norm{\cdot}_\cB$ on $\cB$ as
+        Let us denote the objective functional $\mathcal{J}_\mathcal{B}(s) := \frac{1}{2} \norm{\bm{y} - \phib(s)}_2^2 + \lambda \norm{s}_{\cB}$. For any pair of elements $(u, s) \in \cA \times \cB$, the classical duality inequality stems from the definition of the dual norm $\norm{\cdot}_\cB$ on $\cB$ as
         \begin{equation*}
             \langle u, s \rangle_{\cA \times \cB} \leq \norm{u}_\cA \norm{s}_\cB.
         \end{equation*}
-        Based on this result, we can lower-bound the value of the objective function for any $s\in\cB$ as
+        Based on this result, we can lower-bound the value of the objective functional for any $s\in\cB$ as
         \begin{align}
             \mathcal{J}_\mathcal{B}(s) &= \frac{1}{2} \norm{\bm{y} - \phib(s)}_2^2 + \lambda \norm{s}_{\cB} \\
                     &= \frac{1}{2} \norm{\bm{y}}_2^2 + \frac{1}{2} \norm{\phib(s)}_2^2 - \langle \bm{y}, \phib(s) \rangle + \lambda \norm{s}_{\cB} \\
@@ -508,7 +566,6 @@
         \end{equation*}
         which proves that $0$ is not a minimum.
     \end{proof}
-    }
 
     % Given a Gaussian random model on the data/measurements, there exists a theoretic optimal value for the regularization parameter of the single-component optimization problem with an Hilbert penalty \cite{}. This result however does not exist for a generic optimization problem and finding a rule to set the regularization parameter is an active field of research 
     % \ad{Next introductive sentences need to be rephrased. I can mention that some techniques exist. We have more results for Hilbert-type regularization. References: chapter 7 of Rank-Deficient and discrete Ill-posed problems (Hansen), Wahba 1979, also from Hansen ``The L-curve and its use in the numerical treatment of inverse problems'', also see discussion in article from Park, 2017; another recent discusison in ``On learning the optimal regularization parameter in inverse problems'', Rodriguez 2024 -- FInally we have SUGAR paper from Peyré et al, 2014. }
@@ -526,17 +583,14 @@
     % we can apply this result to composite problems in which the Banach regularization obeys the same property. Proposition~\ref{prop:lmax} illustrates this transferred property onto the values of the two regularization parameters.
     %--------------------
 
-    \ad{Rewrite this as a corollary applied to the case $\norm{\cdot}_\cB$ penalization.}
     \begin{proposition}[Maximum value of $\lambda_1$]
     \label{prop:lmax}
-    Let $\cX$ be $\mathbb{R}^d$ or $\mathbb{T}^d$ for $d \in \mathbb{N}^*$.
-
-    We consider the composite optimization problem \eqref{eq:argminisback} where $\mathcal{B} = \mathcal{M}(\cX)$ and $\lVert \cdot \rVert_\mathcal{B} = \lVert \cdot \rVert_\mathcal{M}$. We define
+    Consider the composite optimization problem \eqref{eq:argminisback} with $\cRS(\cdot) = \lVert \cdot \rVert_\mathcal{B}$. For a fixed $\lh >0$, we define
     \begin{equation}
         \label{eq:l1max}
         \begin{split}
-        \lambda_{1, \mathrm{max}} &:= \lVert \phib^* \mathbf{M}_{\lambda_2}^{-1} \bm{y} \rVert_\infty \\
-                & = \lambda_2 \lVert \phib^* \left( \phih \phih^* + \lambda_2 \mathbf{I}_L \right)^{-1} \bm{y} \rVert_\infty.
+        \lambda_{1, \mathrm{max}} &:= \lVert \phib^* \mathbf{M}_{\lambda_2}^{-1} \bm{y} \rVert_\cA \\
+                & = \lambda_2 \lVert \phib^* \left( \phih \phih^* + \lambda_2 \mathbf{I}_L \right)^{-1} \bm{y} \rVert_\cA.
         \end{split}
     \end{equation}
     For any $\lambda_1 \geq \lambda_{1, \mathrm{max}}$, the solution set for the Banach component is reduced to the singleton zero 
@@ -545,18 +599,43 @@
     \end{proposition}
 
     \begin{proof}
-        Problem \eqref{eq:banachpart} is a B-LASSO problem with operator $\mathbf{M}_{\lh}^{-\frac{1}{2}} \phib$ and measurement vector $\mathbf{M}_{\lh}^{-\frac{1}{2}}\bm{y}$, hence the maximum value of the optimization parameter writes as
+        The sparse component subproblem~\eqref{eq:banachpart} is a Banach-norm penalized single-component problem as in~\eqref{eq:single-banach} with operator $\mathbf{M}_{\lh}^{-\frac{1}{2}} \phib$ and measurement vector $\mathbf{M}_{\lh}^{-\frac{1}{2}}\bm{y}$, hence the maximum value of the optimization parameter writes as
         \begin{equation*}
-            \lambda_{1, \mathrm{max}} = \lVert (\mathbf{M}_{\lh}^{-\frac{1}{2}} \phib)^*  (\mathbf{M}_{\lh}^{-\frac{1}{2}} \bm{y}) \rVert_\infty = \lVert \phib^* (\mathbf{M}_{\lh}^{-\frac{1}{2}})^* \mathbf{M}_{\lh}^{-\frac{1}{2}} \bm{y} \rVert_\infty = \lVert \phib^* \mathbf{M}_{\lambda_2}^{-1} \bm{y} \rVert_\infty,
+            \lambda_{1, \mathrm{max}} = \lVert (\mathbf{M}_{\lh}^{-\frac{1}{2}} \phib)^*  (\mathbf{M}_{\lh}^{-\frac{1}{2}} \bm{y}) \rVert_\cA = \lVert \phib^* (\mathbf{M}_{\lh}^{-\frac{1}{2}})^* \mathbf{M}_{\lh}^{-\frac{1}{2}} \bm{y} \rVert_\cA = \lVert \phib^* \mathbf{M}_{\lambda_2}^{-1} \bm{y} \rVert_\cA,
         \end{equation*}
         using the symmetry of the matrix $\mathbf{M}_{\lambda_2}$.
     \end{proof}
+
+    % \begin{proposition}[Maximum value of $\lambda_1$]
+    % \label{prop:lmax}
+    % Let $\cX$ be $\mathbb{R}^d$ or $\mathbb{T}^d$ for $d \in \mathbb{N}^*$.
+
+    % We consider the composite optimization problem \eqref{eq:argminisback} where $\mathcal{B} = \mathcal{M}(\cX)$ and $\lVert \cdot \rVert_\mathcal{B} = \lVert \cdot \rVert_\mathcal{M}$. We define
+    % \begin{equation}
+    %     \label{eq:l1max}
+    %     \begin{split}
+    %     \lambda_{1, \mathrm{max}} &:= \lVert \phib^* \mathbf{M}_{\lambda_2}^{-1} \bm{y} \rVert_\infty \\
+    %             & = \lambda_2 \lVert \phib^* \left( \phih \phih^* + \lambda_2 \mathbf{I}_L \right)^{-1} \bm{y} \rVert_\infty.
+    %     \end{split}
+    % \end{equation}
+    % For any $\lambda_1 \geq \lambda_{1, \mathrm{max}}$, the solution set for the Banach component is reduced to the singleton zero 
+    % $$\mathcal{V}(\mathbf{M}_{\lh}, \lb) = \left\{ 0 \right\}$$
+    % and Problem \eqref{eq:argminisback} is equivalent to a single-component Hilbert problem.
+    % \end{proposition}
+
+    % \begin{proof}
+    %     Problem \eqref{eq:banachpart} is a B-LASSO problem with operator $\mathbf{M}_{\lh}^{-\frac{1}{2}} \phib$ and measurement vector $\mathbf{M}_{\lh}^{-\frac{1}{2}}\bm{y}$, hence the maximum value of the optimization parameter writes as
+    %     \begin{equation*}
+    %         \lambda_{1, \mathrm{max}} = \lVert (\mathbf{M}_{\lh}^{-\frac{1}{2}} \phib)^*  (\mathbf{M}_{\lh}^{-\frac{1}{2}} \bm{y}) \rVert_\infty = \lVert \phib^* (\mathbf{M}_{\lh}^{-\frac{1}{2}})^* \mathbf{M}_{\lh}^{-\frac{1}{2}} \bm{y} \rVert_\infty = \lVert \phib^* \mathbf{M}_{\lambda_2}^{-1} \bm{y} \rVert_\infty,
+    %     \end{equation*}
+    %     using the symmetry of the matrix $\mathbf{M}_{\lambda_2}$.
+    % \end{proof}
 
     Equation \eqref{eq:l1max} demonstrates a natural dependence of $\lb$ onto $\lh$. Indeed, the range of relevant values for $\lb$ is $[0, \lambda_{1, \mathrm{max}}]$ which depends on $\lh$. Hence, by first choosing $\lh$ then setting $\lb = \alpha \lambda_{1, \mathrm{max}}$ for $0 < \alpha < 1$ we ensure that the value of the regularization parameters is consistent with the problem. This approach was already proposed and discussed in our previous work on composite problems \cite{jarret2024decoupled}. We illustrate this dependency and how our scaling rule allows to decouple the choice of parameters with a cross table of reconstructions in Appendix~\ref{app:reconstructions}.
 
     % Benefits of the result: natural scaling of regularization paramter, order of the selection of the parameters. Refernce to this approach is our previous paper \cite{jarret2024decoupled}.
 
-    Additionally, equation \eqref{eq:l1max} provides information on the asymptotic behavior of $\lbm$. When $\lambda_2$ is small, $\lh \mathbf{I}_L$ is negligible compared to $\phih \phih^*$ and so $\lbm$ is proportional to $\lh$. However, for large values of $\lh$, the Gram matrix $\phih \phih^*$ is itself negligible and $\lbm$ tends to $\lVert \phib^* \bm{y}\rVert_\infty$. This latter result is consistent with the maximum value of the regularization parameter for the single-component B-LASSO problem.
+    Additionally, equation \eqref{eq:l1max} provides information on the asymptotic behavior of $\lbm$. When $\lambda_2$ is small, $\lh \mathbf{I}_L$ is negligible compared to $\phih \phih^*$ and so $\lbm$ is proportional to $\lh$. However, for large values of $\lh$, the Gram matrix $\phih \phih^*$ is itself negligible and $\lbm$ tends to $\lVert \phib^* \bm{y}\rVert_\cA$. This latter result is consistent with the maximum value of the regularization parameter for the single-component Banach-penalized problem~\eqref{eq:single-banach}.
 
     % Interesting asymptotic behavior : when $\lambda$ gets very small, $\lambda_1$ needs to be scaled accordingly (regime of linear dependency).
 

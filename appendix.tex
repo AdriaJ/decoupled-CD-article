@@ -8,7 +8,7 @@
 
     Let us recall the composite problem of interest. For $\lambda_1, \lambda_2 > 0$ we write the objective functional as
     \begin{equation*}
-        \mathcal{J}(\fb, \fh) := \frac{1}{2} \| \bm{y} - (\phib (\fb) + \phih (\fh)) \|_2^2  + \lb \| \fb \|_{\mathcal{B}} + \frac{\lh}{2} \| \fh \|_{\mathcal{H}}^2.
+        \mathcal{J}(\fb, \fh) := \frac{1}{2} \| \bm{y} - (\phib (\fb) + \phih (\fh)) \|_2^2  + \lb \cRS(\fb) + \frac{\lh}{2} \| \fh \|_{\mathcal{H}}^2.
     \end{equation*}
     
     % \begin{proof}
@@ -59,13 +59,15 @@
     \end{align}
     Finally, plugging the relations \eqref{eq:firstinterm} and \eqref{eq:secondinterm} together,  the cost functional $\mathcal{J}(\fb, \widehat{s}_{2, \fb})$ in \eqref{eq:newhproblem} simplifies as
     \begin{align*}
-        \mathcal{J}(\fb, \widehat{s}_{2, \fb}) &=  \frac{\lh}{2} \langle ( \phih \phih^* + \lh \mathbf{I}_L)^{-1} ( \bm{y} - \phib(\fb) ) ,  ( \bm{y} - \phib(\fb) ) \rangle + \lb \|\fb\|_{\mathcal{B}} \nonumber \\
-        &= \frac{\lh}{2} \| ( \phih \phih^* + \lh \mathbf{I}_L)^{-\frac{1}{2}} (\bm{y} - \phib(\fb) ) \|_2^2 + \lb \|\fb\|_{\mathcal{B}} \\
-        &= \frac{1}{2}\| \mathbf{M}_{\lh}^{-\frac{1}{2}} (\bm{y} - \phib(\fb) ) \|_2^2 + \lb \|\fb\|_{\mathcal{B}}.
+        \mathcal{J}(\fb, \widehat{s}_{2, \fb}) &=  \frac{\lh}{2} \langle ( \phih \phih^* + \lh \mathbf{I}_L)^{-1} ( \bm{y} - \phib(\fb) ) ,  ( \bm{y} - \phib(\fb) ) \rangle + \lb \cRS(\fb) \nonumber \\
+        &= \frac{\lh}{2} \| ( \phih \phih^* + \lh \mathbf{I}_L)^{-\frac{1}{2}} (\bm{y} - \phib(\fb) ) \|_2^2 + \lb \cRS(\fb) \\
+        &= \frac{1}{2}\| \mathbf{M}_{\lh}^{-\frac{1}{2}} (\bm{y} - \phib(\fb) ) \|_2^2 + \lb \cRS(\fb).
     \end{align*}
-    This shows the first relation~\eqref{eq:banachpart}. According to Proposition~\ref{prop:banachRT}, this optimization problem admits a solution and therefore the solution set $\mathcal{W} (\lb,\lh)$ is non-empty. 
+    This shows the first relation~\eqref{eq:banachpart}.
 
-    Proposition~\ref{prop:banachRT} also implies that all the $\hfb$ solution of \eqref{eq:newhproblem} share the same measurement vector $\mathbf{M}_{\lh}^{-\frac{1}{2}} \phib (\hfb)$. Hence $\bm{w} = \phib(\hfb) \in \R^L$ is the common measurement vector of the Banach components $\hfb$ of the solutions $(\hfb , \hfh) \in \mathcal{W} (\lb,\lh)$, which proves \eqref{eq:hilbertpart}.
+    % According to Proposition~\ref{prop:banachRT}, this optimization problem admits a solution and therefore the solution set $\mathcal{W} (\lb,\lh)$ is non-empty. 
+
+    Proposition~\ref{prop:abstract-rt} states that all the $\hfb$ solution of \eqref{eq:newhproblem} share the same measurement vector $\mathbf{M}_{\lh}^{-\frac{1}{2}} \phib (\hfb)$. Hence $\bm{w} = \phib(\hfb) \in \R^L$ is the common measurement vector of the Banach components $\hfb$ of the solutions $(\hfb , \hfh) \in \mathcal{W} (\lb,\lh)$, which proves \eqref{eq:hilbertpart}.
 
     % vector $\bm{w} (\mathbf{M}_{\lh}^{-\frac{1}{2}} \bm{y}, \mathbf{M}_{\lh}^{-\frac{1}{2}} \phib,\lb / \lh)$ which is the common measurements of the Banach components $\hfb$ of the solutions $(\hfb , \hfh) \in \mathcal{W} (\bm{y}, \bm{\Phi} ,\lb,\lh)$. In particular, $\bm{w} (\mathbf{M}_{\lh}^{-\frac{1}{2}} \bm{y}, \mathbf{M}_{\lh}^{-\frac{1}{2}} \phib,\lb / \lh) = \phib ( \hfb)$ in \eqref{eq:findmethishfh} and \eqref{eq:hilbertpart} is proved.
     
