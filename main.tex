@@ -44,8 +44,10 @@
         \item Homogenize the use of \/emph (italic)
         \item Homogenize the use of $s_1^*$ or $\hfb$ (stick to the second version probably)
         \item Display of the figures in the appendix (cross tables in particular)
-        \item Capitalization of Figures, Section, ... ?
+        \item Capitalization of Figures, Section, ... ? No capital, from what I remember.
         \item homogeneity of `single-component'
+        \item Banach norm or Banach-norm ?
+        \item Check ad comments. 
     \end{itemize}
 }
 
@@ -110,7 +112,7 @@
     Such a framework can be used for instance to model signals which contain mixed-types information, such as background and foreground in imaging. A concrete example of composite-type signal is provided in figure~\ref{fig:gleam-sky} with an image of the sky from radio observations, containing both precisely-localized point sources (stars) and diffuse emissions (nebulae) \cite{hurley-walker2017}.
     Our goal is to approximately recover not only $s^\dagger$ but also the subcomponents $s_1^\dagger$ and $s_2^\dagger$ from the observations $\bm{y}$.
 
-    In a theoretical model, the addition between $s_1^\dagger$ and $s_2^\dagger$ may not be properly defined because the signals may belong to different spaces. For this reason, in what follows we consider the more general inverse problem over the pair $(s_1^\dagger, s_2^\dagger)$ with two possibly different operators
+    In a theoretical model, the addition between $s_1^\dagger$ and $s_2^\dagger$ may not be properly defined because the signals may belong to different spaces. For this reason, in what follows we consider the more general inverse problem over the pair $(s_1^\dagger, s_2^\dagger)$ with two possibly different measurement operators
     \begin{equation}
         \label{eq:generic-comp-ip}
         \bm{y} \approx \bm{\Phi}_1(s_1^\dagger) + \bm{\Phi}_2(s_2^\dagger)
@@ -177,36 +179,37 @@
     \begin{equation} \label{eq:singletpb}
         \underset{s}{\arg\min} \ \mathcal{D}(\bm{y}, \bm{\Phi}(s)) + \mathcal{R} (s)
     \end{equation}
-    which solves a non-composite inverse problem.
+    which solves a non-composite inverse problem. In this work, we distinguish two types of regularization for ill-posed inverse problems.
 
-    In this work, we distinguish two types of regularization for ill-posed inverse problems. Smooth regularization corresponds to the case where the penalty is a quadratic norm over some Hilbert space $\mathcal{H}$, of the typical form 
+    Smooth regularization corresponds to the case where the penalty is a quadratic norm over some Hilbert space $\mathcal{H}$, of the typical form 
     \begin{equation*}
         \mathcal{R} (s) = \lambda \| s \|_{\mathcal{H}}^2.
     \end{equation*}
-    Smooth regularization has been widely used over more than 70 years, with countless applications. The name stems from the smoothing effect it has on the solution. Pioneering connections between quadratic regularization and spline smoothing were presented in \cite{Kimeldorf1970}, involving Bayesian estimation of Gaussian stochastic processes. Early applied versions of a quadratic regularization include Tikhonov regularization~\cite{tikhonov1963solution}, known as ridge-regression in statistics~\cite{Hoerl1962ridge}.  %with applications on discrete domain problems as well as recovery in the continuum \ad{ref needed here?}.
-    Hilbertian penalization is strongly connected to the RKHS theory and thus there exist representer theorems that precisely specify the form of the solution~\cite{Scholkopf2001generalized}. Interestingly, these problems are fairly simple to solve as they can be recast into a finite-dimensional formulation, even when the signal $s$ to recover is continuously defined, as for instance with $\mathcal{H} = \ldx$ the space of square integrable functions over a domain $\cX$. 
+    This type of regularization has been widely used over more than 70 years, with countless applications. The name stems from the smoothing effect it has on the solution, with pioneering works presented in \cite{Kimeldorf1970}
+    on the connections between quadratic regularization and spline smoothing. % , involving Bayesian estimation of Gaussian stochastic processes.
+    One of the earliest applied versions of quadratic regularization is Tikhonov regularization~\cite{tikhonov1963solution}, also termed ridge-regression in statistics~\cite{Hoerl1962ridge}.  %with applications on discrete domain problems as well as recovery in the continuum \ad{ref needed here?}.
+    Later on, representer theorems have been introduced to precisely specify the form of the solutions, drawing the connection between Hilbertian penalization and the RKHS theory~\cite{Scholkopf2001generalized}. Interestingly, the quadratically-penalized problems are fairly simple to solve as they can be recast into a finite-dimensional formulation, even when the signal $s$ to recover is continuously defined, as for instance with $\mathcal{H} = \ldx$ the space of square integrable functions over a domain $\cX$. 
     % Early versions include Tichonov regularization~\cite{tikhonov1963solution}, known as ridge-regression in statistics~\cite{Hoerl1962ridge}. Over a generic Hilbert space, we will refer to it as smooth regularization for its smoothing effect~\cite{Kimeldorf1970}.
     % Smooth regularization has proven to be efficient, it is strongly related to RKHS theory and representer theorems (which specifies the form of the solution of the optimization problem) in this context~\cite{Scholkopf2001generalized}. 
 
-    The second approach considered in this work is the one of sparsity-promoting regularizations
+    The second approach considered in this work is that of sparsity-promoting regularizations
     \begin{equation*}
         \mathcal{R}(s) = \lambda \mathcal{R}^\mathrm{S}(s).
     \end{equation*}
-    In this scenario, we consider the theoretical model of signals $s$ living in a Banach search space $\cB$, and a convex function $\cRS: \cB \to \R_+$. This framework is more general than the former case of Hilbert spaces and thus enables us to cover most of the common sparsity-promoting penalties.
-    The classical finite-dimensional example for $\mathcal{R}^\mathrm{S}(\cdot)$ is the $\ell_1$-norm over Euclidian $n$-spaces \cite{tibshirani1996regression,chen2001atomic}, optionally including an analysis prior model with a nested linear operator \cite{elad2006analysis}. The continuous-domain counterparts consist in the problems of sparse spikes recovery \cite{laville2021sparse} and spline reconstruction \cite{unser2017splines}, both being infinite-dimensional and based on a total-variation penalty. When a Banach norm $\mathcal{R}^\mathrm{S} (s) = \| s \|_{\mathcal{B}}$ is considered, the solution set of the single-component problem \eqref{eq:singletpb} is described thanks to representer theorems: the solutions are expressed as sums of extreme points of the Banach norm unit ball \cite{boyer2019representer,Unser2020,bredies2020sparsity}. Similarly, $\mathcal{R}^\mathrm{S}(\cdot)$ can be defined as an atomic norm to promote sparse solutions, as the extreme points are generally sparse vectors \cite{chandrasekaran2012convex}. This framework of Banach search space also covers significantly more complex functional setups of sparse recovery, as for instance in \cite{laville2023a,ambrosio2023,decastro2024}.
-    Solving such a sparsity-promoting penalized problem is generally more difficult than the case of quadratic regularization on a Hilbert space: the solution set may be infinite-dimensional and the non-reflexivity of the Banach space prevents us from using gradient steps.
-
-    % The second classical form of regularization considered here involves a norm over of Banach space $\mathcal{B}$ expressed as
-    % \begin{equation*}
-    %     \mathcal{R} (s) = \lambda \| s \|_{\mathcal{B}}.
-    % \end{equation*}
-    % We refer to this type of penalties as sparse regularization, as it is used to reconstruct sparse solutions. More precisely, the solutions are expressed as sums of extreme points of the Banach norm unit ball \cite{boyer2019representer,Unser2020,bredies2020sparsity}. It is common to use atomic norms for which the extreme points are sparse vectors \cite{chandrasekaran2012convex}.
-    % The classical finite-dimensional example is the $\ell_1$-norm over Euclidian $n$-spaces \cite{tibshirani1996regression,chen2001atomic}, however the formalism presented hereabove interestingly applies for infinite-dimensional cases, including the sparse spikes recovery case \cite{laville2021sparse} as well as more complex penalties \cite{laville2023a,ambrosio2023,decastro2024}.
-    % % The topological structure of the search space is more general than the smooth regularization over Hilbert spaces and thus the penalized optimization problems are usually more difficult to solve in practice, the search space being infinite dimensional for continuous-domain problems.
-    % Solving such a sparsity-promoting penalized problem is generally more difficult than the case of quadratic regularization on a Hilbert space: the solution set may be infinite-dimensional and the non-reflexivity of the Banach space prevents us from using gradient steps.
-    % % The Banach space topology is more general than the smooth regularization over Hilbert spaces and thus the penalized optimization problems are more difficult to solve in practice (infinite-dimensional problems, no gradient, etc)
-    
-    % % Atomic norm~\cite{chandrasekaran2012convex}. Example: $\ell_1$. Explain the general principle. \ad{Splines.}
+    In this setting, we consider a theoretical model in which the signal $s$ belongs to a Banach search space $\cB$, and the regularization $\cRS: \cB \to \R_+$ is a convex function. This framework is more general than the Hilbertian case discussed previously and encompasses most of the commonly-used sparsity-promoting penalties.
+    % We reproduce here the formalism of \cite{boyer2019representer}, in which the authors demonstrate a foundational abstract representer theorem. They establish a connection between the choice of the convex penalty $\cRS$ and the structure of the resulting solutions, thereby explaining the sparsity-promoting behavior of certain regularizations.
+    Doing so, we fit into the formalism presented in \cite{boyer2019representer} and therefore we rely on its abstract representer theorem, which links the choice of the convex penalty $\cRS$ to the structure of the solutions, thereby providing a theoretical explanation for the sparsity-inducing behavior of certain regularizations.
+    % Classical example are banach norms: general banach norms, application to finite-dimensional cases with l1 or atomic norm, then sparse spikes recovery. Also more complex examples.
+    A central class of examples within this framework is given by Banach norms. When $\mathcal{R}^\mathrm{S} (s) = \| s \|_{\mathcal{B}}$, the solution set of the single-component problem \eqref{eq:singletpb} admits a precise characterization: solutions can be expressed as finite combinations of extreme points of the unit ball of $\cB$ \cite{Unser2020,bredies2020sparsity}. In finite-dimensional Euclidean spaces, the prototypical example is the $\ell_1$-norm, whose extreme points are the canonical basis vectors \cite{tibshirani1996regression,chen2001atomic}. More generally, sparse dictionary reconstruction can be achieved using atomic norms \cite{chandrasekaran2012convex}.
+    % Banach-norm penalization is also used for continuous-domain recovery, sparse spikes recovery can be addressed using the total-variation norm on measures \cite{laville2021sparse}. 
+    The Banach-norm perspective further allows one to address continuous-domain sparse reconstruction, for instance performing spikes recovery using the total-variation norm on measures \cite{laville2021sparse} or with the design of specific norms for more complex functional settings \cite{laville2023a,ambrosio2023,decastro2024}.
+    % In particular, when a Banach norm $\mathcal{R}^\mathrm{S} (s) = \| s \|_{\mathcal{B}}$ is considered, the solution set of the single-component problem \eqref{eq:singletpb} is well characterized: the solutions are expressed as sums of extreme points of the Banach norm unit ball \cite{Unser2020,bredies2020sparsity}.
+    % The classical finite-dimensional example for $\mathcal{R}^\mathrm{S}(\cdot)$ is the $\ell_1$-norm over Euclidian $n$-spaces \cite{tibshirani1996regression,chen2001atomic}. The continuous-domain counterparts are respectively the problem of sparse spikes recovery \cite{laville2021sparse}.
+    % Similarly, using an atomic norm for $\mathcal{R}^\mathrm{S}(\cdot)$ promotes solutions which are sparse in the dictionary of the atoms defining the norm (as they are indeed the extreme points of the norm unit ball \cite{chandrasekaran2012convex}). This framework of Banach search space also covers significantly more complex functional setups of sparse recovery, as for instance in \cite{laville2023a,ambrosio2023,decastro2024}.
+    % Many other classical examples fit into this framework without being Banach norms though. Positivity constraint is known to promote sparsity in some cases. Spline reconstruction is achieved with precomposing a sparsity promoting norm with a differential operator, leading to $\cRS$ being a semi-norm.
+    However, many classical sparse recovery examples also fit into the $\cRS$-framework without being Banach norms. Positivity constraints, for instance, are known to promote sparse solutions in certain inverse problems \cite{Donoho_Tanner_2005,Slawski_Hein_2011}. Another important model arises from precomposing a sparsity-promoting norm with a differential operator, leading to regularizers that are only seminorms. This includes analysis-prior models \cite{elad2006analysis} and spline reconstruction problems \cite{unser2017splines}.
+    % Solving such a sparsity-promoting penalized problem is generally more difficult than the case of quadratic regularization on a Hilbert space: the solution set may be infinite-dimensional and there may not exist gradient steps due to the absence of inner product.
+    Generally, solving sparsity-promoting penalized problems is more challenging than quadratic regularization in Hilbert spaces: the solution set may be infinite-dimensional, and the lack of an inner product structure precludes the use of standard gradient-based methods.
 
     In this work, we consider the combination of the two above-mentioned penalties, which we refer to as \emph{sparse-plus-smooth} regularization. We focus on problem~\eqref{eq:compositepb} with
         \begin{equation*}
@@ -342,7 +345,6 @@
 
     Within this framework, the solutions of the optimization problem~\eqref{eq:singletpb} with $s\in\cB$  are significantly influenced by the choice of the sparsity-promoting penalty $\mathcal{R}(s) = \lambda \cRS(s)$. Remarkably, we have access to abstract representer theorems to characterize the solution set. We follow the presentation of \cite{boyer2019representer} but similar results were proposed at the same time with somewhat different proofs in \cite{bredies2020sparsity}. The abstract theorem presented hereafter generalizes Proposition~\ref{prop:hilbertRT} on Hilbert spaces.
     
-    \ad{Should I use a proper star instead of the product star as exponent ?}
     \begin{proposition}[Abstract Representer Theorem for penalized problems (Corollary 2 in \cite{boyer2019representer})]
     \label{prop:abstract-rt}
     Let $\cRS: \cB \to \R_+$ be a convex function, $\bm{y}\in \R^L$, $\phibsingle= (\phibb_1 ,\ldots , \phibb_L) \in \mathcal{A}^L$, and $\lambda > 0$. Moreover, let us assume that the optimization problem
@@ -356,6 +358,10 @@
         \item Third, assuming the level set $C^\star := \left\{s \in \cB,\ \cRS(s) \leq R^\star\right\}$ is linearly closed, any solution $\widehat{s} \in \mathcal{V}(\lambda)$ can be expressed as a convex combination of extreme points of the set $C^\star$. The bounds on the  number of elements in the combination depends on the dimension of the face of the solution set which contains the considered solution. 
     \end{itemize}
     \end{proposition}
+
+    \begin{proof}
+        The first statement repeats Remark~6 in \cite{boyer2019representer}. The proof relies on simple convexity arguments, as presented in Lemma~1 from \cite{tibshirani2013lasso}. The second statement is the consequence of the first one: two different solutions $\widehat{r}, \widehat{s} \in \mathcal{V}(\lambda)$ have the same fitted value $\phib(\widehat{r}) = \phib(\widehat{s})$, hence they also produce the same value of the quadratic data-fidelity term. As they are both solutions to the problem, they reach the same global minimum and so they necessarily lead to the same value of the penalty term $\cRS(\widehat{r}) = \cRS(\widehat{s})$, given that $\lambda > 0$. The third statement is the direct application of Corollary~2 from \cite{boyer2019representer}. 
+    \end{proof}
 
     Proposition~\ref{prop:abstract-rt} sheds light on the mechanics behind sparsity-promoting penalties: sparse reconstruction is naturally obtained using a function $\cR^{\mathrm{S}}$ whose level sets have sparse extreme points, and the reconstruction atoms can be chosen to be the extreme points themselves.
 
@@ -516,6 +522,7 @@
     We first extend this result to the generic case of single-components problems penalized with a Banach norm in the following theorem.
     \begin{theorem}[Bound on single-component Banach-penalized problems]
     \label{prop:single-lmax}
+    Assume that the operator $\phib : (\cB, \norm{\cdot}_\cB) \to (\R^L, \norm{\cdot}_2)$ is bounded.
     For $\lambda >0$, we consider the solution set of the single-component optimization problem
     \begin{equation}
         \label{eq:single-banach}
@@ -544,35 +551,40 @@
                     &= \frac{1}{2} \norm{\bm{y}}_2^2 + \frac{1}{2} \norm{\phib(s)}_2^2 - \langle \phib^*\bm{y}, s \rangle_{\cA \times\cB} + \lambda \norm{s}_{\cB} \\
                     &\geq \frac{1}{2} \norm{\bm{y}}_2^2 + \frac{1}{2} \norm{\phib(s)}_2^2 + \norm{s}_{\cB} \left(\lambda - \norm{\phib^*\bm{y}}_\cA \right)
         \end{align}
-
         Assuming $\lambda \geq \lm$, we obtain
         \begin{equation*}
-            \forall s \in \cB, \qquad \mathcal{J}_\mathcal{B}(s) \geq \mathcal{J}_\mathcal{B}(0),
+            \forall s \in \cB, \qquad \mathcal{J}_\mathcal{B}(s) \geq \mathcal{J}_\mathcal{B}(0) = \frac{1}{2} \norm{\bm{y}}_2^2,
         \end{equation*}
-        hence the null element is solution, $0 \in \mathcal{V}(\lambda)$. Moreover, the strict convexity of the square $\ell_2$-norm in the data-fidelity term induces uniqueness of the fit \cite{tibshirani2013lasso}, that is any solutoin belongs to the nullspace of the measurement operator $\phib$, as follows
+        hence the null element is solution, $0 \in \mathcal{V}(\lambda)$. Moreover, the strict convexity of the square $\ell_2$-norm in the data-fidelity term induces uniqueness of the fit, as detailed in Proposition~\ref{prop:abstract-rt}. For any solution $\widehat{s} \in \mathcal{V}(\lambda)$, we have 
         \begin{equation*}
-            \forall s \in \mathcal{V}(\lambda), \qquad \phib(s) = \phib(0) = 0.
+            \phib(\widehat{s}) = \phib(0) = 0,
         \end{equation*}
-        Necessarily, $0$ is the unique solution in the case $\lambda \geq \lm$, which proves the first statement.
+        meaning that any solution belongs to the nullspace of the measurement operator $\phib$.
+        As $\lambda \geq \lm > 0$, all the solutions also share the same value of the penalty term (see Proposition~\ref{prop:abstract-rt} again), hence
+        \begin{equation*}
+            \forall \widehat{s} \in \mathcal{V}(\lambda), \qquad \norm{\widehat{s}}_\cB = \norm{0}_\cB = 0,
+        \end{equation*}
+        so that, using positive definiteness of the norm, $\widehat{s}=0$ is the unique solution in the case $\lambda \geq \lm$, which proves the first statement.
 
         Conversely, let us assume $0 < \lambda < \lm$ and let us prove the second statement. We want to show that $0$ is not solution, or equivalently that $\frac{1}{2} \norm{\phib(s)}_2^2 - \langle \phib^*\bm{y}, s \rangle_{\cA \times\cB} + \lambda \norm{s}_{\cB}$ can be negative. Let us write $v = \phib^*\bm{y} \in \cA$. Using the Hahn-Banach theorem \cite[Chapter~1]{Brezis_2011}, there exists an element $s_0\in\cB$ such that $\norm{s_0}_\cB = \norm{v}_\cA$ and
         \begin{equation*}
             \langle v, s_0\rangle = \norm{v}_\cA^2 = \norm{s_0}_\cB \norm{v}_\cA.
         \end{equation*}
-        We can then write
+        Using $\lm = \norm{v}_\cA$, we can then write
         \begin{align}
-            - \langle v, s_0 \rangle_{\cA \times\cB} + \lambda \norm{s_0}_{\cB} &= \norm{s}_{\cB} \left( \lambda - \norm{v}_\cA \right) \\
+            - \langle v, s_0 \rangle_{\cA \times\cB} + \lambda \norm{s_0}_{\cB} &= \norm{s_0}_{\cB} \left( \lambda - \norm{v}_\cA \right) \\
                 &= \norm{s_0}_{\cB} \left( \lambda - \lm \right) < 0.
         \end{align}
         The measurement operator $\phib: \cB \to \R^L$ being bounded, there exists a constant $C > 0$ such that
         \begin{equation}
             \norm{\phib(s_0)}_2^2 \leq C^2 \norm{s_0}_{\cB}^2.
         \end{equation}
-        Using asymptotic growth comparison toward $0$, there exists $\xi > 0$ such that
+        Let $\xi > 0$ a real number and consider the scaled element $\xi s_0$.
+        The term $\norm{\phib(\xi s_0)}_2^2$ is of order $\xi^2$, while the quantity $\langle \phib^*\bm{y}, \xi s_0 \rangle_{\cA \times\cB} - \lambda \norm{\xi s_0}_{\cB}$ depends linearly on $\xi$. Consequently, as $\xi \to 0$, there exists a critical value $\xi_0 > 0$ such that, for all $0 < \xi \leq \xi_0$,  
         \begin{equation*}
-            \frac{1}{2} \norm{\phib(\xi s_0)}_2^2 - \langle \phib^*\bm{y}, \xi s_0 \rangle_{\cA \times\cB} + \lambda \norm{\xi s_0}_{\cB} < 0,
+            \frac{1}{2} \norm{\phib(\xi s_0)}_2^2 - \langle \phib^*\bm{y}, \xi s_0 \rangle_{\cA \times\cB} + \lambda \norm{\xi s_0}_{\cB} < 0.
         \end{equation*}
-        which proves that $0$ is not a minimum.
+        This shows that $0$ cannot be a minimizer.
     \end{proof}
 
     % Given a Gaussian random model on the data/measurements, there exists a theoretic optimal value for the regularization parameter of the single-component optimization problem with an Hilbert penalty \cite{}. This result however does not exist for a generic optimization problem and finding a rule to set the regularization parameter is an active field of research 
@@ -1136,11 +1148,14 @@
 
         A consequence of our representer theorem is that the composite optimization problem \eqref{eq:argmin-sps} can be solved by performing an optimization procedure on the foreground component only. We assess the practical implication of this property by comparing the runtime of a decoupled solver, including the a posteriori computation of the background component, with the non-decoupled approach of solving the two-components problem~\eqref{eq:ndcp-argmin}. For completeness, we also include in our comparison the runtime for solving a B-LASSO problem with the same input.
 
-        For a fair treatment between the solver, the stopping criterion of all the algorithms is set as a threshold on the relative improvement of consecutive iterates of the foreground component variable.
-        \ad{Moreover, comment on the technical implementaiton choices to remain fair.}
+        To ensure a fair comparison between the solvers, the stopping criterion for all algorithms is defined as a threshold on the relative improvement between consecutive iterates of the foreground component. Moreover, the matrix–vector multiplications involving $\mathbf{H}$, $\mathbf{T}$ and $\mathbf{M}_{\lambda_2}^{-1}$ are implemented as precompiled convolutions with known kernels, so that differences in computational time accurately reflect the intrinsic complexity of the methods rather than implementation-specific optimizations.
+        Similarly, both solvers rely on the APGD scheme, which is known to achieve optimal first-order convergence rates for convex problems.
+        % \ad{
+        % Alternative numerical strategies exploiting the block structure of the objective, such as those proposed in \cite{…}, could also be considered, in particular for the minimization of~\eqref{eq:ndcp-argmin}, and may lead to additional computational gains.
+        % }
 
 
-        We present two experiment: the first one reports the reconstruction time when the contrast $r_{1/2}$ evolves, in the same setup as in section~\ref{sec:bene:comp}; the second experiment presents the reconstruction time when the super-resolution factor $n_\mathrm{srf}$ varies. The results, respectively reported in figure~\ref{fig:time-vs-r} and figure~\ref{fig:time-vs-srf}, correspond to the duration of the best reconstruction obtained through a tested set of regularization parameters. Each experiment is reproduced 24 times, the median value is reported with the solid line and the shaded area represents the interquartile spread.
+        We present two experiments: the first one reports the reconstruction time when the contrast $r_{1/2}$ evolves, in the same setup as in section~\ref{sec:bene:comp}; the second experiment presents the reconstruction time when the super-resolution factor $n_\mathrm{srf}$ varies. The results, respectively reported in figure~\ref{fig:time-vs-r} and figure~\ref{fig:time-vs-srf}, correspond to the duration of the best reconstruction obtained through a tested set of regularization parameters. Each experiment is reproduced 24 times, the median value is reported with the solid line and the shaded area represents the interquartile spread.
 
         \begin{figure}[p]
             \centering
