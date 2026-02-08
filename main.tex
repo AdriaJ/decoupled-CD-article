@@ -35,18 +35,16 @@
 
 {
     \color{red}
+    % Style guide: https://publishingsupport.iopscience.iop.org/questions/style-guide-journal-articles/
     Remaining todo's:
     \begin{itemize}
-        \item Check consistency for solution of optimization problems: star, hat or something else? (like five-arms star).
-        \item Proof of Theorem 2 to be deferred in the appendix.
-        \item Acknowledge the reviewers.
-        \item Mention the assumption about boundedness of $\phib$.
-        \item Homogenize the use of \/emph (italic)
-        \item Homogenize the use of $s_1^*$ or $\hfb$ (stick to the second version probably)
-        \item Display of the figures in the appendix (cross tables in particular)
-        \item Capitalization of Figures, Section, ... ? No capital, from what I remember.
         \item homogeneity of `single-component'
         \item Banach norm or Banach-norm ?
+        \item Display of the figures in the appendix (cross tables in particular)
+        \item Homogenize the use of \/emph , or textit (italic)
+        \item Proof of Theorem 2 to be deferred in the appendix.
+        \item Mention the assumption about boundedness of $\phib$.
+        % \item Capitalization of Figures, Section, ... ? No capital for figure, but okay for Sections
         \item Check ad comments. 
     \end{itemize}
 }
@@ -149,9 +147,9 @@
 
     A classical strategy for solving ill-posed linear inverse problems is to reconstruct the signal as the solution of an optimization problem. We consider composite optimization problems of the form
     \begin{equation} \label{eq:compositepb}
-        (s_1^*,s_2^*) \in \underset{(s_1,s_2)}{\arg\min} \ \mathcal{D}(\bm{y}, \bm{\Phi}_1(s_1) + \bm{\Phi}_2(s_2)) + \mathcal{R}_1 (s_1) + \mathcal{R}_2(s_2),
+        (\hfb,\hfh) \in \underset{(s_1,s_2)}{\arg\min} \ \mathcal{D}(\bm{y}, \bm{\Phi}_1(s_1) + \bm{\Phi}_2(s_2)) + \mathcal{R}_1 (s_1) + \mathcal{R}_2(s_2),
     \end{equation}
-    in which the data-fidelity $\mathcal{D}(\bm{y}, \bm{\Phi}_1(s_1) + \bm{\Phi}_2(s_2))$ constrains the solution to correspond to the observations and the regularizations $\mathcal{R}_1 (s_1)$ and $\mathcal{R}_2(s_2)$ promote specific behaviors according to some prior knowledge (see section~\ref{sec:regularizationblabla}). We specifically consider a \emph{sparse-plus-smooth} model where $\mathcal{R}_1$ is a sparsity-promoting regularization while $\mathcal{R}_2$ favors smooth components.
+    in which the data-fidelity $\mathcal{D}(\bm{y}, \bm{\Phi}_1(s_1) + \bm{\Phi}_2(s_2))$ constrains the solution to correspond to the observations and the regularizations $\mathcal{R}_1 (s_1)$ and $\mathcal{R}_2(s_2)$ promote specific behaviors according to some prior knowledge (see Section~\ref{sec:regularizationblabla}). We specifically consider a \emph{sparse-plus-smooth} model where $\mathcal{R}_1$ is a sparsity-promoting regularization while $\mathcal{R}_2$ favors smooth components.
 
     We make the assumption that the noise corrupting the data is Gaussian, which motivates the choice of a quadratic data fidelity of the form
     \begin{equation*}
@@ -810,7 +808,7 @@
                 \bm{y} = \phib(s_1^\dagger) + \phih(s_2^\dagger) + \bm{n} \in \R^L
             \end{equation}
             where $\bm{n}$ is a white Gaussian noise of unknown variance $\sigma_{\bm{n}}^2$.
-            An illustrative one-dimensional example of simulated measurements is provided in Figure~\ref{fig:simple:measop}.
+            An illustrative one-dimensional example of simulated measurements is provided in figure~\ref{fig:simple:measop}.
 
             % \begin{remark}[Adjoint operator on $\cHk$]
             %     \label{rk:adjoint-op}
@@ -862,18 +860,18 @@
         \begin{proposition}
             \label{prop:rt-applied}
             The solution set of problem~\eqref{eq:argmin-sps} is non-empty, convex and weak*-compact.
-            Any extreme point solution to the optimization can be expressed as a pair of components $(s_1^*, s_2^*) \in \mx \times \cHk$ such that
+            Any extreme point solution to the optimization can be expressed as a pair of components $(\hfb, \hfh) \in \mx \times \cHk$ such that
             \begin{align}
-                s_1^* &= \sum_{k=1}^{K_0} a_k \delta_{z_k}, \label{eq:deconv-banachpart}\\
-                s_2^* &=  \frac{1}{\lh}\phih^* \mathbf{M}_{\lh}^{-1} \left(\bm{y} - \bm{w}\right),\label{eq:deconv-hilbertpart}
+                \hfb &= \sum_{k=1}^{K_0} a_k \delta_{z_k}, \label{eq:deconv-banachpart}\\
+                \hfh &=  \frac{1}{\lh}\phih^* \mathbf{M}_{\lh}^{-1} \left(\bm{y} - \bm{w}\right),\label{eq:deconv-hilbertpart}
             \end{align}
-            in which $(a_k, z_k)_k \in \left(\R \times \cX\right)^{K_0} $ are amplitude-location pairs, $K_0 \leq L$, $\bm{w} = \phib(s_1^*)$ is independent on the actual solution $s_1^*$, and the matrix $\mathbf{M}_{\lambda_2} \in \R^{L \times L}$ is defined in equation \eqref{eq:def-Mphi}.
+            in which $(a_k, z_k)_k \in \left(\R \times \cX\right)^{K_0} $ are amplitude-location pairs, $K_0 \leq L$, $\bm{w} = \phib(\hfb)$ is independent on the actual solution $\hfb$, and the matrix $\mathbf{M}_{\lambda_2} \in \R^{L \times L}$ is defined in equation \eqref{eq:def-Mphi}.
         \end{proposition}
 
         \begin{proof}
-            By construction, Corollary~\ref{cor:main} holds for problem \eqref{eq:argmin-sps}. It directly leads to the expression of $s_2^*$ in $\eqref{eq:deconv-hilbertpart}$. Regarding the sparse component, we have that
+            By construction, Corollary~\ref{cor:main} holds for problem \eqref{eq:argmin-sps}. It directly leads to the expression of $\hfh$ in $\eqref{eq:deconv-hilbertpart}$. Regarding the sparse component, we have that
             \begin{equation*}
-                s_1^* \in \underset{ s_1\in\mx}{\arg\min} \quad  \mathcal{J}_{\mathbf{M}}(s_1)
+                \hfb \in \underset{ s_1\in\mx}{\arg\min} \quad  \mathcal{J}_{\mathbf{M}}(s_1)
             \end{equation*}
             with $\mathcal{J}_{\mathbf{M}}(s_1) := \|\mathbf{M}_{\lh}^{-\frac{1}{2}} ( \bm{y} - \phib(s_1)  ) \|_2^2  + \lb \| s_1 \|_{\mathcal{M}}$. From Proposition~\ref{prop:banachRT}, we know that this latter problem admits sparse solutions and that some can be expressed according to \eqref{eq:deconv-banachpart}.
         \end{proof}
@@ -882,31 +880,31 @@
         % By construction, Theorem~\ref{theo:main} holds and the solution components are indeed decoupled.
         % With the matrix $\mathbf{M}_{\lambda_2} \in \R^{L \times L}$ defined in equation \eqref{eq:def-Mphi}, a solution of \eqref{eq:argmin-sps} is a pair of components $(s_1^\dagger, s_2^\dagger) \in \mx \times \ldx$ such that
         % \begin{align}
-        %     s_1^* &\in \underset{ s_1\in\mx}{\arg\min} \quad  \mathcal{J}_{\mathbf{M}}(s_1), \label{eq:deconv-banachpart}\\
-        %     s_2^* &=  \frac{1}{\lh}\phih^* \mathbf{M}_{\lh}^{-1} \left(\bm{y} - \bm{w}\right).\label{eq:deconv-hilbertpart}
+        %     \hfb &\in \underset{ s_1\in\mx}{\arg\min} \quad  \mathcal{J}_{\mathbf{M}}(s_1), \label{eq:deconv-banachpart}\\
+        %     \hfh &=  \frac{1}{\lh}\phih^* \mathbf{M}_{\lh}^{-1} \left(\bm{y} - \bm{w}\right).\label{eq:deconv-hilbertpart}
         % \end{align}
         % with $\mathcal{J}_{\mathbf{M}}(s_1) = \|\mathbf{M}_{\lh}^{-\frac{1}{2}} ( \bm{y} - \phib(s_1)  ) \|_2^2  + \lb \| s_1 \|_{\mathcal{M}}$.
-        % As stated in Theorem~\ref{theo:main}, $\bm{w} = \phib(s_1^*)$ does not depend on the recovered solution of \eqref{eq:deconv-banachpart}.
+        % As stated in Theorem~\ref{theo:main}, $\bm{w} = \phib(\hfb)$ does not depend on the recovered solution of \eqref{eq:deconv-banachpart}.
         % The smooth background problem \eqref{eq:deconv-hilbertpart} is explicit and only the sparse foreground estimation problem \eqref{eq:deconv-banachpart} needs to be solved numerically with optimization.
     
         % From Proposition~\ref{prop:banachRT}, we know that this latter problem admits sparse solutions and that some can be expressed as
         % \begin{equation*}
-        %     s_1^* = \sum_k a_k \delta_{z_k}.
+        %     \hfb = \sum_k a_k \delta_{z_k}.
         % \end{equation*}
         
         The smooth background problem \eqref{eq:deconv-hilbertpart} is explicit, so that the only numerical challenge consists in estimating the positions $z_k \in \cX$ and the associated intensities $a_k \in \R$ of the foreground component in \eqref{eq:deconv-banachpart}. The positions are notably more challenging to estimate than the intensities due to their continuously-defined nature and the nonlinear dependence on the measurements. This is done numerically by optimizing the single-component functional $\mathcal{J}_{\mathbf{M}}(\cdot)$ over $\mx$.
-        The unique solution background component $s_2^*$ is then synthesized after computation of the residuals $\bm{y}-\bm{w}$ using \eqref{eq:deconv-hilbertpart}.
+        The unique solution background component $\hfh$ is then synthesized after computation of the residuals $\bm{y}-\bm{w}$ using \eqref{eq:deconv-hilbertpart}.
 
         {
         \begin{remark}[Choice of the Hilbert space]
-            The choice of the Hilbert space $\cH$ and in particular the Hilbert norm $\norm{\cdot}_\cH$ has a significant impact on the shape of $\fh^*$, involving the operator $\phih^*$ in equation~\eqref{eq:deconv-hilbertpart}. % Classical choices consist in using the space of square integrable functions $\cH = \ldx$ equipped with the canonical norm $\norm{f}_{\ldx}^2 = \int_\cX f(x)^2 \mathrm{d}x$ for $f \in \ldx$, or alternatively introducing an invertible operator $\mathrm{L}_{\cH}: \ldx \to \ldx$ such that $\norm{f}_\cH^2 = \int_\cX \mathrm{L}_{\cH}\{f\}(x)^2 \mathrm{d}x $. However, these common norms generally do not permit to enforce a strong penalty on the high-frequency band of the solution, limiting their practical interest in applications.
+            The choice of the Hilbert space $\cH$ and in particular the Hilbert norm $\norm{\cdot}_\cH$ has a significant impact on the shape of $\hfh$, involving the operator $\phih^*$ in equation~\eqref{eq:deconv-hilbertpart}. % Classical choices consist in using the space of square integrable functions $\cH = \ldx$ equipped with the canonical norm $\norm{f}_{\ldx}^2 = \int_\cX f(x)^2 \mathrm{d}x$ for $f \in \ldx$, or alternatively introducing an invertible operator $\mathrm{L}_{\cH}: \ldx \to \ldx$ such that $\norm{f}_\cH^2 = \int_\cX \mathrm{L}_{\cH}\{f\}(x)^2 \mathrm{d}x $. However, these common norms generally do not permit to enforce a strong penalty on the high-frequency band of the solution, limiting their practical interest in applications.
             Our choice of using the RKHS induced by a Gaussian kernel is motivated by the test application considered in the following Section~\ref{sec:comp:reco}, in which we want to promote more energy in the low-frequency band. % As demonstrated in equation~\ref{eq:rkhs-atom}, the reconstruction elements are shifted versions of the Gaussian function $g_t$ whose spatial extension is indeed larger than the measurement kernel $g$, hence promoting smoother solutions than what is achievable with classical $\mathrm{L}^2$-based norms.
              As demonstrated in equation~\eqref{eq:rkhs-atom}, the reconstruction elements are shifted versions of the Gaussian function $g_t$, whose spatial extension $\sigma_t$ can be tuned according to the user's needs.
         \end{remark}
         }
         
         % Finding a solution to \eqref{eq:deconv-banachpart} can then be reduced to the task of estimating some positions $z_k \in \cX$ and the associated intensities $a_k \in \R$. The positions are notably more challenging to estimate than the intensities due to their their continuously-defined nature and the nonlinear dependence on the measurements.
-        % The unique solution background component $s_2^*$ is then synthesized after computation of the residuals $\bm{y}-\bm{w}$ using \eqref{eq:deconv-hilbertpart}. 
+        % The unique solution background component $\hfh$ is then synthesized after computation of the residuals $\bm{y}-\bm{w}$ using \eqref{eq:deconv-hilbertpart}. 
         
     \subsection{Composite reconstruction}
     \label{sec:comp:reco}
@@ -995,7 +993,7 @@
         % The sparse component is similar to the simulated source signal of figure~\ref{fig:simple:source} although many reconstructed peaks are composed of several small intensity impulses, which makes the comparison with the ground truth difficult. The background component is faithful, matching the overall intensity of the ground truth and capturing local variations. 
         % This result is sensitive to the actual value of the regularization parameters, potentially leading to worse reconstructions (as can be seen in Appendix~\ref{app:reconstructions}).
 
-        To provide a better comparison between the source foreground component and the recovered one, we convolve the sparse signals $s_1^*$ and $s_1^\dagger$ with a representation kernel. We use a narrow Gaussian function of small standard deviation $\sigma_r = \sigma/4$. This operation intuitively blends nearby peaks while respecting the spatial spread of different clusters. The resulting signals are displayed in figure~\ref{fig:simple:recos-conv}, demonstrating consistency between the signals.
+        To provide a better comparison between the source foreground component and the recovered one, we convolve the sparse signals $\hfb$ and $s_1^\dagger$ with a representation kernel. We use a narrow Gaussian function of small standard deviation $\sigma_r = \sigma/4$. This operation intuitively blends nearby peaks while respecting the spatial spread of different clusters. The resulting signals are displayed in figure~\ref{fig:simple:recos-conv}, demonstrating consistency between the signals.
         % \ad{Should I comment more ?}
         % The $K_f=10$ source peaks are recovered. Some of them suffer from a small intensity shrinkage, which is a well-known artefact of LASSO-like problems. Spurious peaks are also reproduced around the left peak, which may be explained by the presence of strong background information around this location. 
 
@@ -1121,13 +1119,13 @@
         \subsubsection{Non-decoupled approach}
         Letting apart Theorem~\ref{theo:main}, the composite optimization \eqref{eq:argmin-sps} can also be treated directly using the representer theorem of \cite{debarre2021continuous}. Indeed, it was known that there exists at least one Dirac-based sparse solution for the foreground component as
         \begin{equation}
-            s_1^* = \sum_{k=1}^{K_1} a_{k} \delta(\cdot - x_k)
+            \hfb = \sum_{k=1}^{K_1} a_{k} \delta(\cdot - x_k)
             \label{eq:rt-deb-1}
         \end{equation}
         with $a_{k} \in \mathbb{R}$, $x_k \in \cX$ and $K_1 \leq L$.
         Additionally, the background component was known to be unique and that it can be expressed as
         \begin{equation}
-            s_2^* = \sum_{\ell=1}^{L} b_{\ell} \phi_\ell,
+            \hfh = \sum_{\ell=1}^{L} b_{\ell} \phi_\ell,
             \label{eq:rt-deb-2}
         \end{equation}
         with $b_\ell \in \mathbb{R}$ and $\phi_\ell$ the measurement functionals.
@@ -1155,7 +1153,7 @@
         % }
 
 
-        We present two experiments: the first one reports the reconstruction time when the contrast $r_{1/2}$ evolves, in the same setup as in section~\ref{sec:bene:comp}; the second experiment presents the reconstruction time when the super-resolution factor $n_\mathrm{srf}$ varies. The results, respectively reported in figure~\ref{fig:time-vs-r} and figure~\ref{fig:time-vs-srf}, correspond to the duration of the best reconstruction obtained through a tested set of regularization parameters. Each experiment is reproduced 24 times, the median value is reported with the solid line and the shaded area represents the interquartile spread.
+        We present two experiments: the first one reports the reconstruction time when the contrast $r_{1/2}$ evolves, in the same setup as in Section~\ref{sec:bene:comp}; the second experiment presents the reconstruction time when the super-resolution factor $n_\mathrm{srf}$ varies. The results, respectively reported in figure~\ref{fig:time-vs-r} and figure~\ref{fig:time-vs-srf}, correspond to the duration of the best reconstruction obtained through a tested set of regularization parameters. Each experiment is reproduced 24 times, the median value is reported with the solid line and the shaded area represents the interquartile spread.
 
         \begin{figure}[p]
             \centering
@@ -1174,7 +1172,7 @@
     
         On both scenarios, the decoupled approach run significantly faster than the non-decoupled one, on average taking 15.8\% of the runtime in the first experiment (varying contrast) and 16.1\% in the second one (varying super-resolution factor). Up to numerical approximations, the solutions are identical between the two methods.
         % Interestingly, the decoupled approach turns out to be faster than the regular B-LASSO solver.
-        Varying the contrast $r_{1/2}$ has little effect on the reconstruction time. Increasing the resolution, that is using more grid points in the discrete representation of $s_1^*$, slows down the solving for all the algorithms. The effect is stronger for the non-decoupled method, which suffers from having its reconstruction time multiplied by approximately $3.2$.
+        Varying the contrast $r_{1/2}$ has little effect on the reconstruction time. Increasing the resolution, that is using more grid points in the discrete representation of $\hfb$, slows down the solving for all the algorithms. The effect is stronger for the non-decoupled method, which suffers from having its reconstruction time multiplied by approximately $3.2$.
 
         
 
