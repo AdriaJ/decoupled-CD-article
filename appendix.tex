@@ -143,28 +143,58 @@
 
     % \vfill
 
-    Figure~\ref{fig:simple:fg-merged} displays the various reconstructions of the foreground component when varying the regularization parameters. Figure~\ref{fig:simple:bg} does the same for the background component. Note that the value of $\lb$ is not provided in these plots, only the coefficient $\alpha = \lambda_1 / \lambda_{1, \mathrm{max}}$. This reparametrization somehow interleaves the value of the parameters, indeed $\lambda_1$ strongly depends on the value of $\lambda_2$ (that is, in each column, $\lambda_1$ varies across the rows). However, this choice seems relevant as it almost decouple the choice of the parameters. Each column in the foreground reconstructions display similar sparsity characteristics. The choice of $\lambda_2$ mostly has impact on the recovered background.
+    Figure~\ref{fig:simple:fg} hereafter displays the various reconstructions of the foreground component when varying the regularization parameters. Figure~\ref{fig:simple:bg} does the same for the background component. Note that the value of $\lb$ is not provided in these plots, only the coefficient $\alpha = \lambda_1 / \lambda_{1, \mathrm{max}}$. This reparametrization somehow interleaves the value of the parameters, as $\lambda_1$ strongly depends on the value of $\lambda_2$. Consequently, in each row, $\lambda_1$ varies across the columns. %However, this choice seems relevant as it almost decouple the choice of the parameters. Each column in the foreground reconstructions display similar sparsity characteristics. The choice of $\lambda_2$ mostly has impact on the recovered background.
 
     \vfill
 
-    % trim={left bottom right top},clip
-    \begin{figure}[p]
-        % \centering
-        % \includegraphics[width=1.2\linewidth]{figures/simple_reco/foreground_merged.pdf}
-        \makebox[\textwidth][c]{\includegraphics[width=1.1\linewidth, trim=2cm 2.5cm 2cm 3.7cm, clip]{figures/simple_reco/foreground_merged.pdf}}
-        \caption{Recovered foreground after convolution with the representation kernel. \textit{Rows :} Increasing value of $\lambda_2$ from top to bottom. \textit{Columns :} Increasing factor $\alpha$ from left to right.}
-        \label{fig:simple:fg-merged}        
-    \end{figure}
+    % % trim={left bottom right top},clip
+    % \begin{figure}[p]
+    %     % \centering
+    %     % \includegraphics[width=1.2\linewidth]{figures/simple_reco/foreground_merged.pdf}
+    %     \makebox[\textwidth][c]{\includegraphics[width=1.1\linewidth, trim=2cm 2.5cm 2cm 1.7cm, clip]{figures/simple_reco/foreground_merged.pdf}}
+    %     \caption{Recovered foreground after convolution with the representation kernel. \textit{Rows :} Increasing value of $\lambda_2$ from top to bottom. \textit{Columns :} Increasing factor $\alpha$ from left to right.}
+    %     \label{fig:simple:fg-merged}        
+    % \end{figure}
 
-    % \vfill
+    % % \vfill
 
-    \begin{figure}[p]
-        \makebox[\textwidth][c]{\includegraphics[width=1.1\linewidth, trim=2cm 2.5cm 2cm 3.7cm, clip]{figures/simple_reco/backgrounds.pdf}}
-        \caption{Recovered background components, with the same value of regularization parameters as in figure~\ref{fig:simple:fg-merged}.}
-        \label{fig:simple:bg}        
-    \end{figure}
+    % \begin{figure}[p]
+    %     \makebox[\textwidth][c]{\includegraphics[width=1.1\linewidth, trim=2cm 2.5cm 2cm 1.7cm, clip]{figures/simple_reco/backgrounds.pdf}}
+    %     \caption{Recovered background components, with the same value of regularization parameters as in figure~\ref{fig:simple:fg-merged}.}
+    %     \label{fig:simple:bg}        
+    % \end{figure}
 
+\begin{figure}[p]
+    \centering
 
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[
+            height=0.43\textheight,
+            trim=2cm 1.4cm 2cm 2.4cm,
+            clip
+        ]{figures/simple_reco/foreground_merged.pdf}
+        \caption{Foreground components after convolution with the representation kernel.}
+        \label{fig:simple:fg}
+    \end{subfigure}
+
+    \vspace{0.7cm}
+
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[
+            height=0.43\textheight,
+            trim=2cm 1.4cm 2cm 2.4cm,
+            clip
+        ]{figures/simple_reco/backgrounds.pdf}
+        \caption{Background components using the same parameters.}
+        \label{fig:simple:bg}
+    \end{subfigure}
+
+    \caption{Recovered foreground and background components for different values of
+    $\lambda_2$ and $\alpha$. \textit{Rows :} Increasing value of $\alpha$ from top to bottom. \textit{Columns :} Increasing parameter $\lh$ from left to right.}
+    \label{fig:simple:tables}
+\end{figure}    
 \clearpage
 \section{Calculation for the Experiments}
     \label{app:calculation}
