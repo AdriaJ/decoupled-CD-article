@@ -73,7 +73,56 @@
     
     %\end{proof}
 
-\clearpage
+\section{Proof of Theorem~\ref{prop:single-lmax}}
+\label{app:proof:2}
+
+    Let us denote the objective functional $\mathcal{J}_\mathcal{B}(s) := \frac{1}{2} \norm{\bm{y} - \phib(s)}_2^2 + \lambda \norm{s}_{\cB}$. For any pair of elements $(u, s) \in \cA \times \cB$, the classical duality inequality stems from the definition of the dual norm $\norm{\cdot}_\cB$ on $\cB$ as
+    \begin{equation*}
+        \langle u, s \rangle_{\cA \times \cB} \leq \norm{u}_\cA \norm{s}_\cB.
+    \end{equation*}
+    Based on this result, we can lower-bound the value of the objective functional for any $s\in\cB$ as
+    \begin{align*}
+        \mathcal{J}_\mathcal{B}(s) &= \frac{1}{2} \norm{\bm{y} - \phib(s)}_2^2 + \lambda \norm{s}_{\cB} \\
+                &= \frac{1}{2} \norm{\bm{y}}_2^2 + \frac{1}{2} \norm{\phib(s)}_2^2 - \langle \bm{y}, \phib(s) \rangle + \lambda \norm{s}_{\cB} \\
+                &= \frac{1}{2} \norm{\bm{y}}_2^2 + \frac{1}{2} \norm{\phib(s)}_2^2 - \langle \phib^*\bm{y}, s \rangle_{\cA \times\cB} + \lambda \norm{s}_{\cB} \\
+                &\geq \frac{1}{2} \norm{\bm{y}}_2^2 + \frac{1}{2} \norm{\phib(s)}_2^2 + \norm{s}_{\cB} \left(\lambda - \norm{\phib^*\bm{y}}_\cA \right) \\
+                &\geq \frac{1}{2} \norm{\bm{y}}_2^2 + \frac{1}{2} \norm{\phib(s)}_2^2 + \norm{s}_{\cB} \left(\lambda - \lm \right)
+    \end{align*}
+    Assuming $\lambda \geq \lm$, we obtain
+    \begin{equation*}
+        \forall s \in \cB, \qquad \mathcal{J}_\mathcal{B}(s) \geq \mathcal{J}_\mathcal{B}(0) = \frac{1}{2} \norm{\bm{y}}_2^2,
+    \end{equation*}
+    hence the null element is solution, $0 \in \mathcal{V}(\lambda)$. Moreover, the strict convexity of the square $\ell_2$-norm in the data-fidelity term induces uniqueness of the fit, as detailed in Proposition~\ref{prop:abstract-rt}. For any solution $\widehat{s} \in \mathcal{V}(\lambda)$, we have 
+    \begin{equation*}
+        \phib(\widehat{s}) = \phib(0) = 0,
+    \end{equation*}
+    meaning that any solution belongs to the nullspace of the measurement operator $\phib$.
+    As a consequence, they also share the same value of the penalty term (again from Proposition~\ref{prop:abstract-rt}), hence
+    \begin{equation*}
+        \forall \widehat{s} \in \mathcal{V}(\lambda), \qquad \norm{\widehat{s}}_\cB = \norm{0}_\cB = 0.
+    \end{equation*}
+    Using positive definiteness of the norm, $\widehat{s}=0$ is the unique solution in the case $\lambda \geq \lm$, which proves the first statement.
+
+    Conversely, let us assume $0 < \lambda < \lm$ and let us prove the second statement. We want to show that $0$ is not solution, or equivalently that $\frac{1}{2} \norm{\phib(s)}_2^2 - \langle \phib^*\bm{y}, s \rangle_{\cA \times\cB} + \lambda \norm{s}_{\cB}$ can be negative. Let us write $v = \phib^*\bm{y} \in \cA$. Using the Hahn-Banach theorem \cite[Chapter~1]{Brezis_2011}, there exists an element $s_0\in\cB$ such that $\norm{s_0}_\cB = \norm{v}_\cA$ and
+    \begin{equation*}
+        \langle v, s_0\rangle = \norm{v}_\cA^2 = \norm{s_0}_\cB \norm{v}_\cA.
+    \end{equation*}
+    Using $\lm = \norm{v}_\cA$, we can then write
+    \begin{align}
+        - \langle v, s_0 \rangle_{\cA \times\cB} + \lambda \norm{s_0}_{\cB} &= \norm{s_0}_{\cB} \left( \lambda - \norm{v}_\cA \right) \nonumber \\
+            &= \norm{s_0}_{\cB} \left( \lambda - \lm \right) < 0. \label{eq:negative}
+    \end{align}
+    The measurement operator $\phib: \left(\cB, \norm{\cdot}_\cB \right) \to \left(\R^L, \norm{\cdot}_2\right)$ being bounded, there exists a constant $C > 0$ such that
+    \begin{equation*}
+        \forall s \in \cB, \quad \norm{\phib(s)}_2^2 \leq C^2 \norm{s}_{\cB}^2.
+    \end{equation*}
+    Let $\xi > 0$ a real number and consider the scaled element $\xi s_0$.
+    The term $\norm{\phib(\xi s_0)}_2^2$ is then of order $\xi^2$, while the positive quantity $\langle \phib^*\bm{y}, \xi s_0 \rangle_{\cA \times\cB} - \lambda \norm{\xi s_0}_{\cB}$ depends linearly on $\xi$, see equation~\eqref{eq:negative}. Consequently, as $\xi \to 0$, there exists a critical value $\xi_0 > 0$ such that, for all $0 < \xi \leq \xi_0$,  
+    \begin{equation*}
+        \frac{1}{2} \norm{\phib(\xi s_0)}_2^2 - \langle \phib^*\bm{y}, \xi s_0 \rangle_{\cA \times\cB} + \lambda \norm{\xi s_0}_{\cB} < 0.
+    \end{equation*}
+    This shows that $0$ cannot be a minimizer.
+
 \section{Discretization of the Banach Decoupled Subproblem}
     \label{app:discretization}
         Remember that we want to solve the following problem

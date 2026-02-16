@@ -29,15 +29,14 @@
 
 \noindent{\it Keywords\/}: Sparse reconstruction, composite model, continuous-domain recovery, functional inverse problems. 
 
-{
-    \color{red}
-    % Style guide: https://publishingsupport.iopscience.iop.org/questions/style-guide-journal-articles/
-    Remaining todo's:
-    \begin{itemize}
-        \item Proof of Theorem 2 to be deferred in the appendix.
-        \item Check ad comments. 
-    \end{itemize}
-}
+% {
+%     \color{red}
+%     % Style guide: https://publishingsupport.iopscience.iop.org/questions/style-guide-journal-articles/
+%     Remaining todo's:
+%     \begin{itemize}
+%         \item Check ad comments. 
+%     \end{itemize}
+% }
 
     % \ad{
     % Remaining todo's:
@@ -175,8 +174,7 @@
     % Similarly, using an atomic norm for $\mathcal{R}^\mathrm{S}(\cdot)$ promotes solutions which are sparse in the dictionary of the atoms defining the norm (as they are indeed the extreme points of the norm unit ball \cite{chandrasekaran2012convex}). This framework of Banach search space also covers significantly more complex functional setups of sparse recovery, as for instance in \cite{laville2023a,ambrosio2023,decastro2024}.
     % Many other classical examples fit into this framework without being Banach norms though. Positivity constraint is known to promote sparsity in some cases. Spline reconstruction is achieved with precomposing a sparsity promoting norm with a differential operator, leading to $\cRS$ being a semi-norm.
     However, many classical sparse recovery examples also fit into the $\cRS$-framework without being Banach norms. Positivity constraints, for instance, are known to promote sparse solutions in certain inverse problems \cite{Donoho_Tanner_2005,Slawski_Hein_2011}. Another important model arises from precomposing a sparsity-promoting norm with a differential operator, leading to regularizers that are only seminorms. This includes analysis-prior models \cite{elad2006analysis} and spline reconstruction problems \cite{unser2017splines}.
-    % Solving such a sparsity-promoting penalized problem is generally more difficult than the case of quadratic regularization on a Hilbert space: the solution set may be infinite-dimensional and there may not exist gradient steps due to the absence of inner product.
-    Generally, solving sparsity-promoting penalized problems is more challenging than quadratic regularization in Hilbert spaces: the solution set may be infinite-dimensional, and the lack of an inner product structure precludes the use of standard gradient-based methods.
+    Generally, solving sparsity-promoting penalized problems is more challenging than quadratic regularization in Hilbert spaces: there may exist infinitely many solutions in the space $\cB$, and the lack of an inner product structure precludes the use of standard gradient-based methods.
 
     In this work, we consider the combination of the two above-mentioned penalties, which we refer to as \emph{sparse-plus-smooth} regularization. We focus on problem~\eqref{eq:compositepb} with
         \begin{equation*}
@@ -245,7 +243,7 @@
     
    Proposition \ref{prop:hilbertRT} hereafter is a classical result for quadratic optimization over Hilbert spaces. Significantly more general formulations can be found in~\cite{Scholkopf2001generalized} but we restrict here to the case which is relevant for our purpose. We follow the exposition of~\cite[Theorem~7]{caponera2021nonparametric}, which is based on \cite[Section~3.2]{Unser2020}. 
 
-    \begin{proposition}[Representer Theorem on Hilbert spaces]
+    \begin{proposition}[Representer theorem on Hilbert spaces]
     \label{prop:hilbertRT}
     Let $\bm{y}\in \R^L$, $\phihsingle= (\phihh_1 ,\ldots , \phihh_L) \in \mathcal{H}^L$, and $\lambda > 0$. If the measurement functionals $\phihh_1, \dots, \phihh_L$ are linearly independent, the optimization problem 
     \begin{equation} \label{eq:hibertpb}
@@ -280,7 +278,7 @@
     % The norms responsible for promoting sparsity do not stem from any inner product.
     % Using a Hilbertian norm generally does not promote sparsity, as the solution can be interpreted as a projection over 
     The solution resulting from the quadratic Hilbertian regularization is generally not sparse (it can be interpreted as an orthogonal projection over a Hilbert norm ball, see \cite{engl1996regularization}).
-    A general framework for sparse reconstruction can be classically formalized using a non-reflexive Banach space $\mathcal{B}$ as the search space, for which we assume the existence of a predual space \cite{unser2021unifying}.
+    A general framework for sparse reconstruction is classically formalized using a non-reflexive Banach space $\mathcal{B}$ as the search space, for which we assume the existence of a predual space \cite{unser2021unifying}.
     
     We fix two Banach spaces $( \mathcal{A}, \| \cdot \|_{\mathcal{A}})$ and $( \mathcal{B}, \| \cdot \|_{\mathcal{B}})$ such that $\mathcal{B} = \mathcal{A}'$ is the topological dual of $\mathcal{A}$ and $\| \cdot \|_{\mathcal{B}}$ is the dual norm 
     \begin{equation*}
@@ -303,34 +301,35 @@
         \label{eq:phi-banach}
         \phibsingle (s) := (\langle \phibb_\ell, s \rangle_{\mathcal{A}\times\mathcal{B}})_{1\leq \ell \leq L} \in \mathbb{R}^L.
     \end{equation}
-    In what follows, we make the mild assumption that $\phib$ is a bounded operator, an assumption that is typically satisfied in practical settings.
+    % In what follows, we make the mild assumption that $\phib$ is a bounded operator, an assumption that is typically satisfied in practical settings.
+    This definition ensures that $\phibb$ is a bounded operator $\left(\cB, \norm{\cdot}_\cB \right) \to \left(\R^L, \norm{\cdot}_2\right)$, as for any $s\in\cB$ the duality inequality holds: $\lvert \langle \phibb_\ell, s \rangle_{\mathcal{A}\times\mathcal{B}} \rvert \leq \norm{\phibb_\ell}_\cA \norm{s}_\cB$.
+    % Having the measurement functionals $\phibb_\ell$ in $\cA$ ensures that the measurement operator $\phib: (\cB, \norm{\cdot}_\cB ) \to (\R^L, \norm{\cdot}_2)$ is bounded, as $\lvert \langle \phibb_\ell, s \rangle_{\mathcal{A}\times\mathcal{B}} \rvert \leq \norm{\phibb_\ell}_\cA \norm{s}_\cB$.
 
-
-    Within this framework, the solutions of the optimization problem~\eqref{eq:singletpb} with $s\in\cB$  are significantly influenced by the choice of the sparsity-promoting penalty $\mathcal{R}(s) = \lambda \cRS(s)$. Remarkably, we have access to abstract representer theorems to characterize the solution set. We follow the presentation of \cite{boyer2019representer} but similar results were proposed at the same time with somewhat different proofs in \cite{bredies2020sparsity}. The abstract theorem presented hereafter generalizes Proposition~\ref{prop:hilbertRT} on Hilbert spaces.
+    Within this framework, the solutions of the single-component optimization problem~\eqref{eq:singletpb} with $s\in\cB$  are significantly influenced by the choice of the sparsity-promoting penalty $\mathcal{R}(s) = \lambda \cRS(s)$. Remarkably, we have access to abstract representer theorems to characterize the solution set. We follow the presentation of \cite{boyer2019representer} but similar results were proposed at the same time with somewhat different proofs in \cite{bredies2020sparsity}. The abstract theorem presented hereafter generalizes Proposition~\ref{prop:hilbertRT} on Hilbert spaces.
     
-    \begin{proposition}[Abstract Representer Theorem for penalized problems (Corollary 2 in \cite{boyer2019representer})]
+    \begin{proposition}[Abstract representer theorem for penalized problems (Corollary 2 in \cite{boyer2019representer})]
     \label{prop:abstract-rt}
-    Let $\cRS: \cB \to \R_+$ be a convex function, $\bm{y}\in \R^L$, $\phibsingle= (\phibb_1 ,\ldots , \phibb_L) \in \mathcal{A}^L$, and $\lambda > 0$. Moreover, let us assume that the optimization problem
+    Let $\cRS: \cB \to \R_+$ be a lower semi-continuous convex function, $\bm{y}\in \R^L$, $\phibsingle= (\phibb_1 ,\ldots , \phibb_L) \in \mathcal{A}^L$, and $\lambda > 0$. Moreover, let us assume that the optimization problem
     \begin{equation} \label{eq:sparse-rt}
-        \inf_{s \in \mathcal{B}} \frac{1}{2} \| \bm{y} - \phibsingle(s) \|_2^2 + \lambda \cRS(s)
+        \inf_{s \in \mathcal{B}}\ \frac{1}{2} \| \bm{y} - \phibsingle(s) \|_2^2 + \lambda \cRS(s)
     \end{equation}
     has a nonempty solution set $\mathcal{V}(\lambda)$.
     \begin{itemize}
-        \item First, the strict convexity of the quadratic data-fidelity term ensures that any solution $\widehat{s} \in \mathcal{V}(\lambda)$ shares the same measurement vector, i.e., $\phib \left(\mathcal{V}(\lambda)\right)$ is a singleton.
+        \item First, any solution $\widehat{s} \in \mathcal{V}(\lambda)$ shares the same measurement vector, i.e., $\phib \left(\mathcal{V}(\lambda)\right)$ is a singleton.
         \item Second, any solution $\widehat{s} \in \mathcal{V}(\lambda)$ leads to the same value of the penalty $R^\star := \cRS(\widehat{s})$.
-        \item Third, assuming the level set $C^\star := \left\{s \in \cB,\ \cRS(s) \leq R^\star\right\}$ is linearly closed, any solution $\widehat{s} \in \mathcal{V}(\lambda)$ can be expressed as a convex combination of extreme points of the set $C^\star$. The bounds on the  number of elements in the combination depends on the dimension of the face of the solution set which contains the considered solution. 
+        \item Third, the extreme points of $\mathcal{V}(\lambda)$ can be expressed as convex combinations of at most $L$ extreme points of the level set $C^\star:= \left\{s \in \cB,\ \cRS(s) \leq R^\star\right\}$ (or $L+1$ in the specific case $R^\star = \inf_\cB \cRS$). 
     \end{itemize}
     \end{proposition}
 
     \begin{proof}
-        The first statement repeats Remark~6 in \cite{boyer2019representer}. The proof relies on simple convexity arguments, as presented in Lemma~1 from \cite{tibshirani2013lasso}. The second statement is the consequence of the first one: two different solutions $\widehat{r}, \widehat{s} \in \mathcal{V}(\lambda)$ have the same fitted value $\phib(\widehat{r}) = \phib(\widehat{s})$, hence they also produce the same value of the quadratic data-fidelity term. As they are both solutions to the problem, they reach the same global minimum and so they necessarily lead to the same value of the penalty term $\cRS(\widehat{r}) = \cRS(\widehat{s})$, given that $\lambda > 0$. The third statement is the direct application of Corollary~2 from \cite{boyer2019representer}. 
+        The first statement repeats Remark~6 in \cite{boyer2019representer}. The proof relies on the strict convexity of the data-fidelity term, as presented in Lemma~1 from \cite{tibshirani2013lasso}. The second statement is the consequence of the first one: two different solutions $\widehat{r}, \widehat{s} \in \mathcal{V}(\lambda)$ have the same fitted value $\phib(\widehat{r}) = \phib(\widehat{s})$, hence they also produce the same value of the quadratic data-fidelity term. As they are both solutions to the problem, they reach the same global minimum and so they necessarily lead to the same value of the penalty term $\cRS(\widehat{r}) = \cRS(\widehat{s})$, given that $\lambda > 0$. The third statement is the direct application of Corollary~2 from \cite{boyer2019representer}, using the lower semi-continuity of $\cRS$ to ensure that $C^\star$ is linearly closed (Remark~5 in the article). 
     \end{proof}
 
     Proposition~\ref{prop:abstract-rt} sheds light on the mechanics behind sparsity-promoting penalties: sparse reconstruction is naturally obtained using a function $\cR^{\mathrm{S}}$ whose level sets have sparse extreme points, and the reconstruction atoms can be chosen to be the extreme points themselves.
 
     More precise representer theorems can be deduced from Proposition~\ref{prop:abstract-rt}, for instance considering (generalized) total-variation norms for measures and splines reconstructions\cite{Fisher1975,Unser2016representer,unser2017splines,bredies2020sparsity,bredies2020sparsity}. As an example, we recall the specific case of a Banach-norm regularization $\cRS = \norm{s}_\cB$ in Proposition~\ref{prop:banachRT}, which combines existence and topological results from~\cite[Proposition 8]{gupta2018continuous} and the extreme point characterization of \cite[Theorem 3.1]{boyer2019representer}.
 
-    \begin{proposition}[Representer Theorem on Banach spaces]
+    \begin{proposition}[Representer theorem on Banach spaces]
     \label{prop:banachRT}
     Let $\bm{y}\in \R^L$, $\phibsingle= (\phibb_1 ,\ldots , \phibb_L) \in \mathcal{A}^L$, and $\lambda > 0$. The optimization problem 
     \begin{equation} \label{eq:banachpb}
@@ -448,7 +447,7 @@
 
     Another consequence of Theorem~\ref{theo:main} is that known results over $\mathcal{B}$ are directly transferred into $\mathcal{B}\times \mathcal{H}$, as the decoupling holds for any convex penalty $\cRS$. The properties of the sparse component directly stem from the shape of the solutions in $\mathcal{V}(\mathbf{M}_{\lh}, \lb)$. We illustrate this principle with a Banach-norm regularization in the following corollary, stating a representer theorem which characterizes the extreme point solutions.
 
-    \begin{corollary}
+    \begin{corollary}[Decoupling representer theorem]
     \label{cor:main}
     Let us consider the problem~\eqref{eq:argminisback} with $\cRS(\cdot) = \norm{\cdot}_\cB $ over $\cB$. Invoking Proposition~\ref{prop:banachRT} to $\mathcal{V}(\mathbf{M}_{\lh},\lb)$ in \eqref{eq:banachpart}, the solution set $\mathcal{W} (\lb,\lh)$ is non-empty, convex, and weak*-compact in $\mathcal{B}\times \mathcal{H}$. Its extreme points are of the form 
     \begin{equation} \label{eq:extreme}
@@ -481,11 +480,11 @@
     If we consider a single-component problem with a Hilbert penalty, there exists an optimal value of the regularization parameter when the source signal follows a random Gaussian model \cite{Badou}. Beyond this ideal model, finding a relevant value for this parameter is still an open question and many strategies have been proposed in the literature \cite{hansen2000,park2008parameter}. The case of single-component Banach problems is not simpler \cite{deladalle2014sugar,chirinos2024parameter}. 
     However, when an $\ell_1$-norm or a total-variation norm is considered, the relevant values of the regularization parameter $\lambda > 0$ are confined to an explicit interval. Indeed, there exists a problem-dependent maximum value $\lambda_{\mathrm{max}} > 0$ above which the solution of the optimization is unique and reduced to the null signal. This is a well-known result for LASSO-type problems, both in discrete \cite{tibshirani2013lasso}, \cite[Proposition~II.1]{koulouri2021} and continuous settings \cite[Proposition~10]{debarre2022sparsest}, \cite[Proposition~4.3]{jarret_grid_2025}.
 
-    \ad{Maybe move the proof to the appendix.}
-    We first extend this result to the generic case of single-components problems penalized with a Banach norm in the following theorem.
-    \begin{theorem}[Bound on single-component Banach-penalized problems]
+    We first extend this result to the generic case of single-components problems penalized with a Banach norm in the following theorem, whose proof is deferred to Appendix~\ref{app:proof:2}.
+    \begin{theorem}[Regularization bound on Banach-penalized problems]
     \label{prop:single-lmax}
-    Assume that the operator $\phib : (\cB, \norm{\cdot}_\cB) \to (\R^L, \norm{\cdot}_2)$ is bounded.
+    % Assume that the operator $\phib : (\cB, \norm{\cdot}_\cB) \to (\R^L, \norm{\cdot}_2)$ is bounded.
+    Let $\bm{y}\in \R^L$ and $\phib \in \cA^L$.
     For $\lambda >0$, we consider the solution set of the single-component optimization problem
     \begin{equation}
         \label{eq:single-banach}
@@ -502,59 +501,11 @@
     \end{itemize}
     \end{theorem}
 
-    \begin{proof}
-        Let us denote the objective functional $\mathcal{J}_\mathcal{B}(s) := \frac{1}{2} \norm{\bm{y} - \phib(s)}_2^2 + \lambda \norm{s}_{\cB}$. For any pair of elements $(u, s) \in \cA \times \cB$, the classical duality inequality stems from the definition of the dual norm $\norm{\cdot}_\cB$ on $\cB$ as
-        \begin{equation*}
-            \langle u, s \rangle_{\cA \times \cB} \leq \norm{u}_\cA \norm{s}_\cB.
-        \end{equation*}
-        Based on this result, we can lower-bound the value of the objective functional for any $s\in\cB$ as
-        \begin{align}
-            \mathcal{J}_\mathcal{B}(s) &= \frac{1}{2} \norm{\bm{y} - \phib(s)}_2^2 + \lambda \norm{s}_{\cB} \\
-                    &= \frac{1}{2} \norm{\bm{y}}_2^2 + \frac{1}{2} \norm{\phib(s)}_2^2 - \langle \bm{y}, \phib(s) \rangle + \lambda \norm{s}_{\cB} \\
-                    &= \frac{1}{2} \norm{\bm{y}}_2^2 + \frac{1}{2} \norm{\phib(s)}_2^2 - \langle \phib^*\bm{y}, s \rangle_{\cA \times\cB} + \lambda \norm{s}_{\cB} \\
-                    &\geq \frac{1}{2} \norm{\bm{y}}_2^2 + \frac{1}{2} \norm{\phib(s)}_2^2 + \norm{s}_{\cB} \left(\lambda - \norm{\phib^*\bm{y}}_\cA \right)
-        \end{align}
-        Assuming $\lambda \geq \lm$, we obtain
-        \begin{equation*}
-            \forall s \in \cB, \qquad \mathcal{J}_\mathcal{B}(s) \geq \mathcal{J}_\mathcal{B}(0) = \frac{1}{2} \norm{\bm{y}}_2^2,
-        \end{equation*}
-        hence the null element is solution, $0 \in \mathcal{V}(\lambda)$. Moreover, the strict convexity of the square $\ell_2$-norm in the data-fidelity term induces uniqueness of the fit, as detailed in Proposition~\ref{prop:abstract-rt}. For any solution $\widehat{s} \in \mathcal{V}(\lambda)$, we have 
-        \begin{equation*}
-            \phib(\widehat{s}) = \phib(0) = 0,
-        \end{equation*}
-        meaning that any solution belongs to the nullspace of the measurement operator $\phib$.
-        As $\lambda \geq \lm > 0$, all the solutions also share the same value of the penalty term (see Proposition~\ref{prop:abstract-rt} again), hence
-        \begin{equation*}
-            \forall \widehat{s} \in \mathcal{V}(\lambda), \qquad \norm{\widehat{s}}_\cB = \norm{0}_\cB = 0,
-        \end{equation*}
-        so that, using positive definiteness of the norm, $\widehat{s}=0$ is the unique solution in the case $\lambda \geq \lm$, which proves the first statement.
-
-        Conversely, let us assume $0 < \lambda < \lm$ and let us prove the second statement. We want to show that $0$ is not solution, or equivalently that $\frac{1}{2} \norm{\phib(s)}_2^2 - \langle \phib^*\bm{y}, s \rangle_{\cA \times\cB} + \lambda \norm{s}_{\cB}$ can be negative. Let us write $v = \phib^*\bm{y} \in \cA$. Using the Hahn-Banach theorem \cite[Chapter~1]{Brezis_2011}, there exists an element $s_0\in\cB$ such that $\norm{s_0}_\cB = \norm{v}_\cA$ and
-        \begin{equation*}
-            \langle v, s_0\rangle = \norm{v}_\cA^2 = \norm{s_0}_\cB \norm{v}_\cA.
-        \end{equation*}
-        Using $\lm = \norm{v}_\cA$, we can then write
-        \begin{align}
-            - \langle v, s_0 \rangle_{\cA \times\cB} + \lambda \norm{s_0}_{\cB} &= \norm{s_0}_{\cB} \left( \lambda - \norm{v}_\cA \right) \\
-                &= \norm{s_0}_{\cB} \left( \lambda - \lm \right) < 0.
-        \end{align}
-        The measurement operator $\phib: \cB \to \R^L$ being bounded, there exists a constant $C > 0$ such that
-        \begin{equation}
-            \norm{\phib(s_0)}_2^2 \leq C^2 \norm{s_0}_{\cB}^2.
-        \end{equation}
-        Let $\xi > 0$ a real number and consider the scaled element $\xi s_0$.
-        The term $\norm{\phib(\xi s_0)}_2^2$ is of order $\xi^2$, while the quantity $\langle \phib^*\bm{y}, \xi s_0 \rangle_{\cA \times\cB} - \lambda \norm{\xi s_0}_{\cB}$ depends linearly on $\xi$. Consequently, as $\xi \to 0$, there exists a critical value $\xi_0 > 0$ such that, for all $0 < \xi \leq \xi_0$,  
-        \begin{equation*}
-            \frac{1}{2} \norm{\phib(\xi s_0)}_2^2 - \langle \phib^*\bm{y}, \xi s_0 \rangle_{\cA \times\cB} + \lambda \norm{\xi s_0}_{\cB} < 0.
-        \end{equation*}
-        This shows that $0$ cannot be a minimizer.
-    \end{proof}
-
     This result on the maximum value of the regularization parameter can be transferred to composite problems using Theorem~\ref{theo:main}. It reveals an explicit dependence between the two regularization parameters of composite problems, as illustrated in Proposition~\ref{prop:lmax}.
 
     \begin{proposition}[Maximum value of $\lambda_1$]
     \label{prop:lmax}
-    Consider the composite optimization problem \eqref{eq:argminisback} with $\cRS(\cdot) = \lVert \cdot \rVert_\mathcal{B}$ and assume that $\phib$ is a bounded operator. For a fixed $\lh >0$, we define
+    Consider the composite optimization problem \eqref{eq:argminisback} with $\cRS(\cdot) = \lVert \cdot \rVert_\mathcal{B}$. For a fixed $\lh >0$, we define
     \begin{equation}
         \label{eq:l1max}
         \begin{split}
@@ -686,7 +637,7 @@
             \end{equation}
             Keeping the notation of equation \eqref{eq:phi-banach}, this measurement operator corresponds to the measurement functionals
             $$\phibb_\ell = g(x_\ell - \cdot) \in \czx.$$
-            Moreover, $\phib$ is indeed a bounded operator $(\mx, \norm{\cdot}_\mathcal{M}) \to (\R^L, \norm{\cdot}_2)$ as the PSF $g$ admits a maximum value on $\cX$, hence we can use the maximum value $\lbm$ as defined in Proposition~\ref{prop:lmax}.
+            % Moreover, $\phib$ is indeed a bounded operator $(\mx, \norm{\cdot}_\mathcal{M}) \to (\R^L, \norm{\cdot}_2)$ as the PSF $g$ admits a maximum value on $\cX$, hence we can use the maximum value $\lbm$ as defined in Proposition~\ref{prop:lmax}.
                 \item Definition of $\phih$:
             \begin{equation}
                 \label{eq:phih-conv}
@@ -966,7 +917,8 @@
         \begin{figure}[t]
             \centering
             \includegraphics[width=\linewidth, trim=0 2cm 0 2.2cm, clip]{figures/simple_reco/blasso_merged.pdf}
-            \caption{Single-component reconstructions using a B-LASSO problem approximated on the fine grid: ground truth (\textit{upper left}) and several values of the regularization parameter ($\alpha=0.2, 0.3$ or $0.4$). \ad{Larger titles or subfigures.}
+            \caption{Single-component reconstructions using a B-LASSO problem approximated on the fine grid: ground truth (\textit{upper left}) and several values of the regularization parameter ($\alpha=0.2, 0.3$ or $0.4$).
+            % \ad{Larger titles or subfigures.}
             }
             \label{fig:simple:blasso-conv}
         \end{figure}
@@ -1134,7 +1086,8 @@
 
 % \ack 
 \section*{Acknowledgments}
-    The authors sincerely thank Martin Vetterli for his trust and guidance throughout this project. They also address their sincere gratitude to the anonymous referees for their careful reviews and constructive suggestions, which contributed to improving the quality of this manuscript. \\
+    The authors sincerely thank Martin Vetterli for his trust and guidance throughout this project. 
+    % They also address their sincere gratitude to the anonymous referees for their careful reviews and constructive suggestions, which contributed to improving the quality of this manuscript. \\
     A.J. is funded by the Swiss National Science Fundation (SNSF) under grant \emph{SESAM - Sensing and Sampling: Theory and Algorithms (n\textdegree 200021\_181978/1)}.
     
 \input{appendix}
