@@ -185,7 +185,7 @@
         \caption{Relative $\ell_2$-norm error on the background components \label{tab:rl2-bg}}
     \end{table}
 
-    \vfill
+    % \vfill
 
 \section{Composite Reconstructions}
     \label{app:reconstructions}
@@ -194,7 +194,7 @@
 
     Figure~\ref{fig:simple:fg} hereafter displays the various reconstructions of the foreground component when varying the regularization parameters. Figure~\ref{fig:simple:bg} does the same for the background component. Note that the value of $\lb$ is not provided in these plots, only the coefficient $\alpha = \lambda_1 / \lambda_{1, \mathrm{max}}$. This reparametrization somehow interleaves the value of the parameters, as $\lambda_1$ strongly depends on the value of $\lambda_2$. Consequently, in each row, $\lambda_1$ varies across the columns. %However, this choice seems relevant as it almost decouple the choice of the parameters. Each column in the foreground reconstructions display similar sparsity characteristics. The choice of $\lambda_2$ mostly has impact on the recovered background.
 
-    \vfill
+    % \vfill
 
     % % trim={left bottom right top},clip
     % \begin{figure}[p]
@@ -243,8 +243,9 @@
     \caption{Recovered foreground and background components for different values of
     $\lambda_2$ and $\alpha$. \textit{Rows :} Increasing value of $\alpha$ from top to bottom. \textit{Columns :} Increasing parameter $\lh$ from left to right.}
     \label{fig:simple:tables}
-\end{figure}    
-\clearpage
+\end{figure}
+    
+% \clearpage
 \section{Calculation for the Experiments}
     \label{app:calculation}
 

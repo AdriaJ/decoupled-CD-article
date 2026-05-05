@@ -327,7 +327,7 @@
 
     Proposition~\ref{prop:abstract-rt} sheds light on the mechanics behind sparsity-promoting penalties: sparse reconstruction is naturally obtained using a function $\cR^{\mathrm{S}}$ whose level sets have sparse extreme points, and the reconstruction atoms can be chosen to be the extreme points themselves.
 
-    More precise representer theorems can be deduced from Proposition~\ref{prop:abstract-rt}, for instance considering (generalized) total-variation norms for measures and splines reconstructions\cite{Fisher1975,Unser2016representer,unser2017splines,bredies2020sparsity,bredies2020sparsity}. As an example, we recall the specific case of a Banach-norm regularization $\cRS = \norm{s}_\cB$ in Proposition~\ref{prop:banachRT}, which combines existence and topological results from~\cite[Proposition 8]{gupta2018continuous} and the extreme point characterization of \cite[Theorem 3.1]{boyer2019representer}.
+    More precise representer theorems can be deduced from Proposition~\ref{prop:abstract-rt}, for instance considering (generalized) total-variation norms for measures and splines reconstructions\cite{Fisher1975,Unser2016representer,unser2017splines,bredies2020sparsity,debarre2022sparsest}. As an example, we recall the specific case of a Banach-norm regularization $\cRS = \norm{s}_\cB$ in Proposition~\ref{prop:banachRT}, which combines existence and topological results from~\cite[Proposition 8]{gupta2018continuous} and the extreme point characterization of \cite[Theorem 3.1]{boyer2019representer}.
 
     \begin{proposition}[Representer theorem on Banach spaces]
     \label{prop:banachRT}
@@ -508,10 +508,11 @@
     Consider the composite optimization problem \eqref{eq:argminisback} with $\cRS(\cdot) = \lVert \cdot \rVert_\mathcal{B}$. For a fixed $\lh >0$, we define
     \begin{equation}
         \label{eq:l1max}
-        \begin{split}
-        \lambda_{1, \mathrm{max}} &:= \lVert \phib^* \mathbf{M}_{\lambda_2}^{-1} \bm{y} \rVert_\cA \\
-                & = \lambda_2 \lVert \phib^* \left( \phih \phih^* + \lambda_2 \mathbf{I}_L \right)^{-1} \bm{y} \rVert_\cA.
-        \end{split}
+        % \begin{split}
+        % \lambda_{1, \mathrm{max}} &:= \lVert \phib^* \mathbf{M}_{\lambda_2}^{-1} \bm{y} \rVert_\cA \\
+        %         & = \lambda_2 \lVert \phib^* \left( \phih \phih^* + \lambda_2 \mathbf{I}_L \right)^{-1} \bm{y} \rVert_\cA.
+        % \end{split}
+        \lambda_{1, \mathrm{max}} := \lVert \phib^* \mathbf{M}_{\lambda_2}^{-1} \bm{y} \rVert_\cA = \lambda_2 \lVert \phib^* \left( \phih \phih^* + \lambda_2 \mathbf{I}_L \right)^{-1} \bm{y} \rVert_\cA.
     \end{equation}
     For any $\lambda_1 \geq \lambda_{1, \mathrm{max}}$, the solution set for the Banach component is reduced to the singleton zero 
     $$\mathcal{V}(\mathbf{M}_{\lh}, \lb) = \left\{ 0 \right\}$$
