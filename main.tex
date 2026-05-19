@@ -560,12 +560,8 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%  SECTION 3
+%%%%%  SECTION 4
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% \input{sect4}
-
-%!TEX root = main.tex
 
 \section{Application to Super-Resolved Deconvolution}
 \label{sec:application}
@@ -656,13 +652,14 @@
                 \label{prop:phihh}
                 For any $\fh \in \cHk$, for $\ell \in \left\{ 1, \dots, L \right\}$, the measurement operator can be written as
                 \begin{equation}
+                    \label{eq:defPhihStar}
                     [\phih(\fh)]_\ell = \langle \phihh_\ell, \fh \rangle_{\cHk}
                     % = \int_\cX g(x_\ell - x) s_2(x) \mathrm{d}x = \int_\cX \phi_\ell(x) s_2(x) \mathrm{d}x
                 \end{equation}
                 with $\phihh_\ell$ being the convolution
-                \begin{equation}
+                \begin{equation*}
                     \phihh_\ell = g_0 * g(x_\ell - \cdot).
-                \end{equation}
+                \end{equation*}
             \end{proposition}
             \begin{proof}
                 % \ad{ToDo: This is a very classical result but I don't manage to find a good reference. The core idea is as follows.}
@@ -847,7 +844,7 @@
     
             \begin{figure}[t]
                 \centering
-                \includegraphics[width=\linewidth]{figures/simple_reco/gt.pdf}        
+                \includegraphics[width=\linewidth]{/home/adrian/PycharmProjects/decouple-composite/figures/review2/gt.pdf}        
                 \caption{Simulated source signal. \textit{Left:} Sparse component. \textit{Center:} Background smooth component. \textit{Right:} Superposition of the two components.
                 }
                 \label{fig:simple:source}
@@ -855,7 +852,7 @@
         
             \begin{figure}[t]
                 \centering
-                \includegraphics[width=\linewidth]{figures/simple_reco/measurements.pdf}        
+                \includegraphics[width=\linewidth]{/home/adrian/PycharmProjects/decouple-composite/figures/review2/measurements.pdf}        
                 \caption{Simulated measurements. \textit{Left:} Contribution of the sparse component. \textit{Center:} Contribution of background. \textit{Right:} Total noisy observations $\bm{y}$. In practice, only the information of the right-hand plot is accessible and respective contribution of the components is not known.}
                 \label{fig:simple:measurements}
             \end{figure}
@@ -865,19 +862,34 @@
         %According to equation~\eqref{eq:def-Mphi}, the parameters $\lh$ appears in the sparse component estimation problem in front of the Gram matrix as $(1/\lh)\phih\phih^*$. It is then relevant to scale $\lh$ with the highest singular value of $\phih$, which is $\sigma_{mas}(\phih)\approx L$ in our case.
         Once $\lh$ has been set, $\lb$ is fixed as a rate of the maximum value as defined in \eqref{eq:l1max} with $\lb = \alpha_1 \lambda_{1, \mathrm{max}}$ for $0 < \alpha_1 <1$. Typically, $\alpha_1$ takes values in the range $[0.1, 0.3]$. To emphasize the smoothing effect on the background, we use the reconstruction width $\sigma_t = 0.1 > \sigma_b$. Additionally, a positivity constraint has been enforced on $s_1$ which does not break the representer theorem and usually improves the quality of the reconstruction. The approximate decoupled problem \eqref{eq:gridbased-sparse} is solved with an APGD algorithm \cite{liang2022improving}.
 
+        % \begin{figure}[t]
+        %     \centering
+        %     \includegraphics[width=\linewidth]{figures/simple_reco/recos.pdf}
+        %     \caption{Recovered signals with regularization parameters $\lambda_2 = 8$ and $\alpha_1 = 0.1$. \textit{Left:} Sparse foreground component. \textit{Right:} Smooth background.}
+        %     \label{fig:simple:recos}
+        % \end{figure}
+
         \begin{figure}[t]
             \centering
-            \includegraphics[width=\linewidth]{figures/simple_reco/recos.pdf}
-            \caption{Recovered signals with regularization parameters $\lambda_2 = 8$ and $\alpha_1 = 0.1$. \textit{Left:} Sparse foreground component. \textit{Right:} Smooth background.}
+            \includegraphics[width=\linewidth]{/home/adrian/PycharmProjects/decouple-composite/figures/review2/recos.pdf}
+            \caption{Recovered signals with regularization parameters $\lambda_2 = 4$ and $\alpha_1 = 0.1$, overlaid with the ground truth signals. \textit{Left:} Sparse foreground component. \textit{Right:} Smooth background.}
             \label{fig:simple:recos}
         \end{figure}
         
+        % \begin{figure}[t]
+        %     \centering
+        %     \includegraphics[width=\linewidth]{figures/simple_reco/recos_conv.pdf}        
+        %     \caption{Foregrounds convolved with the sharp representation kernel. \textit{Left:} Ground truth signal. \textit{Right:} Reconstruction.}
+        %     \label{fig:simple:recos-conv}
+        % \end{figure}
+
         \begin{figure}[t]
             \centering
-            \includegraphics[width=\linewidth]{figures/simple_reco/recos_conv.pdf}        
-            \caption{Foregrounds convolved with the sharp representation kernel. \textit{Left:} Ground truth signal. \textit{Right:} Reconstruction.}
+            \includegraphics[width=\linewidth]{/home/adrian/PycharmProjects/decouple-composite/figures/review2/recos_conv.pdf}        
+            \caption{Foregrounds after convolution with the sharp representation kernel.}
             \label{fig:simple:recos-conv}
         \end{figure}
+
 
         Figure~\ref{fig:simple:recos} presents the foreground and background components recovered with regularization parameters $\lambda_2 = 0.08 L =8$ and $\alpha_1 = 0.1$. In this very simple situation, we observe a strong match between the simulated source signals and the reconstructions. The recovered foreground component is composed of two clusters of impulses which accurately locate the peaks from the ground truth signal. The total intensity is however split in between the reconstruction impulses. This phenomenon is classically observed with over-parametrized LASSO problems (see for instance the discussion in \cite{duval2017sparseI}). The background reconstruction is also faithful to the ground truth signal, matching the overall maximum intensity and support of the function, even though the small variation between the two bumps is not precisely recovered.
 
@@ -889,7 +901,12 @@
         % The $K_f=10$ source peaks are recovered. Some of them suffer from a small intensity shrinkage, which is a well-known artefact of LASSO-like problems. Spurious peaks are also reproduced around the left peak, which may be explained by the presence of strong background information around this location. 
 
         Naturally, the penalty parameters $\lb$ and $\lh$ have a significant influence on the recovered components and the interplay between the respective value of these two parameters is not fully understood. We provide in Appendix~\ref{app:reconstructions} a cross table of reconstructions with various regularization parameters to illustrate the dependence. 
-        
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%  SECTION 5
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \FloatBarrier        
 \section{Benefits of our Decoupled Composite Model}
     
@@ -918,6 +935,15 @@
         \begin{figure}[t]
             \centering
             \includegraphics[width=\linewidth, trim=0 2cm 0 2.2cm, clip]{figures/simple_reco/blasso_merged.pdf}
+            \caption{Single-component reconstructions using a B-LASSO problem approximated on the fine grid: ground truth (\textit{upper left}) and several values of the regularization parameter ($\alpha=0.2, 0.3$ or $0.4$).
+            % \ad{Larger titles or subfigures.}
+            }
+            \label{fig:simple:blasso-conv}
+        \end{figure}
+
+        \begin{figure}[t]
+            \centering
+            \includegraphics[width=\linewidth, trim=0 .8cm 0 0.2cm, clip]{/home/adrian/PycharmProjects/decouple-composite/figures/review2/srf8r121.000000seed476613/blasso_merged.pdf}
             \caption{Single-component reconstructions using a B-LASSO problem approximated on the fine grid: ground truth (\textit{upper left}) and several values of the regularization parameter ($\alpha=0.2, 0.3$ or $0.4$).
             % \ad{Larger titles or subfigures.}
             }

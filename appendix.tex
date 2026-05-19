@@ -244,6 +244,36 @@
     $\lambda_2$ and $\alpha$. \textit{Rows :} Increasing value of $\alpha$ from top to bottom. \textit{Columns :} Increasing parameter $\lh$ from left to right.}
     \label{fig:simple:tables}
 \end{figure}
+
+\begin{figure}[p]
+    \centering
+
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[
+            width=\linewidth,
+            trim=0 .2cm 0cm .2cm,
+            clip
+        ]{/home/adrian/PycharmProjects/decouple-composite/figures/review2/srf8r121.000000seed476613/foreground_merged.pdf}
+        \caption{Foreground components after convolution with the representation kernel.}
+        \label{fig:simple:fg}
+    \end{subfigure}
+
+    \vspace{0.7cm}
+
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[
+            width=\linewidth
+        ]{/home/adrian/PycharmProjects/decouple-composite/figures/review2/srf8r121.000000seed476613/backgrounds.pdf}
+        \caption{Background components using the same parameters.}
+        \label{fig:simple:bg}
+    \end{subfigure}
+
+    \caption{Recovered foreground and background components for different values of
+    $\lambda_2$ and $\alpha$. \textit{Rows :} Increasing value of $\alpha$ from top to bottom. \textit{Columns :} Increasing parameter $\lh$ from left to right.}
+    \label{fig:simple:tables}
+\end{figure}
     
 % \clearpage
 \section{Calculation for the Experiments}
@@ -251,24 +281,23 @@
 
     \subsection{Computation of \texorpdfstring{$M_{\lh}$}{M lambda 2}}
 
-    Using the definition of the PSF $g$ in section~\ref{sec:application}, we derive the expression of the matrix $\mathbf{M}_{\lambda_2}$ defined in equation~\eqref{eq:def-Mphi}. For $1\leq k, \ell \leq L$, we have:
+    Using the definition of the PSF $g$ in Section~\ref{sec:application}, we derive the expression of the matrix $\mathbf{M}_{\lambda_2}$ defined in equation~\eqref{eq:def-Mphi}. For $1\leq k, \ell \leq L$, we have:
     \begin{equation*}
-        \mathbf{M}_{\lh}[k, \ell] = \frac{1}{\lh} \left( \langle \phi_k , \phi_\ell \rangle_{\mathcal{H}} + \lh \delta[k - \ell] \right)
+        \mathbf{M}_{\lh}[k, \ell] = \frac{1}{\lh} \left( \langle \phihh_k , \phihh_\ell \rangle_{\mathcal{H}} + \lh \delta[k - \ell] \right)
     \end{equation*}
-    Let us compute the inner product between the functionals $\phi$
+    Let us compute the inner product between the functionals $\phihh$
     \begin{equation*}
         \begin{aligned}
-            \langle \phi_k , \phi_\ell \rangle_{\mathcal{H}} &= \int_\mathcal{X} g(x_k - t) g(x_\ell - t) \mathrm{d}t \\
-                &= \int_\mathcal{X} g(- t) g(x_\ell - x_k - t) \mathrm{d}t \\
-                &= \int_\mathcal{X} g(t) g(x_\ell - t) \mathrm{d}t \\
-                &=  (g * g)(x_\ell - x_k)
+            \langle \phihh_k , \phihh_\ell \rangle_{\mathcal{H}} &= (g * \phihh_\ell)(x_k)\\
+                &= \left(g * \left[(g_0 * g)(x_\ell - \cdot)\right]\right)(x_k) \\
+                &=  (g * g_0 * g)(x_\ell - x_k)
         \end{aligned}
     \end{equation*}
-    using the symmetry of the kernel $g$ between lines 2 and 3.
+    using equation~\eqref{eq:defPhihStar} and the symmetry of the kernels $g$ and $g_0$.
     We finally obtain the expression
     \begin{equation*}
         \label{eq:mlambda-1d}
-        \mathbf{M}_{\lambda_2}[k, \ell] = \frac{1}{\lh} \left( (g * g)(x_\ell - x_k) + \lh \delta [k - \ell] \right) .
+        \mathbf{M}_{\lambda_2}[k, \ell] = \frac{1}{\lh} \left( (g * g_0 * g)(x_\ell - x_k) + \lh \delta [k - \ell] \right) .
     \end{equation*}
 
     \subsection{Scaling of \texorpdfstring{$\lh$}{lambda 2}}
@@ -279,13 +308,13 @@
     \end{equation}
     For any vector $\mathbf{h} \in \R^L$, we have
     \begin{align*}
-        \forall 1 \leq k \leq L, \quad \left(\phih\phih^*\mathbf{h}\right)[k] &= \sum_\ell \langle \phi_k , \phi_\ell \rangle_{\mathcal{H}} h_\ell \\
-            &= \sum_\ell (g * g)(x_\ell - x_k) h_\ell \\
+        \forall 1 \leq k \leq L, \quad \left(\phih\phih^*\mathbf{h}\right)[k] &= \sum_\ell \langle \phihh_k , \phihh_\ell \rangle_{\mathcal{H}} h_\ell \\
+            % &= \sum_\ell (g * g)(x_\ell - x_k) h_\ell \\
             &= \sum_\ell u_{k - \ell} h_\ell,
     \end{align*}
-    with $u_i = (g * g)(x_i)$ for $ \leq i \leq L$. Assuming the support of $\mathbf{h}$ is concentrated in the center of the vector and there is no information near the borders, $\phih\phih^*\mathbf{h}$ can be seen as a convolution between $\mathbf{h}$ and $\mathbf{u}$.
+    with $u_i = (g * g * g_0 * g_0)(x_i)$ for $ \leq i \leq L$. Assuming the support of $\mathbf{h}$ is concentrated in the center of the vector and there is no information near the borders, $\phih\phih^*\mathbf{h}$ can be seen as a convolution between $\mathbf{h}$ and $\mathbf{u}$.
 
-    It is possible to prove that the Lipschitz constant of the operator $\phih\phih^* \in \R^{L \times L}$, which is its maximum singular value, is bounded by $\sqrt{L} \norm{\mathbf{u}}$. Using that $\norm{g*g}_2 = 1$, we can approximate $\norm{\mathbf{u}}_2 \approx \sqrt{L}$ using Riemann sum. Hence, we approximate the maximum singular value of $\phih\phih^*$ with $L$.
+    It is possible to prove that the Lipschitz constant of the operator $\phih\phih^* \in \R^{L \times L}$, which is its maximum singular value, is bounded by $\sqrt{L} \norm{\mathbf{u}}$. Using that $\norm{g*g*g_0*g_0}_2 = 1$, we can approximate $\norm{\mathbf{u}}_2 \approx \sqrt{L}$ using Riemann sum. Hence, we approximate the maximum singular value of $\phih\phih^*$ with $L$.
 
     To maintain the term $\frac{1}{\lh} \phih\phih^*$ of the same order as $\mathbf{I}_L$ in $\eqref{eq:mlambda2}$, we set $\lh$ as a ratio of $L$ and we obtain our proposed scaling rule $\lh = \alpha_2 L$.
     
