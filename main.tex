@@ -886,7 +886,7 @@
         \begin{figure}[t]
             \centering
             \includegraphics[width=\linewidth]{/home/adrian/PycharmProjects/decouple-composite/figures/review2/recos_conv.pdf}        
-            \caption{Foregrounds after convolution with the sharp representation kernel.}
+            \caption{Ground truth and recovered foregrounds after convolution with the sharp representation kernel, with detailed zoomed-in areas on the two impulses of the signal.}
             \label{fig:simple:recos-conv}
         \end{figure}
 
@@ -901,6 +901,39 @@
         % The $K_f=10$ source peaks are recovered. Some of them suffer from a small intensity shrinkage, which is a well-known artefact of LASSO-like problems. Spurious peaks are also reproduced around the left peak, which may be explained by the presence of strong background information around this location. 
 
         Naturally, the penalty parameters $\lb$ and $\lh$ have a significant influence on the recovered components and the interplay between the respective value of these two parameters is not fully understood. We provide in Appendix~\ref{app:reconstructions} a cross table of reconstructions with various regularization parameters to illustrate the dependence. 
+
+        \subsubsection{Validation of the method}
+        \begin{figure}[t]
+            \centering
+            \includegraphics[width=.7\linewidth]{/home/adrian/PycharmProjects/decouple-composite/figures/review2/aposteriori\_obs.pdf}
+            \caption{Comparison of the simulated noiseless observations $\left\{\phib(\fb^\dagger) + \phih(\fh^\dagger) \right\}$ and the measurements resulting from the recovered solutions $\left\{\phib(\hfb) + \phih(\hfh) \right\}$.}
+            \label{fig:comparison_obs}
+        \end{figure}
+
+        In addition to the reconstructed signal, it is also relevant to observe a few indicators in order to validate our composite approach, and in particular the grid-based approximation strategy that has been carried out in this section.
+
+        A first classical idea consists in evaluating the mismatch between the noiseless measurements, which we know from the simulated model, and the \emph{a posteriori measurements}, which result from feeding the recovered solution $(\hfb, \hfh)$ to the operators $(\phib, \phih)$. Both measurements vectors are plotted in Figure~\ref{fig:comparison_obs}. We observe a strong match between the two datasets, with a relative error between the two vectors of $5.0$\%, ensuring that the recovered signals indeed explain the simulated observations. The measurements close to the location of the peaks in the foreground component appear slightly underestimated, which may be due to the classical underestimation of the reconstructions with B-LASSO-type problems.
+
+        \begin{figure}[t]
+            \centering
+            \includegraphics[width=\linewidth]{/home/adrian/PycharmProjects/decouple-composite/figures/review2/composite\_certif.pdf}
+            \caption{Empirical dual certificate computed with the approximate solution from Figure~\ref{fig:simple:recos}. The local maxima values are reported on the curve.}
+            \label{fig:certif}
+        \end{figure}
+
+        A second validation tool appears when considering the optimality conditions related to the sparsity-promoting penalty $\cRS(\cdot) = \norm{\cdot}_\mathcal{M}$. In a similar fashion as the \emph{empirical dual certificate} which exists for the B-LASSO problem (see for instance \cite{duval2017sparseI,denoyelle2019sliding,jarret_grid_2025}), a pair of elements $(\fb, \fh) \in \mx \times \cHk$ is solution to the composite problem if it satisfies the system of equations:
+        \begin{align}
+            0 &\in -\phib^* (\bm{r}) + \lb \partial \norm{\cdot}_\mathcal{M}(\fb), \label{eq:opt:fermat}\\
+            \bm{0} &= \phih^*(\bm{r}) - \lh \fh, \label{eq:opt:grad}
+        \end{align}
+        with $\bm{r} = \bm{y}  - \phib(\fb) - \phih(\fh)\in \R^L$ being the observations' residuals. Equation~\eqref{eq:opt:fermat} applies Fermat's rule with the subdifferential of the TV-norm while equation~\eqref{eq:opt:grad} is simply the gradient in $\cHk$ with respect to $\fh$. We can the define an empirical dual certificate $\eta(\cdot, \cdot): \mx \times \cHk \to \czx$ as
+        \begin{equation}
+            \eta(\fb, \fh) := \frac{1}{\lb} \phib^*(\bm{y}  - \phib(\fb) - \phih(\fh)).
+        \end{equation}
+        For a pair of solutions $(\hfh, \hfb)$, this empirical dual certificate satisfies the boundedness condition $\| \eta(\hfb, \hfh) \|_\infty \leq 1$ and saturates to $\pm 1$ on the support of $\hfb$. In practice, we compute an empirical dual certificate with the residuals resulting from the approximate grid-based solution from problem~\eqref{eq:gridbased-sparse}, which evaluates to what extent the grid-based solution solves the original continuous-domain problem. This certificate is displayed in Figure~\ref{fig:certif}, with its local maxima and their value in black. The reported values, both around $1.02$, are closed to the theoretical value of $1$, which ensures that the grid-based solution approximates well a continuous-domain solution of~\eqref{eq:argmin-sps}.
+
+        The two tools presented in this subsection both provide relative criteria for evaluating the sub-optimality of the approach. They can be used in our framework/setting to validate the correctness of the approximation strategy with employed. More generally, they could also be used to compare different setups in practice and to evaluate the importance of some approximation parameter (value of the super-resolution factor, stopping criteria of the optimization problems, operators implementation).
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
