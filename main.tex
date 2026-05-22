@@ -732,7 +732,7 @@
 
             \begin{figure}
                 \centering
-                \includegraphics[width=\linewidth]{figures/simple_reco/measurement_figure.pdf}        
+                \includegraphics[width=.8\linewidth]{/home/adrian/PycharmProjects/decouple-composite/figures/measurement_figure.pdf}
                 \caption{Illustration of the effect of the measurement operator $\phib$ applied to a Dirac signal $\fb^\dagger = \delta_{x_0}$ with $x_0 \approx 0.695$.}
                 \label{fig:simple:measop}
             \end{figure}
@@ -840,20 +840,20 @@
             
             We provide in figure~\ref{fig:simple:source} a simulated source signal built with a ratio of $r_{1/2} = 1$. 
             % \ju{après réflexion je me dis que tu peux garder la figure en expliquant bien l'effet d'échelle et le fait que la représentation peut être misleading.}
-            The associated measurements are presented in figure~\ref{fig:simple:measurements}. Note that the contributions of the two components $\phib(\fb^\dagger)$ and $\phih(\fh^\dagger)$ have the same Euclidian norm although their distribution of mass is very different, leading to the difference of scales in the right panel of figure~\ref{fig:simple:source}. %In this case, the $\ell_1$-norm of the contribution of the background is actually twice as large as the one from the foreground.
+            The associated measurements are presented in figure~\ref{fig:simple:measurements}. Note that the contributions of the two components $\phib(\fb^\dagger)$ and $\phih(\fh^\dagger)$ have the same Euclidian norm although their distribution of mass is very different, leading to the relative difference of magnitude in the right panel of figure~\ref{fig:simple:source}. %In this case, the $\ell_1$-norm of the contribution of the background is actually twice as large as the one from the foreground.
     
             \begin{figure}[t]
                 \centering
-                \includegraphics[width=\linewidth]{/home/adrian/PycharmProjects/decouple-composite/figures/review2/gt.pdf}        
-                \caption{Simulated source signal. \textit{Left:} Sparse component. \textit{Center:} Background smooth component. \textit{Right:} Superposition of the two components.
+                \includegraphics[width=\linewidth, trim=0 0cm 0 .5cm, clip]{/home/adrian/Documents/EPFL/decoupled-CD-article/figures/review2/gt.pdf}        
+                \caption{Simulated source signal. \textit{Left:} Sparse component $\fb^\dagger$. \textit{Center:} Background smooth component $\fh^\dagger$. \textit{Right:} Superposition of the two components.
                 }
                 \label{fig:simple:source}
             \end{figure}
         
             \begin{figure}[t]
                 \centering
-                \includegraphics[width=\linewidth]{/home/adrian/PycharmProjects/decouple-composite/figures/review2/measurements.pdf}        
-                \caption{Simulated measurements. \textit{Left:} Contribution of the sparse component. \textit{Center:} Contribution of background. \textit{Right:} Total noisy observations $\bm{y}$. In practice, only the information of the right-hand plot is accessible and respective contribution of the components is not known.}
+                \includegraphics[width=\linewidth, trim=0 0cm 0 .5cm, clip]{/home/adrian/Documents/EPFL/decoupled-CD-article/figures/review2/measurements.pdf}        
+                \caption{Simulated measurements. \textit{Left:} Contribution of the sparse component $\phib(\fb^\dagger)\in \R^L$. \textit{Center:} Contribution of background $\phih(\fh^\dagger)\in \R^L$. \textit{Right:} Total noisy observations $\bm{y}$. In practice, only the information of the right-hand plot is accessible and respective contribution of the components is not known.}
                 \label{fig:simple:measurements}
             \end{figure}
 
@@ -871,8 +871,8 @@
 
         \begin{figure}[t]
             \centering
-            \includegraphics[width=\linewidth]{/home/adrian/PycharmProjects/decouple-composite/figures/review2/recos.pdf}
-            \caption{Recovered signals with regularization parameters $\lambda_2 = 4$ and $\alpha_1 = 0.1$, overlaid with the ground truth signals. \textit{Left:} Sparse foreground component. \textit{Right:} Smooth background.}
+            \includegraphics[width=\linewidth]{/home/adrian/Documents/EPFL/decoupled-CD-article/figures/review2/recos.pdf}
+            \caption{Recovered signals with regularization parameters $\lambda_2 = 4$ and $\alpha_1 = 0.1$, overlaid with the ground truth signals. \textit{Left:} Sparse foreground component. \textit{Right:} Smooth background. \textit{(Note the difference in vertical scaling.)}}
             \label{fig:simple:recos}
         \end{figure}
         
@@ -885,54 +885,65 @@
 
         \begin{figure}[t]
             \centering
-            \includegraphics[width=\linewidth]{/home/adrian/PycharmProjects/decouple-composite/figures/review2/recos_conv.pdf}        
+            \includegraphics[width=\linewidth]{/home/adrian/Documents/EPFL/decoupled-CD-article/figures/review2/recos_conv.pdf}        
             \caption{Ground truth and recovered foregrounds after convolution with the sharp representation kernel, with detailed zoomed-in areas on the two impulses of the signal.}
             \label{fig:simple:recos-conv}
         \end{figure}
 
 
-        Figure~\ref{fig:simple:recos} presents the foreground and background components recovered with regularization parameters $\lambda_2 = 0.08 L =8$ and $\alpha_1 = 0.1$. In this very simple situation, we observe a strong match between the simulated source signals and the reconstructions. The recovered foreground component is composed of two clusters of impulses which accurately locate the peaks from the ground truth signal. The total intensity is however split in between the reconstruction impulses. This phenomenon is classically observed with over-parametrized LASSO problems (see for instance the discussion in \cite{duval2017sparseI}). The background reconstruction is also faithful to the ground truth signal, matching the overall maximum intensity and support of the function, even though the small variation between the two bumps is not precisely recovered.
+        Figure~\ref{fig:simple:recos} presents the foreground and background components recovered with regularization parameters $\lambda_2 = 0.04 L = 4$ and $\alpha_1 = 0.1$. In this very simple situation, we observe a strong match between the simulated source signals and the reconstructions. The recovered foreground component is composed of two clusters of impulses which accurately locate the peaks from the ground truth signal. The total intensity is however split in between the reconstruction impulses. This phenomenon is classically observed with over-parametrized LASSO problems (see for instance the discussion in \cite{duval2017sparseI}). The background reconstruction is also faithful to the ground truth signal, matching the overall maximum intensity and support of the function, even though the small variation between the two bumps is not precisely recovered.
 
         % The sparse component is similar to the simulated source signal of figure~\ref{fig:simple:source} although many reconstructed peaks are composed of several small intensity impulses, which makes the comparison with the ground truth difficult. The background component is faithful, matching the overall intensity of the ground truth and capturing local variations. 
         % This result is sensitive to the actual value of the regularization parameters, potentially leading to worse reconstructions (as can be seen in Appendix~\ref{app:reconstructions}).
 
-        To provide a better comparison between the source foreground component and the recovered one, we convolve the sparse signals $\hfb$ and $s_1^\dagger$ with a representation kernel. We use a narrow Gaussian function of small standard deviation $\sigma_r = \sigma/4$. This operation intuitively blends nearby peaks while respecting the spatial spread of different clusters. The resulting signals are displayed in figure~\ref{fig:simple:recos-conv}, demonstrating consistency between the signals.
+        To provide a better comparison between the source foreground component and the recovered one, we convolve the sparse signals $\hfb$ and $s_1^\dagger$ with a representation kernel. We use a narrow Gaussian function of small standard deviation $\sigma_r = \sigma/4$. This operation intuitively blends nearby peaks while respecting the spatial spread of different clusters. The resulting signals are displayed in figure~\ref{fig:simple:recos-conv}, demonstrating consistency between the signals. Both impulses are correctly placed in the reconstruction, with a small underestimation of their intensity, which is classical side side effect of $\ell_1$-type regularization.
         % \ad{Should I comment more ?}
         % The $K_f=10$ source peaks are recovered. Some of them suffer from a small intensity shrinkage, which is a well-known artefact of LASSO-like problems. Spurious peaks are also reproduced around the left peak, which may be explained by the presence of strong background information around this location. 
 
-        Naturally, the penalty parameters $\lb$ and $\lh$ have a significant influence on the recovered components and the interplay between the respective value of these two parameters is not fully understood. We provide in Appendix~\ref{app:reconstructions} a cross table of reconstructions with various regularization parameters to illustrate the dependence. 
+        The regularization parameters $\lb$ and $\lh$ have a significant influence on the recovered components, and the interplay between these two parameters is not yet fully understood. To illustrate the sensitivity of the method to their respective values, Appendix~\ref{app:reconstructions} provides a grid of reconstructions obtained for various choices of regularization parameters. This analysis highlights both the stable reconstruction regimes and the parameter configurations for which the reconstruction deteriorates.
 
         \subsubsection{Validation of the method}
-        \begin{figure}[t]
-            \centering
-            \includegraphics[width=.7\linewidth]{/home/adrian/PycharmProjects/decouple-composite/figures/review2/aposteriori\_obs.pdf}
-            \caption{Comparison of the simulated noiseless observations $\left\{\phib(\fb^\dagger) + \phih(\fh^\dagger) \right\}$ and the measurements resulting from the recovered solutions $\left\{\phib(\hfb) + \phih(\hfh) \right\}$.}
-            \label{fig:comparison_obs}
-        \end{figure}
 
-        In addition to the reconstructed signal, it is also relevant to observe a few indicators in order to validate our composite approach, and in particular the grid-based approximation strategy that has been carried out in this section.
+        In addition to the reconstructed signals themselves, it is relevant to consider several indicators in order to validate the proposed composite approach, and in particular the grid-based approximation strategy employed to simplify the sparse foreground estimation problem.
 
-        A first classical idea consists in evaluating the mismatch between the noiseless measurements, which we know from the simulated model, and the \emph{a posteriori measurements}, which result from feeding the recovered solution $(\hfb, \hfh)$ to the operators $(\phib, \phih)$. Both measurements vectors are plotted in Figure~\ref{fig:comparison_obs}. We observe a strong match between the two datasets, with a relative error between the two vectors of $5.0$\%, ensuring that the recovered signals indeed explain the simulated observations. The measurements close to the location of the peaks in the foreground component appear slightly underestimated, which may be due to the classical underestimation of the reconstructions with B-LASSO-type problems.
+        A first classical validation consists in evaluating the mismatch between the noiseless measurements, which are known from the simulated model, and the \emph{a posteriori measurements} obtained by applying the operators $(\phib, \phih)$ to the recovered solution $(\hfb, \hfh)$. Both measurement vectors are displayed in Figure~\ref{fig:comparison_obs}. We observe a strong agreement between the two datasets, with a relative error of $5.0$\% between the corresponding vectors. This indicates that the recovered signals provide an accurate explanation of the simulated observations. The measurements located near the peaks of the foreground component appear slightly underestimated, which may be attributed to the classical amplitude bias encountered in B-LASSO-type problems.
 
-        \begin{figure}[t]
-            \centering
-            \includegraphics[width=\linewidth]{/home/adrian/PycharmProjects/decouple-composite/figures/review2/composite\_certif.pdf}
-            \caption{Empirical dual certificate computed with the approximate solution from Figure~\ref{fig:simple:recos}. The local maxima values are reported on the curve.}
-            \label{fig:certif}
-        \end{figure}
-
-        A second validation tool appears when considering the optimality conditions related to the sparsity-promoting penalty $\cRS(\cdot) = \norm{\cdot}_\mathcal{M}$. In a similar fashion as the \emph{empirical dual certificate} which exists for the B-LASSO problem (see for instance \cite{duval2017sparseI,denoyelle2019sliding,jarret_grid_2025}), a pair of elements $(\fb, \fh) \in \mx \times \cHk$ is solution to the composite problem if it satisfies the system of equations:
+        A second validation tool is obtained from the optimality conditions associated with the sparsity-promoting penalty $\cRS(\cdot) = \norm{\cdot}_\mathcal{M}$, similarly to the \emph{empirical dual certificate} commonly considered in the B-LASSO literature (see for instance \cite{duval2017sparseI,denoyelle2019sliding,jarret_grid_2025}). A pair of elements $(\fb, \fh) \in \mx \times \cHk$ is a solution of the composite problem if it satisfies the optimality conditions
         \begin{align}
-            0 &\in -\phib^* (\bm{r}) + \lb \partial \norm{\cdot}_\mathcal{M}(\fb), \label{eq:opt:fermat}\\
-            \bm{0} &= \phih^*(\bm{r}) - \lh \fh, \label{eq:opt:grad}
+            0 &\in -\phib^* (\bm{r}) + \lb \, \partial \norm{\cdot}_\mathcal{M}(\fb), \label{eq:opt:fermat}\\
+            \bm{0} &= \phih^*(\bm{r}) - \lh \, \fh, \label{eq:opt:grad}
         \end{align}
-        with $\bm{r} = \bm{y}  - \phib(\fb) - \phih(\fh)\in \R^L$ being the observations' residuals. Equation~\eqref{eq:opt:fermat} applies Fermat's rule with the subdifferential of the TV-norm while equation~\eqref{eq:opt:grad} is simply the gradient in $\cHk$ with respect to $\fh$. We can the define an empirical dual certificate $\eta(\cdot, \cdot): \mx \times \cHk \to \czx$ as
+        where $\bm{r} := \bm{y} - \phib(\fb) - \phih(\fh) \in \R^L$ denotes the residual vector. Equation~\eqref{eq:opt:fermat} follows from Fermat's rule using the subdifferential of the TV-norm $\partial \norm{\cdot}_\mathcal{M}(\cdot)$, while equation~\eqref{eq:opt:grad} corresponds to the vanishing of the gradient in $\cHk$ with respect to $\fh$.
+
+        % A second validation tool appears when considering the optimality conditions related to the sparsity-promoting penalty $\cRS(\cdot) = \norm{\cdot}_\mathcal{M}$, in a similar fashion as the \emph{empirical dual certificate} which exists for the B-LASSO problem (see for instance \cite{duval2017sparseI,denoyelle2019sliding,jarret_grid_2025}). A pair of elements $(\fb, \fh) \in \mx \times \cHk$ is solution to the composite problem if it satisfies the system of equations:
+        % \begin{align}
+        %     0 &\in -\phib^* (\bm{r}) + \lb \partial \norm{\cdot}_\mathcal{M}(\fb), \label{eq:opt:fermat}\\
+        %     \bm{0} &= \phih^*(\bm{r}) - \lh \fh, \label{eq:opt:grad}
+        % \end{align}
+        % with $\bm{r} := \bm{y}  - \phib(\fb) - \phih(\fh)\in \R^L$ being the observations' residuals. Equation~\eqref{eq:opt:fermat} applies Fermat's rule with the subdifferential of the TV-norm while equation~\eqref{eq:opt:grad} is simply the gradient in $\cHk$ with respect to $\fh$.
+        % In practice, we compute an empirical dual certificate with the residuals resulting from the approximate grid-based solution from problem~\eqref{eq:gridbased-sparse}. This certificate is displayed in figure~\ref{fig:certif}, with its local maxima and their value in black. The reported values, both around $1.02$, are closed to the theoretical value of $1$, which ensures that the grid-based solution approximates well a continuous-domain solution of~\eqref{eq:argmin-sps}.
+        We can then define an empirical dual certificate $\eta(\cdot, \cdot): \mx \times \cHk \to \czx$ as
         \begin{equation}
             \eta(\fb, \fh) := \frac{1}{\lb} \phib^*(\bm{y}  - \phib(\fb) - \phih(\fh)).
         \end{equation}
-        For a pair of solutions $(\hfh, \hfb)$, this empirical dual certificate satisfies the boundedness condition $\| \eta(\hfb, \hfh) \|_\infty \leq 1$ and saturates to $\pm 1$ on the support of $\hfb$. In practice, we compute an empirical dual certificate with the residuals resulting from the approximate grid-based solution from problem~\eqref{eq:gridbased-sparse}, which evaluates to what extent the grid-based solution solves the original continuous-domain problem. This certificate is displayed in Figure~\ref{fig:certif}, with its local maxima and their value in black. The reported values, both around $1.02$, are closed to the theoretical value of $1$, which ensures that the grid-based solution approximates well a continuous-domain solution of~\eqref{eq:argmin-sps}.
+        For a solution pair $(\hfh, \hfb)$, this empirical dual certificate satisfies the boundedness condition $\| \eta(\hfb, \hfh) \|_\infty \leq 1$ and saturates to $\pm 1$ on the support of $\hfb$.
+        In practice, the certificate is computed using the residual associated with the approximate grid-based solution obtained from problem~\eqref{eq:gridbased-sparse}. The resulting certificate is displayed in Figure~\ref{fig:certif}, together with its local maxima shown in black. The reported values, both close to $1.02$, remain very close to the theoretical value $1$, which indicates that the grid-based solution provides a good approximation of a continuous-domain solution of problem~\eqref{eq:argmin-sps}.
 
-        The two tools presented in this subsection both provide relative criteria for evaluating the sub-optimality of the approach. They can be used in our framework/setting to validate the correctness of the approximation strategy with employed. More generally, they could also be used to compare different setups in practice and to evaluate the importance of some approximation parameter (value of the super-resolution factor, stopping criteria of the optimization problems, operators implementation).
+        The two validation tools presented in this subsection provide quantitative indicators for assessing the sub-optimality of the proposed approach. In the present setting, they support the validity of the approximation strategy employed in the numerical implementation. More generally, they may also be used to compare different numerical configurations and to evaluate the influence of approximation parameters such as the super-resolution factor, the stopping criteria of the optimization procedures, or the implementation of the different operators.
+
+        \begin{figure}[t]
+            \centering
+            \includegraphics[width=.7\linewidth, trim=0 0.1cm 0 .6cm, clip]{/home/adrian/Documents/EPFL/decoupled-CD-article/figures/review2/aposteriori\_obs.pdf}
+            \caption{Comparison of the simulated noiseless observations $\{\phib(\fb^\dagger) + \phih(\fh^\dagger)\}$ (dark green crosses) and the measurements resulting from the recovered solutions $\{\phib(\hfb) + \phih(\hfh)\}$ (light green dots).}
+            \label{fig:comparison_obs}
+        \end{figure}
+
+        \begin{figure}[t]
+            \centering
+            \includegraphics[width=\linewidth, trim=0 0.1cm 0 .6cm, clip]{/home/adrian/Documents/EPFL/decoupled-CD-article/figures/review2/composite\_certif.pdf}
+            \caption{Empirical dual certificate $\eta(\hfb, \hfh)$ computed with the approximate solution from figure~\ref{fig:simple:recos}. The values of the local maxima are reported on the curve.}
+            \label{fig:certif}
+        \end{figure}
 
 
 
@@ -965,18 +976,18 @@
         Figure~\ref{fig:simple:blasso-conv} displays the reconstructions with the same representation kernel as before for various reconstruction parameters $\alpha$.
         We observe that the B-LASSO problem manages to recover some high intensity peaks, however the reconstructions are strongly corrupted by the presence of background information. When more sparsity is enforced with a larger value of $\alpha$, the spurious peaks tend to vanish but the intensity of the relevant peaks is also reduced, becoming lower than the source and than the composite reconstruction.
 
-        \begin{figure}[t]
-            \centering
-            \includegraphics[width=\linewidth, trim=0 2cm 0 2.2cm, clip]{figures/simple_reco/blasso_merged.pdf}
-            \caption{Single-component reconstructions using a B-LASSO problem approximated on the fine grid: ground truth (\textit{upper left}) and several values of the regularization parameter ($\alpha=0.2, 0.3$ or $0.4$).
-            % \ad{Larger titles or subfigures.}
-            }
-            \label{fig:simple:blasso-conv}
-        \end{figure}
+        % \begin{figure}[t]
+        %     \centering
+        %     \includegraphics[width=\linewidth, trim=0 2cm 0 2.2cm, clip]{figures/simple_reco/blasso_merged.pdf}
+        %     \caption{Single-component reconstructions using a B-LASSO problem approximated on the fine grid: ground truth (\textit{upper left}) and several values of the regularization parameter ($\alpha=0.2, 0.3$ or $0.4$).
+        %     % \ad{Larger titles or subfigures.}
+        %     }
+        %     \label{fig:simple:blasso-conv}
+        % \end{figure}
 
         \begin{figure}[t]
             \centering
-            \includegraphics[width=\linewidth, trim=0 .8cm 0 0.2cm, clip]{/home/adrian/PycharmProjects/decouple-composite/figures/review2/srf8r121.000000seed476613/blasso_merged.pdf}
+            \includegraphics[width=\linewidth, trim=0 .8cm 0 0.4cm, clip]{/home/adrian/Documents/EPFL/decoupled-CD-article/figures/review2/srf8r121.000000seed476613/blasso_merged.pdf}
             \caption{Single-component reconstructions using a B-LASSO problem approximated on the fine grid: ground truth (\textit{upper left}) and several values of the regularization parameter ($\alpha=0.2, 0.3$ or $0.4$).
             % \ad{Larger titles or subfigures.}
             }
@@ -994,9 +1005,10 @@
 
         The evaluation metrics on the foreground component are reported in tables~\ref{tab:rl2} and~\ref{tab:rl1} for the sparse-plus-smooth composite model, and in table~\ref{tab:blasso} for the single-component reconstructions with the B-LASSO. A similar error table for the reconstruction of the background is provided in Appendix~\ref{app:errorbg}.
 
-        Both metrics identify the same best pair of reconstruction parameters for the composite model, using $\alpha_1 = 0.1$ and $\lh = 8.0$, which corresponds to the example displayed in Section~\ref{sec:application}. The actual value of the error is significantly lower than the best error obtained with the single-component B-LASSO reconstruction. Moreover, the metrics for the B-LASSO improve with higher values of the penalty parameter, coincidentally with a decrease in intensity of the recovered signal. These observations suggest that the B-LASSO model is inappropriate for such a recovery problem and having a composite model significantly improves the reconstruction. 
+        Both metrics identify the same best pair of reconstruction parameters for the composite model, using $\alpha_1 = 0.1$ and $\lh = 8.0$. %, which corresponds to the example displayed in Section~\ref{sec:application}.
+        The actual value of the error is significantly lower than the best error obtained with the single-component B-LASSO reconstruction. Moreover, the metrics for the B-LASSO improve with higher values of the penalty parameter, coincidentally with a decrease in intensity of the recovered signal. These observations suggest that the B-LASSO model is inappropriate for such a recovery problem and having a composite model significantly improves the reconstruction. 
         
-        \begin{table}[!hb]
+        \begin{table}[t]
         \centering
         \begin{subtable}[t]{0.45\linewidth}
             \centering
@@ -1031,10 +1043,10 @@
             \end{tabular}
             \caption{Relative $\ell_1$-norm error\label{tab:rl1}}
         \end{subtable}
-        \caption{Evaluation metrics for the composite reconstructions.}
+        \caption{Evaluation metrics for the foreground component with composite reconstructions.}
         \end{table}
     
-        \begin{table}[!hb]
+        \begin{table}[t]
             \centering
             \begin{tabular}{l|rrr}
                 \toprule
